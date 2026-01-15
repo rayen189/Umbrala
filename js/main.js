@@ -77,6 +77,7 @@ function renderChat() {
   messagesByRoom[currentRoom].forEach(m=>{
     const div = document.createElement('div');
     div.textContent = `${m.user}: ${m.text}`;
+    div.className = (m.user===currentUser)?'user':'user';
     chatContainer.appendChild(div);
   });
   chatContainer.scrollTop = chatContainer.scrollHeight;
