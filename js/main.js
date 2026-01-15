@@ -1,193 +1,140 @@
+// ------------------ Variables ------------------
+const landingScreen = document.getElementById('landing-screen');
+const roomsScreen = document.getElementById('rooms-screen');
+const chatScreen = document.getElementById('chat-screen');
+const privateChatScreen = document.getElementById('private-chat');
 
-// --------------------- Variables ---------------------
+const initBtn = document.getElementById('init-btn');
+const backLanding = document.getElementById('back-landing');
+const roomsList = document.getElementById('rooms-list');
+const chatRoomName = document.getElementById('chat-room-name');
 const chatContainer = document.getElementById('chat-container');
 const chatInput = document.getElementById('chat-input');
 const sendBtn = document.getElementById('send-btn');
-const alertContainer = document.getElementById('alert-container');
-const roomSelect = document.getElementById('room-select');
+const usersList = document.getElementById('users-list');
+const exitRoom = document.getElementById('exit-room');
 
-const adminNickInput = document.getElementById('admin-nick');
-const adminPassInput = document.getElementById('admin-pass');
-const adminLoginBtn = document.getElementById('admin-login');
-const adminLogoutBtn = document.getElementById('admin-logout');
+const privateUserSpan = document.getElementById('private-user');
+const privateContainer = document.getElementById('private-container');
+const privateInput = document.getElementById('private-input');
+const privateSend = document.getElementById('private-send');
+const closePrivate = document.getElementById('close-private');
 
-const adminPanel = document.getElementById('admin-panel');
-const targetUserInput = document.getElementById('target-user');
-const banBtn = document.getElementById('ban-user');
-const shadowbanBtn = document.getElementById('shadowban-user');
-const clearRoomBtn = document.getElementById('clear-room');
-const shutdownBtn = document.getElementById('shutdown-btn');
-const shutdownTimerDiv = document.getElementById('shutdown-timer');
-const adminLogDiv = document.getElementById('admin-log');
+let currentRoom = '';
+let currentUser = 'User'+Math.floor(Math.random()*1000);
+let usersByRoom = {};
+let messagesByRoom = {};
+let privateMessages = {};
 
-const ADMIN_NICK = 'root'; // Cambiar nick root
-const ADMIN_PASS = '1234'; // Cambiar clave root
-const ADMIN_STORAGE_KEY = 'umbrala_admin_logged';
+// ------------------ Salas ------------------
+const rooms = ['General','Norte','Sur','La Serena','VIP'];
 
-let messages = [];
-let shadowbannedUsers = JSON.parse(localStorage.getItem('umbrala_shadowbans')) || [];
-let bannedUsers = JSON.parse(localStorage.getItem('umbrala_bans')) || [];
-let adminLog = JSON.parse(localStorage.getItem('umbrala_admin_log')) || [];
-
-let isAdmin = localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
-
-// --------------------- Funciones ---------------------
-function renderMessages() {
-  chatContainer.innerHTML = '';
-  messages
-    .filter(m => m.room === roomSelect.value)
-    .forEach(msg => {
-      if(shadowbannedUsers.includes(msg.user) || bannedUsers.includes(msg.user)) return;
-      const div = document.createElement('div');
-      div.classList.add('line');
-      div.textContent = `${msg.user}: ${msg.text}`;
-      if(isAdmin && msg.user === ADMIN_NICK) div.style.color = '#00ff00';
-      chatContainer.appendChild(div);
-    });
-  chatContainer.scrollTop = chatContainer.scrollHeight;
-  adminPanel.style.display = isAdmin ? 'block' : 'none';
-  renderAdminLog();
-}
-
-function showAlert(text) {
-  alertContainer.textContent = text;
-  setTimeout(() => { alertContainer.textContent = ''; }, 3000);
-}
-
-function addAdminLog(event) {
-  const timestamp = new Date().toLocaleString();
-  adminLog.push(`[${timestamp}] ${event}`);
-  localStorage.setItem('umbrala_admin_log', JSON.stringify(adminLog));
-}
-
-function renderAdminLog() {
-  adminLogDiv.innerHTML = '';
-  adminLog.forEach(l => {
+function showRooms() {
+  roomsList.innerHTML = '';
+  rooms.forEach(room => {
+    if(!usersByRoom[room]) usersByRoom[room]=[];
+    if(!messagesByRoom[room]) messagesByRoom[room]=[];
     const div = document.createElement('div');
-    div.textContent = l;
-    adminLogDiv.appendChild(div);
+    div.innerHTML = `<strong>${room}</strong> - Usuarios conectados: ${usersByRoom[room].length} 
+                     <button onclick="enterRoom('${room}')">Entrar</button>`;
+    roomsList.appendChild(div);
   });
 }
 
-// --------------------- Eventos ---------------------
-sendBtn.addEventListener('click', () => {
+// ------------------ Navegación ------------------
+initBtn.onclick = () => {
+  landingScreen.style.display='none';
+  roomsScreen.style.display='block';
+  showRooms();
+}
+backLanding.onclick = () => {
+  roomsScreen.style.display='none';
+  landingScreen.style.display='block';
+}
+
+// ------------------ Entrar a sala ------------------
+function enterRoom(room) {
+  currentRoom = room;
+  chatRoomName.textContent = room;
+  if(!usersByRoom[room].includes(currentUser)) usersByRoom[room].push(currentUser);
+  renderChat();
+  renderUsers();
+  roomsScreen.style.display='none';
+  chatScreen.style.display='block';
+}
+
+// ------------------ Salir de sala ------------------
+exitRoom.onclick = () => {
+  usersByRoom[currentRoom] = usersByRoom[currentRoom].filter(u=>u!==currentUser);
+  chatScreen.style.display='none';
+  roomsScreen.style.display='block';
+  showRooms();
+}
+
+// ------------------ Render chat ------------------
+function renderChat() {
+  chatContainer.innerHTML='';
+  messagesByRoom[currentRoom].forEach(m=>{
+    const div = document.createElement('div');
+    div.textContent = `${m.user}: ${m.text}`;
+    chatContainer.appendChild(div);
+  });
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// ------------------ Enviar mensaje ------------------
+sendBtn.onclick = () => {
   const text = chatInput.value.trim();
   if(!text) return;
-  let user = isAdmin ? ADMIN_NICK : prompt("Escribe tu nick:") || 'Anon';
-
-  // Comandos root
-  if(isAdmin && text.startsWith('/')) {
-    const parts = text.split(' ');
-    const cmd = parts[0];
-    const target = parts[1];
-
-    switch(cmd){
-      case '/ban':
-        if(target){
-          bannedUsers.push(target);
-          localStorage.setItem('umbrala_bans', JSON.stringify(bannedUsers));
-          messages = messages.filter(m=>m.user!==target);
-          showAlert(`Usuario ${target} baneado via comando`);
-          addAdminLog(`Usuario ${target} baneado`);
-          renderMessages();
-        }
-        return;
-      case '/shadowban':
-        if(target){
-          shadowbannedUsers.push(target);
-          localStorage.setItem('umbrala_shadowbans', JSON.stringify(shadowbannedUsers));
-          showAlert(`Usuario ${target} shadowbaneado via comando`);
-          addAdminLog(`Usuario ${target} shadowbaneado`);
-          renderMessages();
-        }
-        return;
-      case '/clearsala':
-        const room = roomSelect.value;
-        messages = messages.filter(m=>m.room!==room);
-        showAlert(`Sala ${room} limpiada via comando`);
-        addAdminLog(`Sala ${room} limpiada`);
-        renderMessages();
-        return;
-      default:
-        showAlert(`Comando desconocido: ${cmd}`);
-        return;
-    }
-  }
-
-  messages.push({user,text,room:roomSelect.value});
-  if(!isAdmin) messages.push({user:'Umbrala',text:`Eco -> ${text}`,room:roomSelect.value});
-  renderMessages();
+  messagesByRoom[currentRoom].push({user:currentUser,text});
   chatInput.value='';
+  renderChat();
+}
+
+// Enter en input
+chatInput.addEventListener('keypress', e=>{
+  if(e.key==='Enter') sendBtn.click();
 });
 
-chatInput.addEventListener('keypress', e=>{ if(e.key==='Enter') sendBtn.click(); });
-roomSelect.addEventListener('change', renderMessages);
+// ------------------ Render usuarios ------------------
+function renderUsers() {
+  usersList.innerHTML='';
+  usersByRoom[currentRoom].forEach(u=>{
+    const li = document.createElement('li');
+    li.textContent=u;
+    if(u!==currentUser) li.onclick=()=>openPrivate(u);
+    usersList.appendChild(li);
+  });
+}
 
-// --------------------- Admin Login/Logout ---------------------
-adminLoginBtn.addEventListener('click', ()=>{
-  const nick = adminNickInput.value.trim();
-  const pass = adminPassInput.value.trim();
+// ------------------ Chat privado ------------------
+function openPrivate(user) {
+  privateUserSpan.textContent=user;
+  if(!privateMessages[user]) privateMessages[user]=[];
+  privateContainer.innerHTML='';
+  privateMessages[user].forEach(m=>{
+    const div = document.createElement('div');
+    div.textContent=`${m.user}: ${m.text}`;
+    privateContainer.appendChild(div);
+  });
+  chatScreen.style.display='none';
+  privateChatScreen.style.display='block';
+}
 
-  if(nick===ADMIN_NICK && pass===ADMIN_PASS){
-    isAdmin=true;
-    localStorage.setItem(ADMIN_STORAGE_KEY,'true');
-    showAlert('ROOT conectado');
-    renderMessages();
-  } else showAlert('Acceso denegado');
-});
+privateSend.onclick = () => {
+  const text = privateInput.value.trim();
+  const user = privateUserSpan.textContent;
+  if(!text) return;
+  privateMessages[user].push({user:currentUser,text});
+  privateInput.value='';
+  openPrivate(user);
+}
 
-adminLogoutBtn.addEventListener('click', ()=>{
-  localStorage.removeItem(ADMIN_STORAGE_KEY);
-  isAdmin=false;
-  showAlert('Sesión root cerrada');
-  renderMessages();
-});
+closePrivate.onclick = () => {
+  privateChatScreen.style.display='none';
+  chatScreen.style.display='block';
+  renderUsers();
+}
 
-// --------------------- Panel Admin ---------------------
-banBtn.addEventListener('click', ()=>{
-  const user = targetUserInput.value.trim();
-  if(!user) return;
-  bannedUsers.push(user);
-  localStorage.setItem('umbrala_bans',JSON.stringify(bannedUsers));
-  messages=messages.filter(m=>m.user!==user);
-  showAlert(`Usuario ${user} baneado`);
-  addAdminLog(`Usuario ${user} baneado`);
-  renderMessages();
-});
-
-shadowbanBtn.addEventListener('click', ()=>{
-  const user = targetUserInput.value.trim();
-  if(!user) return;
-  shadowbannedUsers.push(user);
-  localStorage.setItem('umbrala_shadowbans',JSON.stringify(shadowbannedUsers));
-  showAlert(`Usuario ${user} shadowbaneado`);
-  addAdminLog(`Usuario ${user} shadowbaneado`);
-  renderMessages();
-});
-
-clearRoomBtn.addEventListener('click', ()=>{
-  const room = roomSelect.value;
-  messages = messages.filter(m=>m.room!==room);
-  showAlert(`Sala ${room} limpiada`);
-  addAdminLog(`Sala ${room} limpiada`);
-  renderMessages();
-});
-
-// --------------------- Apagar Umbrala ---------------------
-shutdownBtn.addEventListener('click', ()=>{
-  let count = 5;
-  shutdownTimerDiv.textContent=`Apagando Umbrala en ${count}...`;
-  const interval=setInterval(()=>{
-    count--;
-    shutdownTimerDiv.textContent=`Apagando Umbrala en ${count}...`;
-    if(count<=0){
-      clearInterval(interval);
-      shutdownTimerDiv.textContent='Umbrala apagado.';
-      chatContainer.innerHTML='';
-    }
-  },1000);
-});
-
-// --------------------- Inicializar ---------------------
-messages.push({user:'Sistema',text:'Bienvenido a Umbrala Demo Completa.',room:'general'});
-renderMessages();
+// Inicial render
+showRooms();
