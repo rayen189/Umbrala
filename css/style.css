@@ -2,181 +2,131 @@
 /* UMBRALA :: STYLE.CSS — FULL CYBERPUNK   */
 /* ======================================== */
 
-/* --- RESET Y BASE --- */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* RESET */
+* {margin:0;padding:0;box-sizing:border-box;}
+
+body.page.center{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  width:100vw;
+  background:#050520 url('../img/particles-bg.png') repeat;
+  color:#0ff;
+  font-family:'Courier New', monospace;
+  overflow:hidden;
 }
 
-body.page.center {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* centra vertical */
-  align-items: center;     /* centra horizontal */
-  height: 100vh;
-  width: 100vw;
-  background: #050520 url('../img/particles-bg.png') repeat; /* fondo partículas opcional */
-  color: #0ff;
-  font-family: 'Courier New', monospace;
-  overflow: hidden;
-}
-
-/* --- CONTENEDORES PRINCIPALES --- */
-.screen {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-/* --- TÍTULO PRINCIPAL --- */
-#site-title {
-  cursor: pointer;
-  font-size: 3rem;
-  color: #0ff;
-  text-align: center;
-  margin-bottom: 20px;
-  text-shadow: 0 0 5px #0ff, 0 0 15px #0ff, 0 0 30px #0ff;
-  transition: 0.3s ease-in-out;
-}
-#site-title:hover {
-  text-shadow: 0 0 15px #0ff, 0 0 30px #0ff, 0 0 50px #0ff;
-}
-
-/* --- BOTONES --- */
-button, .primary {
-  background: #0ff;
-  color: #050520;
-  border: none;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  font-family: monospace;
-  font-size: 1rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 5px #0ff, 0 0 10px #0ff;
-}
-button:hover, .primary:hover {
-  background: #0ff;
-  color: #050520;
-  box-shadow: 0 0 15px #0ff, 0 0 30px #0ff, 0 0 50px #0ff;
-}
-
-/* --- SALAS --- */
-#rooms-list div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(0, 255, 255, 0.05);
-  padding: 10px 15px;
-  margin: 5px 0;
-  border-radius: 4px;
-  width: 300px;
-  box-shadow: 0 0 5px #0ff;
-  transition: 0.2s;
-}
-#rooms-list div:hover {
-  background: rgba(0, 255, 255, 0.15);
-  box-shadow: 0 0 15px #0ff;
-}
-
-/* --- CHAT --- */
-#chat-container {
-  width: 500px;
-  height: 400px;
-  overflow-y: auto;
-  background: rgba(0, 0, 50, 0.5);
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px #0ff;
-}
-#chat-container .user {
-  margin: 5px 0;
-  padding: 5px;
-  border-left: 2px solid #0ff;
-}
-
-/* --- USUARIOS --- */
-#users-list {
-  list-style: none;
-  max-height: 150px;
-  overflow-y: auto;
-  margin: 10px 0;
-  padding-left: 10px;
-}
-#users-list li {
-  padding: 3px 0;
-  color: #0ff;
-  text-shadow: 0 0 5px #0ff;
-}
-
-/* --- INPUTS --- */
-input[type="text"], input[type="file"], #root-command {
-  width: 300px;
-  padding: 5px 10px;
-  border: 1px solid #0ff;
-  border-radius: 4px;
-  background: rgba(0, 0, 50, 0.3);
-  color: #0ff;
-  font-family: monospace;
-  margin: 5px 0;
-}
-
-/* --- ROOT TERMINAL --- */
-#root-console {
-  width: 600px;
-  height: 400px;
-  background: rgba(0,0,0,0.7);
-  padding: 10px;
-  overflow-y: auto;
-  color: #0ff;
-  font-family: monospace;
-  border: 1px solid #0ff;
-  box-shadow: 0 0 10px #0ff;
-}
-#root-terminal input, #root-terminal button {
-  margin-top: 5px;
-  font-family: monospace;
-}
-
-/* --- EFECTO GLOW --- */
-@keyframes glowAnim {
-  0% { text-shadow: 0 0 5px #0ff,0 0 10px #0ff,0 0 15px #0ff; }
-  50% { text-shadow: 0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff; }
-  100% { text-shadow: 0 0 5px #0ff,0 0 10px #0ff,0 0 15px #0ff; }
-}
-.glow {
-  animation: glowAnim 1s infinite alternate;
-}
-
-/* --- BOTÓN SALIR --- */
-#exit-room {
-  background: #ff007f;
-  color: #050520;
-  box-shadow: 0 0 5px #ff007f, 0 0 10px #ff007f;
-}
-#exit-room:hover {
-  box-shadow: 0 0 15px #ff007f, 0 0 30px #ff007f;
-}
-
-/* --- CONTEO DE USUARIOS --- */
-#user-count {
-  font-weight: bold;
-  color: #0ff;
-  text-shadow: 0 0 5px #0ff;
-}
-
-/* --- PARTICLES --- */
-canvas#particles {
-  position: fixed;
-  top:0;
-  left:0;
+/* CONTENEDORES */
+.screen{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   width:100%;
-  height:100%;
-  z-index:-1;
+}
+
+/* TITULO PRINCIPAL */
+#site-title{
+  cursor:pointer;
+  font-size:3rem;
+  color:#0ff;
+  text-align:center;
+  margin-bottom:20px;
+  text-shadow:0 0 5px #0ff,0 0 15px #0ff,0 0 30px #0ff;
+  transition:0.3s ease-in-out;
+}
+#site-title:hover{
+  text-shadow:0 0 15px #0ff,0 0 30px #0ff,0 0 50px #0ff;
+}
+
+/* BOTONES */
+button,.primary{
+  background:#0ff;color:#050520;border:none;
+  padding:10px 20px;margin:10px;
+  cursor:pointer;font-family:monospace;
+  font-size:1rem;border-radius:4px;text-transform:uppercase;
+  transition:all 0.2s ease;box-shadow:0 0 5px #0ff,0 0 10px #0ff;
+}
+button:hover,.primary:hover{
+  box-shadow:0 0 15px #0ff,0 0 30px #0ff,0 0 50px #0ff;
+}
+
+/* SALAS */
+#rooms-list div{
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(0,255,255,0.05);
+  padding:10px 15px;margin:5px 0;
+  border-radius:4px;width:300px;
+  box-shadow:0 0 5px #0ff;
+  transition:0.2s;
+}
+#rooms-list div:hover{
+  background:rgba(0,255,255,0.15);
+  box-shadow:0 0 15px #0ff;
+}
+
+/* CHAT */
+#chat-container{
+  width:500px;height:400px;
+  overflow-y:auto;
+  background:rgba(0,0,50,0.5);
+  padding:10px;margin-bottom:10px;
+  border-radius:4px;
+  box-shadow:0 0 10px #0ff;
+}
+#chat-container .user{
+  margin:5px 0;
+  padding:5px;
+  border-left:2px solid #0ff;
+}
+
+/* USUARIOS */
+#users-list{list-style:none;max-height:150px;overflow-y:auto;margin:10px 0;padding-left:10px;}
+#users-list li{padding:3px 0;color:#0ff;text-shadow:0 0 5px #0ff;}
+
+/* INPUTS */
+input[type="text"],input[type="file"],#root-command{
+  width:300px;padding:5px 10px;
+  border:1px solid #0ff;border-radius:4px;
+  background:rgba(0,0,50,0.3);
+  color:#0ff;font-family:monospace;margin:5px 0;
+}
+
+/* ROOT TERMINAL */
+#root-console{
+  width:600px;height:400px;
+  background:rgba(0,0,0,0.7);
+  padding:10px;
+  overflow-y:auto;
+  color:#0ff;font-family:monospace;
+  border:1px solid #0ff;
+  box-shadow:0 0 10px #0ff;
+}
+#root-terminal input,#root-terminal button{margin-top:5px;font-family:monospace;}
+
+/* EFECTO GLOW */
+@keyframes glowAnim{
+  0%{text-shadow:0 0 5px #0ff,0 0 10px #0ff,0 0 15px #0ff;}
+  50%{text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff;}
+  100%{text-shadow:0 0 5px #0ff,0 0 10px #0ff,0 0 15px #0ff;}
+}
+.glow{animation:glowAnim 1s infinite alternate;}
+
+/* BOTON SALIR */
+#exit-room{
+  background:#ff007f;color:#050520;
+  box-shadow:0 0 5px #ff007f,0 0 10px #ff007f;
+}
+#exit-room:hover{
+  box-shadow:0 0 15px #ff007f,0 0 30px #ff007f;
+}
+
+/* CONTADOR DE USUARIOS */
+#user-count{font-weight:bold;color:#0ff;text-shadow:0 0 5px #0ff;}
+
+/* PARTICULAS */
+canvas#particles{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;
 }
