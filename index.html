@@ -8,26 +8,34 @@
 </head>
 <body>
 
-<!-- Fondo de partículas -->
 <canvas id="particles"></canvas>
 
-<!-- Encabezado común -->
 <header id="header">
   <h1 id="home-btn">UMBRALA</h1>
 </header>
 
-<!-- Pantalla inicial tipo terminal -->
+<!-- Pantalla inicial -->
 <div id="landing-screen" class="screen terminal-screen">
   <div class="terminal-box">
-    <div class="line glow">UMBRALA v2.1</div>
-    <div class="line">Comunica en las sombras. 
-      Chat anónimo y efímero. Sin registro. Sin rastros. 
-      Solo tú, tu mensaje, y el vacío</div>
+    <div class="line glow">UMBRALA v2.2</div>
+    <div class="line">Comunicación efímera y anónima.</div>
     <button id="init-btn">Inicializar</button>
+    <button id="root-btn">Login Root</button>
   </div>
 </div>
 
-<!-- Pantalla de selección de salas -->
+<!-- Login root -->
+<div id="root-login" class="screen" style="display:none;">
+  <div class="terminal-box">
+    <div class="line glow">Login Root</div>
+    <input type="text" id="root-nick" placeholder="Usuario" value="root">
+    <input type="password" id="root-pass" placeholder="Contraseña">
+    <button id="root-login-btn">Entrar</button>
+    <div id="root-error" style="color:red; margin-top:5px;"></div>
+  </div>
+</div>
+
+<!-- Salas -->
 <div id="rooms-screen" class="screen" style="display:none;">
   <h2>Selecciona una sala</h2>
   <div id="rooms-list"></div>
@@ -39,6 +47,8 @@
   <div id="chat-container"></div>
   <input type="text" id="chat-input" placeholder="Escribe un mensaje..." autocomplete="off">
   <button id="send-btn">Enviar</button>
+  <input type="file" id="chat-file" accept="image/*,video/*">
+  <button id="send-file-btn">Enviar archivo</button>
 
   <div id="users-panel">
     <h3>Usuarios conectados: <span id="user-count">0</span></h3>
@@ -53,11 +63,13 @@
   <h3>Chat privado con <span id="private-user"></span></h3>
   <div id="private-container"></div>
   <input type="text" id="private-input" placeholder="Escribe un mensaje..." autocomplete="off">
+  <input type="file" id="private-file" accept="image/*,video/*">
   <button id="private-send">Enviar</button>
+  <button id="private-send-file">Enviar archivo</button>
   <button id="close-private">Cerrar chat</button>
 </div>
 
-<script src="js/main.js"></script>
 <script src="js/particles.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
