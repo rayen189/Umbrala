@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Umbrala Futurista Terminal</title>
+  <title>Umbrala Cyberpunk</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<!-- Fondo de partículas -->
+<canvas id="particles"></canvas>
 
 <!-- Encabezado común -->
 <header id="header">
@@ -16,12 +19,11 @@
 <!-- Pantalla inicial tipo terminal -->
 <div id="landing-screen" class="screen terminal-screen">
   <div class="terminal-box">
-    <div class="line glow">UMBRALA v2.0</div>
-    <div class="line"> Comunica en las
+    <div class="line glow">UMBRALA v2.1</div>
+    <div class="line">Comunica en las
 sombras
-Chat anónimo y efímero. Sin registro. Sin rastros.
-      Solo tú, tu mensaje, y el vacío.
-      </div>
+Chat anónimo y efímero. Sin registro. Sin rastros. 
+      Solo tú, tu mensaje, y el vacío</div>
     <button id="init-btn">Inicializar</button>
   </div>
 </div>
@@ -40,7 +42,7 @@ Chat anónimo y efímero. Sin registro. Sin rastros.
   <button id="send-btn">Enviar</button>
 
   <div id="users-panel">
-    <h3>Usuarios conectados</h3>
+    <h3>Usuarios conectados: <span id="user-count">0</span></h3>
     <ul id="users-list"></ul>
   </div>
 
@@ -57,5 +59,6 @@ Chat anónimo y efímero. Sin registro. Sin rastros.
 </div>
 
 <script src="js/main.js"></script>
+<script src="js/particles.js"></script>
 </body>
 </html>
