@@ -9,52 +9,69 @@
 </head>
 <body class="page center">
 
+  <!-- PARTICLES -->
   <canvas id="particles"></canvas>
 
-  <!-- TITULO PRINCIPAL -->
-  <h1 id="site-title">UMBRALA</h1>
-
-  <!-- LANDING SCREEN -->
-  <div id="landing-screen" class="screen">
-    <p>Comunicación efímera y anónima</p>
-    <button id="init-btn" class="primary">Inicializar</button>
-    <button id="root-btn" class="primary">Login Root</button>
+  <!-- PANTALLA PRINCIPAL -->
+  <div id="landing-screen" class="screen center">
+    <h1 id="site-title">UMBRALA</h1>
+    <p>Comunica en las
+sombras
+Chat anónimo y efímero. Sin registro. Sin rastros.
+      Solo tú, tu mensaje, y el vacío </p>
+    <button id="init-btn">Inicializar</button>
+    <button id="root-btn">Login Root</button>
   </div>
 
   <!-- SALAS -->
-  <div id="rooms-screen" class="screen" style="display:none;">
+  <div id="rooms-screen" class="screen center" style="display:none">
+    <h2>Salas</h2>
     <div id="rooms-list"></div>
-    <button id="home-btn" class="primary">Volver</button>
+    <p id="user-count"></p>
+    <button id="home-btn">Volver al inicio</button>
   </div>
 
   <!-- CHAT -->
-  <div id="chat-screen" class="screen" style="display:none;">
+  <div id="chat-screen" class="screen center" style="display:none">
     <h2 id="chat-room-name"></h2>
-    <div id="chat-container"></div>
-    <input type="text" id="chat-input" placeholder="Escribe un mensaje...">
-    <input type="file" id="chat-file">
-    <button id="send-btn" class="primary">Enviar</button>
-    <button id="send-file-btn" class="primary">Subir archivo</button>
+    <div id="chat-container" class="chat-container"></div>
+    <input id="chat-input" placeholder="Escribe tu mensaje...">
+    <button id="send-btn">Enviar</button>
+    <button id="exit-room">Salir</button>
     <ul id="users-list"></ul>
-    <span id="user-count"></span>
-    <button id="exit-room" class="primary">Salir</button>
-    <button id="home-btn-2" class="primary">Volver</button>
   </div>
 
   <!-- ROOT LOGIN -->
-  <div id="root-login" class="screen" style="display:none;">
-    <input id="root-nick" placeholder="Nick">
-    <input id="root-pass" type="password" placeholder="Clave">
-    <button id="root-login-btn" class="primary">Entrar</button>
-    <p id="root-error" style="color:red;"></p>
+  <div id="root-login" class="screen center" style="display:none">
+    <h2>Login Root</h2>
+    <input id="root-nick" placeholder="Nick root">
+    <input id="root-pass" type="password" placeholder="Clave primaria">
+    <button id="root-login-btn">Entrar</button>
+    <p id="root-error"></p>
   </div>
 
-  <!-- ROOT TERMINAL -->
-  <div id="root-terminal" class="screen" style="display:none;">
-    <div id="root-console"></div>
-    <input id="root-command" placeholder="Escribe un comando root">
-    <button id="root-exec" class="primary">Ejecutar</button>
-    <button id="root-exit" class="primary">Salir Root</button>
+  <!-- ROOT DASHBOARD VISUAL -->
+  <div id="root-dashboard" class="screen center" style="display:none">
+    <h2>ROOT DASHBOARD</h2>
+    <div class="root-section">
+      <h3>Usuarios</h3>
+      <ul id="root-users-list"></ul>
+    </div>
+    <div class="root-section">
+      <h3>Salas</h3>
+      <ul id="root-rooms-list"></ul>
+    </div>
+    <div class="root-section">
+      <h3>Acciones Globales</h3>
+      <button id="root-freeze-btn">Freeze Global ❄️</button>
+      <button id="root-godview-btn">God View 🌐</button>
+      <button id="root-shutdown-btn">Apagar Umbrala 💀</button>
+    </div>
+    <div class="root-section">
+      <h3>Timeline</h3>
+      <div id="root-console"></div>
+    </div>
+    <button id="root-logout-btn">Salir Root</button>
   </div>
 
 </body>
