@@ -2,48 +2,101 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Umbrala Demo Completa</title>
+  <title>Umbrala 2.0</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="page center terminal">
+<body>
 
-  <div class="terminal-box" id="terminal">
-    <div class="line glow">UMBRALA v1.0 - Demo Completa</div>
+<!-- Pantalla inicial -->
+<div id="landing-screen" class="screen">
+  <h1>UMBRALA</h1>
+  <p><!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Umbrala 2.0</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
 
-    <div class="line">Selecciona tu sala:</div>
-    <select id="room-select">
-      <option value="general">General</option>
-      <option value="norte">Norte de Chile</option>
-      <option value="sur">Sur de Chile</option>
-      <option value="serena">La Serena</option>
-    </select>
+<!-- Pantalla inicial -->
+<div id="landing-screen" class="screen">
+  <h1>UMBRALA</h1>
+  <p> Comunica en las
+sombras
+Chat anónimo y efímero. Sin registro. Sin rastros. 
+    Solo tú, tu mensaje, y el vacío.</p>
+  <button id="init-btn">Inicializar</button>
+</div>
 
-    <div id="alert-container"></div>
-    <div id="chat-container"></div>
-  </div>
+<!-- Pantalla de selección de salas -->
+<div id="rooms-screen" class="screen" style="display:none;">
+  <h2>Selecciona una sala</h2>
+  <div id="rooms-list"></div>
+  <button id="back-landing">Volver</button>
+</div>
 
-  <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." autocomplete="off">
+<!-- Chat de sala -->
+<div id="chat-screen" class="screen" style="display:none;">
+  <h2 id="chat-room-name"></h2>
+  <div id="chat-container"></div>
+  <input type="text" id="chat-input" placeholder="Escribe un mensaje..." autocomplete="off">
   <button id="send-btn">Enviar</button>
 
-  <div style="margin-top:10px;">
-    <input type="text" id="admin-nick" placeholder="Admin Nick">
-    <input type="password" id="admin-pass" placeholder="Contraseña Admin">
-    <button id="admin-login">Login Admin</button>
-    <button id="admin-logout">Salir Root</button>
+  <div id="users-panel">
+    <h3>Usuarios conectados</h3>
+    <ul id="users-list"></ul>
   </div>
 
-  <div id="admin-panel" style="display:none;">
-    <h3>Panel Root</h3>
-    <input type="text" id="target-user" placeholder="Nick objetivo">
-    <button id="ban-user">Ban</button>
-    <button id="shadowban-user">Shadowban</button>
-    <button id="clear-room">Limpiar sala</button>
-    <button id="shutdown-btn">Apagar Umbrala</button>
-    <div id="shutdown-timer"></div>
-    <div id="admin-log" style="margin-top:10px; max-height:100px; overflow-y:auto; background:#111; padding:5px;"></div>
+  <button id="exit-room">Salir de la sala</button>
+</div>
+
+<!-- Chat privado -->
+<div id="private-chat" class="screen" style="display:none;">
+  <h3>Chat privado con <span id="private-user"></span></h3>
+  <div id="private-container"></div>
+  <input type="text" id="private-input" placeholder="Escribe un mensaje..." autocomplete="off">
+  <button id="private-send">Enviar</button>
+  <button id="close-private">Cerrar chat</button>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html> </p>
+  <button id="init-btn">Inicializar</button>
+</div>
+
+<!-- Pantalla de selección de salas -->
+<div id="rooms-screen" class="screen" style="display:none;">
+  <h2>Selecciona una sala</h2>
+  <div id="rooms-list"></div>
+  <button id="back-landing">Volver</button>
+</div>
+
+<!-- Chat de sala -->
+<div id="chat-screen" class="screen" style="display:none;">
+  <h2 id="chat-room-name"></h2>
+  <div id="chat-container"></div>
+  <input type="text" id="chat-input" placeholder="Escribe un mensaje..." autocomplete="off">
+  <button id="send-btn">Enviar</button>
+
+  <div id="users-panel">
+    <h3>Usuarios conectados</h3>
+    <ul id="users-list"></ul>
   </div>
 
-  <script src="js/main.js" defer></script>
+  <button id="exit-room">Salir de la sala</button>
+</div>
+
+<!-- Chat privado -->
+<div id="private-chat" class="screen" style="display:none;">
+  <h3>Chat privado con <span id="private-user"></span></h3>
+  <div id="private-container"></div>
+  <input type="text" id="private-input" placeholder="Escribe un mensaje..." autocomplete="off">
+  <button id="private-send">Enviar</button>
+  <button id="close-private">Cerrar chat</button>
+</div>
+
+<script src="js/main.js"></script>
 </body>
 </html>
