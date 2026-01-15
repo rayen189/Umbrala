@@ -3,26 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Umbrala Futurista</title>
+  <title>Umbrala Futurista Terminal</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- Pantalla inicial -->
-<div id="landing-screen" class="screen">
-  <h1>UMBRALA</h1>
-  <p>Comunica en las
+<!-- Encabezado común -->
+<header id="header">
+  <h1 id="home-btn">UMBRALA</h1>
+</header>
+
+<!-- Pantalla inicial tipo terminal -->
+<div id="landing-screen" class="screen terminal-screen">
+  <div class="terminal-box">
+    <div class="line glow">UMBRALA v2.0</div>
+    <div class="line">Comunica en las
 sombras
 Chat anónimo y efímero. Sin registro. Sin rastros. 
-    Solo tú, tu mensaje, y el vacío.</p>
-  <button id="init-btn">Inicializar</button>
+      Solo tú, tu mensaje, y el vacío.</div>
+    <div class="line">Escribe "inicializar" o presiona Enter para continuar...</div>
+    <input type="text" id="terminal-input" placeholder=">">
+  </div>
 </div>
 
-<!-- Selección de salas -->
+<!-- Pantalla de selección de salas -->
 <div id="rooms-screen" class="screen" style="display:none;">
   <h2>Selecciona una sala</h2>
   <div id="rooms-list"></div>
-  <button id="back-landing">Volver</button>
 </div>
 
 <!-- Chat de sala -->
@@ -40,7 +47,7 @@ Chat anónimo y efímero. Sin registro. Sin rastros.
   <button id="exit-room">Salir de la sala</button>
 </div>
 
-<!-- Chat privado -->
+<!-- Chat privado 1:1 -->
 <div id="private-chat" class="screen" style="display:none;">
   <h3>Chat privado con <span id="private-user"></span></h3>
   <div id="private-container"></div>
