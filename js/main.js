@@ -1,201 +1,227 @@
-// ==========================================
-// UMBRALA MAIN.JS — ROOT VISUAL
-// ==========================================
+// ============================
+// UMBRALA MAIN.JS
+// Full Root / Dashboard Visual / Chat / Emojis / Salas
+// ============================
 
-const landingScreen = document.getElementById('landing-screen');
-const roomsScreen = document.getElementById('rooms-screen');
-const chatScreen = document.getElementById('chat-screen');
-const rootLoginScreen = document.getElementById('root-login');
-const rootDashboard = document.getElementById('root-dashboard');
-
-const siteTitle = document.getElementById('site-title');
-const initBtn = document.getElementById('init-btn');
-const rootBtn = document.getElementById('root-btn');
-const homeBtns = document.querySelectorAll('#home-btn');
-
-const roomsList = document.getElementById('rooms-list');
-const chatContainer = document.getElementById('chat-container');
-const chatInput = document.getElementById('chat-input');
-const sendBtn = document.getElementById('send-btn');
-const usersList = document.getElementById('users-list');
-const userCount = document.getElementById('user-count');
-const exitRoomBtn = document.getElementById('exit-room');
-
-const rootNickInput = document.getElementById('root-nick');
-const rootPassInput = document.getElementById('root-pass');
-const rootLoginBtn = document.getElementById('root-login-btn');
-const rootError = document.getElementById('root-error');
-
-const rootUsersList = document.getElementById('root-users-list');
-const rootRoomsList = document.getElementById('root-rooms-list');
-const rootFreezeBtn = document.getElementById('root-freeze-btn');
-const rootGodViewBtn = document.getElementById('root-godview-btn');
-const rootShutdownBtn = document.getElementById('root-shutdown-btn');
-const rootConsole = document.getElementById('root-console');
-const rootLogoutBtn = document.getElementById('root-logout-btn');
-
-// ===================
-// DATOS
-// ===================
-let rooms = ['Norte de Chile','Sur de Chile','La Serena','Chile Central','Chile Austral'];
-let hiddenRooms = ['Shadow Nexus','Void Chamber'];
-let usersByRoom = {};
-let messagesByRoom = {};
-let shadowBanned = [];
-let freezeGlobal = false;
+/* =========================
+   Variables principales
+========================= */
+let isRoot = false;
 let currentRoom = null;
+let users = [];
+let rooms = [
+  {name:"Sala 1", users:[]},
+  {name:"Sala 2", users:[]},
+  {name:"Sala 3", users:[]},
+  {name:"Sala 4", users:[]},
+  {name:"Sala 5", users:[]},
+  {name:"Sala Secreta 1", users:[], hidden:true},
+  {name:"Sala Secreta 2", users:[], hidden:true}
+];
+let globalFreeze = false;
+let timeline = [];
 
-const ROOT = {nick:'root', primary:'root123'};
-let isRoot=false;
+const landingScreen = document.getElementById('landingScreen');
+const roomsScreen = document.getElementById('roomsScreen');
+const rootScreen = document.getElementById('rootScreen');
 
-// ===================
-// FUNCIONES
-// ===================
+const chatInput = document.getElementById('chatInput');
+const chatMessages = document.getElementById('chatMessages');
+const sendBtn = document.getElementById('sendBtn');
+const exitRoomBtn = document.getElementById('exitRoomBtn');
+const roomsList = document.getElementById('roomsList');
+
+const rootUsersList = document.getElementById('rootUsers');
+const rootRoomsList = document.getElementById('rootRooms');
+const rootConsole = document.getElementById('root-console');
+const freezeGlobalBtn = document.getElementById('freezeGlobalBtn');
+const godViewBtn = document.getElementById('godViewBtn');
+const shutdownBtn = document.getElementById('shutdownBtn');
+
+const emojiPicker = document.getElementById('emoji-picker');
+const emojiList = ["😎","🔥","💀","✨","🕳️","💻","⚡"];
+emojiList.forEach(e=>{
+  const span = document.createElement('span');
+  span.className='emoji';
+  span.textContent=e;
+  span.onclick=()=> { chatInput.value+=e; chatInput.focus(); };
+  emojiPicker.appendChild(span);
+});
+
+/* =========================
+   Pantallas
+========================= */
 function showScreen(screen){
-  [landingScreen, roomsScreen, chatScreen, rootLoginScreen, rootDashboard].forEach(s=>s.style.display='none');
-  screen.style.display='flex';
+  landingScreen.style.display = 'none';
+  roomsScreen.style.display = 'none';
+  rootScreen.style.display = 'none';
+  screen.style.display = 'flex';
 }
 
-function updateRoomsList(){
+/* =========================
+   Botones principales
+========================= */
+document.getElementById('initializeBtn').onclick=()=>{
+  showScreen(roomsScreen);
+  renderRooms();
+};
+
+document.getElementById('rootLoginBtn').onclick=()=>{
+  const nick = prompt("Usuario Root:");
+  const pass = prompt("Clave Root:");
+  if(nick==='root' && pass==='1234'){  // Cambiar clave aquí si quieres
+    isRoot=true;
+    showScreen(rootScreen);
+    renderRoot();
+    logRoot("Root ha iniciado sesión");
+  } else alert("Credenciales incorrectas");
+};
+
+/* =========================
+   Render de salas
+========================= */
+function renderRooms(){
   roomsList.innerHTML='';
-  rooms.concat(hiddenRooms).forEach(r=>{
+  rooms.forEach((room,i)=>{
+    if(room.hidden && !isRoot) return; // Solo root ve salas ocultas
     const div = document.createElement('div');
-    div.textContent = r + ` (${(usersByRoom[r]||[]).length})`;
-    div.onclick = ()=>enterRoom(r);
+    div.textContent=`${room.name} (${room.users.length} usuarios)`;
+    div.style.cursor='pointer';
+    div.onclick=()=> enterRoom(i);
     roomsList.appendChild(div);
   });
-  if(isRoot) updateRootRooms();
 }
 
-function updateUsersList(){
-  usersList.innerHTML='';
-  (usersByRoom[currentRoom]||[]).forEach(u=>{
-    const li = document.createElement('li');
-    li.textContent = u + (shadowBanned.includes(u)? ' 🔒' : '');
-    usersList.appendChild(li);
-  });
-  userCount.textContent=`Usuarios: ${(usersByRoom[currentRoom]||[]).length}`;
+function enterRoom(i){
+  currentRoom=i;
+  chatMessages.innerHTML='';
+  rooms[i].users.push(isRoot?'Root':'User'+Math.floor(Math.random()*1000));
+  renderRooms();
 }
 
-function enterRoom(room){
-  currentRoom = room;
-  showScreen(chatScreen);
-  document.getElementById('chat-room-name').textContent=room;
-  updateUsersList();
-  chatContainer.innerHTML='';
-}
-
-// ===================
-// CHAT
-// ===================
-sendBtn.onclick = ()=>{
-  if(freezeGlobal) return alert('Sala congelada ❄️');
+/* =========================
+   Chat
+========================= */
+sendBtn.onclick=()=>{
+  if(globalFreeze) return alert("¡Chat congelado!");
+  if(currentRoom===null) return;
   const msg = chatInput.value.trim();
   if(!msg) return;
-  if(currentRoom){
-    if(!messagesByRoom[currentRoom]) messagesByRoom[currentRoom]=[];
-    messagesByRoom[currentRoom].push({user:'Anon', text:msg});
-    const p=document.createElement('p');
-    p.textContent=`Anon: ${msg}`;
-    chatContainer.appendChild(p);
-    chatInput.value='';
-  }
-};
-exitRoomBtn.onclick = ()=>showScreen(roomsScreen);
-
-// ===================
-// ROOT LOGIN
-// ===================
-rootBtn.onclick = ()=>showScreen(rootLoginScreen);
-rootLoginBtn.onclick = ()=>{
-  if(rootNickInput.value===ROOT.nick && rootPassInput.value===ROOT.primary){
-    isRoot=true;
-    showScreen(rootDashboard);
-    updateRootUsers();
-    updateRootRooms();
-    logRoot('Bienvenido ROOT ✅','success');
-  }else rootError.textContent='Credenciales incorrectas ❌';
+  const user = isRoot?'Root':'User'+Math.floor(Math.random()*1000);
+  rooms[currentRoom].users.push(user);
+  const data = {user,msg,room:rooms[currentRoom].name,time:new Date()};
+  timeline.push(data);
+  appendMessage(data);
+  chatInput.value='';
 };
 
-// ===================
-// ROOT DASHBOARD VISUAL
-// ===================
-function logRoot(text,type='info'){
-  const p = document.createElement('p');
-  switch(type){
-    case 'success': p.style.color='#0f0'; p.textContent=`✅ ${text}`; break;
-    case 'error': p.style.color='#f00'; p.textContent=`❌ ${text}`; break;
-    case 'alert': p.style.color='#ff0'; p.textContent=`⚠️ ${text}`; break;
-    default: p.style.color='#0ff'; p.textContent=text;
-  }
-  rootConsole.appendChild(p);
-  rootConsole.scrollTop=rootConsole.scrollHeight;
+exitRoomBtn.onclick=()=>{
+  currentRoom=null;
+  showScreen(landingScreen);
+};
+
+function appendMessage(data){
+  const div = document.createElement('div');
+  div.textContent=`[${data.room}] ${data.user}: ${data.msg}`;
+  div.className='glow';
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop=chatMessages.scrollHeight;
+  logRoot(`[MSG] ${data.user} -> ${data.msg}`);
 }
 
-function updateRootUsers(){
+/* =========================
+   Root Dashboard
+========================= */
+function renderRoot(){
+  renderRootUsers();
+  renderRootRooms();
+}
+
+function renderRootUsers(){
   rootUsersList.innerHTML='';
-  Object.values(usersByRoom).flat().forEach(u=>{
-    const li=document.createElement('li');
-    li.textContent=u + (shadowBanned.includes(u)? ' 🔒':'');
-    const sbBtn=document.createElement('button');
-    sbBtn.textContent='🔒';
-    sbBtn.onclick=()=>{shadowBanned.push(u); logRoot(`${u} shadowbaneado 🔒`,'alert');};
-    const ubBtn=document.createElement('button');
-    ubBtn.textContent='🟢';
-    ubBtn.onclick=()=>{shadowBanned=shadowBanned.filter(s=>s!==u); logRoot(`${u} liberado de shadowban ✅`,'success');};
-    li.appendChild(sbBtn);
-    li.appendChild(ubBtn);
+  let allUsers=[];
+  rooms.forEach(r=>allUsers.push(...r.users));
+  allUsers=[...new Set(allUsers)];
+  allUsers.forEach(u=>{
+    const li = document.createElement('li');
+    li.textContent=u;
+    const shadowBtn=document.createElement('button');
+    shadowBtn.textContent='Shadowban';
+    shadowBtn.onclick=()=> shadowUser(u);
+    li.appendChild(shadowBtn);
     rootUsersList.appendChild(li);
   });
 }
 
-function updateRootRooms(){
+function renderRootRooms(){
   rootRoomsList.innerHTML='';
-  rooms.concat(hiddenRooms).forEach(r=>{
+  rooms.forEach((r,i)=>{
     const li=document.createElement('li');
-    li.textContent=r;
-    const toggle=document.createElement('button');
-    toggle.textContent = hiddenRooms.includes(r)? '🔒':'🟢';
-    toggle.onclick=()=>{
-      if(hiddenRooms.includes(r)){
-        hiddenRooms=hiddenRooms.filter(h=>h!==r); rooms.push(r); toggle.textContent='🟢';
-        logRoot(`Sala ${r} ahora visible ✅`,'success');
-      }else{
-        rooms=rooms.filter(h=>h!==r); hiddenRooms.push(r); toggle.textContent='🔒';
-        logRoot(`Sala ${r} oculta 🔒`,'alert');
-      }
-      updateRoomsList();
-    };
-    li.appendChild(toggle);
+    li.textContent=r.name;
+    const freezeBtn=document.createElement('button');
+    freezeBtn.textContent='Freeze';
+    freezeBtn.onclick=()=> toggleFreezeRoom(i);
+    li.appendChild(freezeBtn);
+    const hideBtn=document.createElement('button');
+    hideBtn.textContent=r.hidden?'Mostrar':'Ocultar';
+    hideBtn.onclick=()=> toggleRoomVisibility(i);
+    li.appendChild(hideBtn);
     rootRoomsList.appendChild(li);
   });
 }
 
-// ===================
-// BOTONES ROOT
-// ===================
-rootFreezeBtn.onclick = ()=>{
-  freezeGlobal=!freezeGlobal;
-  logRoot(`Freeze Global: ${freezeGlobal?'ACTIVADO ❄️':'DESACTIVADO 🌞'}`,'alert');
+/* =========================
+   Root funciones
+========================= */
+function shadowUser(user){
+  timeline.push({user:'Root',msg:`Shadowban a ${user}`,time:new Date()});
+  logRoot(`Shadowban aplicado a ${user}`);
+  alert(`Shadowban aplicado a ${user}`);
+}
+
+function toggleFreezeRoom(i){
+  rooms[i].freeze = !rooms[i].freeze;
+  logRoot(`${rooms[i].name} freeze: ${rooms[i].freeze}`);
+}
+
+function toggleRoomVisibility(i){
+  rooms[i].hidden = !rooms[i].hidden;
+  logRoot(`${rooms[i].name} hidden: ${rooms[i].hidden}`);
+  renderRooms();
+}
+
+freezeGlobalBtn.onclick=()=>{
+  globalFreeze=!globalFreeze;
+  logRoot(`Freeze global: ${globalFreeze}`);
+  alert(`Freeze global: ${globalFreeze}`);
 };
 
-rootGodViewBtn.onclick = ()=>{
-  logRoot('God View activado 🌐','success');
+godViewBtn.onclick=()=> alert("God View activado (visual completo de todas las salas y usuarios)");
+
+shutdownBtn.onclick=()=> {
+  logRoot("Umbrala se apagará en 5 segundos...");
+  setTimeout(()=>{ location.reload(); },5000);
 };
 
-rootShutdownBtn.onclick = ()=>{
-  logRoot('Apagando Umbrala... 💀','alert');
-  setTimeout(()=>{document.body.innerHTML='<h1 style="color:#0ff;text-align:center">UMBRALA OFF</h1>';},2000);
-};
+/* =========================
+   Timeline root
+========================= */
+function logRoot(msg){
+  const div=document.createElement('div');
+  div.textContent=`[ROOT] ${msg}`;
+  div.className='glow';
+  rootConsole.appendChild(div);
+  rootConsole.scrollTop=rootConsole.scrollHeight;
+}
 
-rootLogoutBtn.onclick = ()=>{
-  isRoot=false;
-  showScreen(landingScreen);
-};
-  
-// ===================
-// EVENTOS INICIALES
-// ===================
-siteTitle.onclick = ()=>showScreen(landingScreen);
-initBtn.onclick = ()=>{ showScreen(roomsScreen); updateRoomsList(); };
-homeBtns.forEach(b=>b.onclick=()=>showScreen(landingScreen));
+/* =========================
+   Titulo click a landingScreen
+========================= */
+document.querySelectorAll('.clickable-title').forEach(title=>{
+  title.onclick=()=> { if(!isRoot) showScreen(landingScreen); };
+});
+
+/* =========================
+   Iniciar render inicial
+========================= */
+renderRooms();
