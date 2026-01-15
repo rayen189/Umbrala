@@ -316,3 +316,117 @@ function shutdown() {
       UMBRALA APAGADO
     </h1>`;
 }
+// ===============================
+// SHADOWBAN REAL
+// ===============================
+
+// Objeto para almacenar los usuarios shadowbaneados
+const shadowBannedUsers = {};
+
+// Comando root: /shadowban nick
+function shadowBanUser(nick) {
+  shadowBannedUsers[nick] = true;
+  rootPrint(`🕳️ Usuario ${nick} ahora está shadowbaneado`);
+}
+
+// Comando root: /unshadow nick
+function unshadowUser(nick) {
+  delete shadowBannedUsers[nick];
+  rootPrint(`✅ Usuario ${nick} ya no está shadowbaneado`);
+}
+
+// Modificación de addMessage para shadowban
+function addMessage(text, file = null) {
+  const msg = {
+    user: currentUser,
+    text,
+    file,
+    time: Date.now()
+  };
+
+  // Si el usuario está shadowbaneado y no es root, el mensaje solo se guarda para él
+  if (shadowBannedUsers[currentUser] && currentUser !== ROOT.nick) {
+    // Crear un chat "fantasma" solo para el usuario
+    if (!messagesByRoom[currentRoom + '_shadow']) messagesByRoom[currentRoom + '_shadow'] = [];
+    messagesByRoom[currentRoom + '_shadow'].push(msg);
+  } else {
+    // Mensaje normal visible a todos
+    if (!messagesByRoom[currentRoom]) messagesByRoom[currentRoom] = [];
+    messagesByRoom[currentRoom].push(msg);
+  }
+
+  renderChat();
+}
+
+// Modificación de renderChat para shadowban
+function renderChat() {
+  chatContainer.innerHTML = '';
+  const roomMsgs = messagesByRoom[currentRoom] || [];
+  const shadowMsgs = messagesByRoom[currentRoom + '_shadow'] || [];
+
+  // Todos los mensajes normales
+  roomMsgs.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'user';
+    div.textContent = `${m.user}: ${m.text}`;
+    if (m.file) {
+      const el = document.createElement(m.file.startsWith('data:image') ? 'img' : 'video');
+      el.src = m.file;
+      el.style.maxWidth = '200px';
+      if (el.tagName === 'VIDEO') el.controls = true;
+      div.appendChild(el);
+    }
+    chatContainer.appendChild(div);
+  });
+
+  // Mostrar shadow messages solo si el usuario es shadowbaneado
+  if (shadowBannedUsers[currentUser] && currentUser !== ROOT.nick) {
+    shadowMsgs.forEach(m => {
+      const div = document.createElement('div');
+      div.className = 'user';
+      div.textContent = `${m.user}: ${m.text}`;
+      if (m.file) {
+        const el = document.createElement(m.file.startsWith('data:image') ? 'img' : 'video');
+        el.src = m.file;
+        el.style.maxWidth = '200px';
+        if (el.tagName === 'VIDEO') el.controls = true;
+        div.appendChild(el);
+      }
+      chatContainer.appendChild(div);
+    });
+  }
+
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// ---------- COMANDOS ROOT MODIFICADOS ----------
+function execRootCommand(cmd) {
+  if (!rootSecured) {
+    if (cmd === ROOT.secondary) {
+      rootSecured = true;
+      rootPrint('🔓 ROOT SECURED — ACCESO TOTAL');
+    } else {
+      rootPrint('Clave secundaria incorrecta');
+    }
+    return;
+  }
+
+  rootPrint('> ' + cmd);
+
+  if (cmd === '/map ultra') startGodView();
+  else if (cmd === '/map stop') stopGodView();
+  else if (cmd === '/freeze') toggleFreeze();
+  else if (cmd === '/timeline') replayTimeline();
+  else if (cmd === '/shutdown') shutdown();
+  else if (cmd.startsWith('/shadowban ')) {
+    const nick = cmd.split(' ')[1];
+    shadowBanUser(nick);
+  } else if (cmd.startsWith('/unshadow ')) {
+    const nick = cmd.split(' ')[1];
+    unshadowUser(nick);
+  } else if (cmd === '/help') {
+    rootPrint('/map ultra | /map stop | /freeze | /timeline | /shutdown | /shadowban nick | /unshadow nick');
+  } else {
+    rootPrint('Comando desconocido');
+  }
+}
