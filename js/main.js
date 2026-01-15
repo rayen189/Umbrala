@@ -4,7 +4,7 @@ const roomsScreen = document.getElementById('rooms-screen');
 const chatScreen = document.getElementById('chat-screen');
 const privateChatScreen = document.getElementById('private-chat');
 
-const initBtn = document.getElementById('terminal-input');
+const initBtn = document.getElementById('init-btn');
 const roomsList = document.getElementById('rooms-list');
 const chatRoomName = document.getElementById('chat-room-name');
 const chatContainer = document.getElementById('chat-container');
@@ -42,18 +42,11 @@ function showRooms() {
   });
 }
 
-// ---------- Terminal inicial ----------
-initBtn.addEventListener('keypress', e => {
-  if(e.key === 'Enter') {
-    const cmd = initBtn.value.trim().toLowerCase();
-    if(cmd === 'inicializar' || cmd === '') {
-      landingScreen.style.display='none';
-      roomsScreen.style.display='block';
-      showRooms();
-    } else {
-      alert('Comando desconocido. Escribe "inicializar" para continuar.');
-    }
-  }
+// ---------- Inicializar ----------
+initBtn.addEventListener('click', () => {
+  landingScreen.style.display='none';
+  roomsScreen.style.display='block';
+  showRooms();
 });
 
 // ---------- Navegación home ----------
