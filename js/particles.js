@@ -49,7 +49,6 @@ function animate(){
   requestAnimationFrame(animate);
 }
 
-// Conectar partículas cercanas
 function connectParticles(){
   const maxDist = 100;
   for(let i=0;i<particles.length;i++){
