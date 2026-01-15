@@ -1,6 +1,7 @@
+/* ---------- General ---------- */
 body {
   background: linear-gradient(135deg, #0b0b0b, #1a1a1a);
-  color: #7a7cff;
+  color: #00ffff;
   font-family: 'Courier New', monospace;
   display: flex;
   flex-direction: column;
@@ -8,29 +9,112 @@ body {
   justify-content: center;
   min-height: 100vh;
   margin: 0;
+  overflow-x: hidden;
 }
 
+/* ---------- Pantalla ---------- */
 .screen { width: 90%; max-width: 800px; text-align: center; }
-button {
-  padding: 8px 15px; margin: 5px; background-color: #7a7cff; border: none; color: #000;
-  border-radius: 5px; cursor: pointer; transition: 0.3s;
+
+h1 {
+  font-size: 60px;
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 30px #00ffffaa, 0 0 50px #00ffff44;
+  animation: neonGlow 2s infinite alternate;
 }
-button:hover { background-color: #5e5edd; box-shadow: 0 0 10px #7a7cffaa; }
+@keyframes neonGlow {
+  0% { text-shadow: 0 0 5px #00ffff,0 0 20px #00ffffaa; }
+  100% { text-shadow: 0 0 15px #00ffff,0 0 50px #00ffffcc; }
+}
+
+p { color: #7a7cff; font-size: 18px; }
+
+/* ---------- Botones ---------- */
+button {
+  padding: 10px 20px; margin: 10px;
+  background-color: #00ffff;
+  color: #000;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ffff77, 0 0 20px #00ffff33;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 30px #00ffffaa, 0 0 60px #00ffff55;
+}
+
+/* ---------- Salas ---------- */
+#rooms-list div {
+  background: rgba(0,255,255,0.05);
+  border: 2px solid #00ffff;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 10px 0;
+  box-shadow: 0 0 20px #00ffff55;
+  transition: all 0.3s;
+}
+#rooms-list div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px #00ffffaa,0 0 80px #00ffff33;
+}
+
+/* ---------- Chat ---------- */
 #chat-container, #private-container {
-  background: rgba(0,0,0,0.9);
-  border: 2px solid #7a7cff;
+  background: rgba(0,0,0,0.85);
+  border: 2px solid #00ffff;
   height: 300px;
   overflow-y: auto;
   margin: 10px 0;
   padding: 10px;
   border-radius: 10px;
 }
-#users-panel {
-  background: rgba(18,0,0,0.9);
-  border-radius: 10px; padding: 10px; border: 2px solid #ff4b4b;
-  max-height: 300px; overflow-y: auto;
+#chat-container div { margin-bottom:5px; }
+#chat-container div.admin {
+  color: #00ff00;
+  font-weight: bold;
+  text-shadow: 0 0 5px #00ff00;
 }
-ul { list-style: none; padding: 0; }
-li { cursor: pointer; padding: 5px; border-bottom: 1px solid #444; }
-li:hover { background-color: #333; }
-input { padding: 10px; width: 70%; margin: 5px 0; border-radius: 6px; border: 1px solid #7a7cff; background: #0b0b0b; color: #7a7cff; }
+#chat-container div.user { color: #00ffff; }
+
+/* ---------- Usuarios ---------- */
+#users-panel {
+  background: rgba(0,0,0,0.9);
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #ff4b4b;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 10px;
+}
+#users-panel li {
+  cursor: pointer;
+  padding: 5px;
+  border-bottom: 1px solid #444;
+  transition: all 0.2s;
+}
+#users-panel li:hover {
+  background-color: rgba(0,255,255,0.1);
+  box-shadow: 0 0 10px #00ffffaa;
+}
+
+/* ---------- Inputs ---------- */
+input {
+  padding: 10px;
+  width: 70%;
+  margin: 5px 0;
+  border-radius: 6px;
+  border: 1px solid #00ffff;
+  background: #0b0b0b;
+  color: #00ffff;
+}
+
+/* ---------- Animaciones ---------- */
+body::after {
+  content:"|";
+  animation: blink 1s step-start infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
