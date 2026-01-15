@@ -1,97 +1,73 @@
-// ====================================
-// PARTICLES.JS — FONDO CYBERPUNK
-// ====================================
-
 const canvas = document.getElementById('particles');
 const ctx = canvas.getContext('2d');
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
 
-let particlesArray;
-let w = canvas.width = window.innerWidth;
-let h = canvas.height = window.innerHeight;
+window.addEventListener('resize', ()=>{
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+});
 
-// --------------------------
-// PARTICLE CLASS
-// --------------------------
-class Particle {
-  constructor() {
-    this.x = Math.random() * w;
-    this.y = Math.random() * h;
-    this.size = Math.random() * 3 + 1;
-    this.speedX = Math.random() * 1 - 0.5;
-    this.speedY = Math.random() * 1 - 0.5;
-    this.color = `rgba(0,255,255,${Math.random()})`;
+const particles = [];
+const PARTICLE_COUNT = 100;
+
+class Particle{
+  constructor(){
+    this.x = Math.random()*width;
+    this.y = Math.random()*height;
+    this.vx = (Math.random()-0.5)*0.5;
+    this.vy = (Math.random()-0.5)*0.5;
+    this.size = Math.random()*2+1;
+    this.color = `hsl(${Math.random()*360}, 100%, 50%)`;
   }
-
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-
-    // Rebotar en bordes
-    if (this.x > w || this.x < 0) this.speedX = -this.speedX;
-    if (this.y > h || this.y < 0) this.speedY = -this.speedY;
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x<0 || this.x>width) this.vx*=-1;
+    if(this.y<0 || this.y>height) this.vy*=-1;
   }
-
-  draw() {
-    ctx.fillStyle = this.color;
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = '#0ff';
+  draw(){
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=this.color;
+    ctx.shadowColor=this.color;
+    ctx.shadowBlur=10;
     ctx.fill();
   }
 }
 
-// --------------------------
-// CREAR PARTICULAS
-// --------------------------
-function initParticles() {
-  particlesArray = [];
-  const count = Math.floor((w + h) / 15); // cantidad de partículas proporcional al tamaño de la pantalla
-  for (let i = 0; i < count; i++) {
-    particlesArray.push(new Particle());
-  }
-}
-initParticles();
+for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle());
 
-// --------------------------
-// ANIMACIÓN
-// --------------------------
-function animateParticles() {
-  ctx.clearRect(0, 0, w, h);
-  particlesArray.forEach(p => {
+function animate(){
+  ctx.fillStyle='rgba(0,0,0,0.1)';
+  ctx.fillRect(0,0,width,height);
+  particles.forEach(p=>{
     p.update();
     p.draw();
   });
+  connectParticles();
+  requestAnimationFrame(animate);
+}
 
-  // Conectar partículas cercanas
-  for (let i = 0; i < particlesArray.length; i++) {
-    for (let j = i; j < particlesArray.length; j++) {
-      const dx = particlesArray[i].x - particlesArray[j].x;
-      const dy = particlesArray[i].y - particlesArray[j].y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < 120) {
+// Conectar partículas cercanas
+function connectParticles(){
+  const maxDist = 100;
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < maxDist){
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0,255,255,${1 - distance / 120})`;
-        ctx.lineWidth = 1;
-        ctx.shadowBlur = 5;
-        ctx.shadowColor = '#0ff';
-        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle=`rgba(0,255,255,${1 - dist/maxDist})`;
+        ctx.lineWidth=1;
+        ctx.shadowBlur=5;
         ctx.stroke();
-        ctx.closePath();
       }
     }
   }
-
-  requestAnimationFrame(animateParticles);
 }
-animateParticles();
 
-// --------------------------
-// AJUSTAR A CAMBIO DE PANTALLA
-// --------------------------
-window.addEventListener('resize', () => {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-  initParticles();
-});
+animate();
