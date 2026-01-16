@@ -21,20 +21,9 @@ body.page {
   justify-content: center;
 }
 
-#landingScreen h1 {
-  font-size: 3rem;
-  text-align: center;
-  cursor: default;
-  text-shadow: 0 0 10px #aa88ff, 0 0 20px #aa88ff, 0 0 40px #aa88ff;
-  margin-bottom: 1rem;
-}
+h1, h2, h3, h4 { text-align:center; }
 
-#landingScreen p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
-}
-
-#landingScreen button {
+button {
   padding: 0.7rem 1.5rem;
   margin: 0.5rem;
   font-size: 1rem;
@@ -46,154 +35,50 @@ body.page {
   transition: 0.2s;
 }
 
-#landingScreen button:hover {
-  background: #aa88ff;
-  color: #000;
-  box-shadow: 0 0 10px #aa88ff, 0 0 20px #aa88ff, 0 0 40px #aa88ff;
-}
-
-#roomsListScreen {
-  flex-direction: column;
-  align-items: center;
-}
-
-.portal-btn {
-  margin: 0.5rem;
-  padding: 0.8rem 1.5rem;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background: #111;
-  color: #aa88ff;
-  border: 1px solid #aa88ff;
-  text-shadow: 0 0 5px #aa88ff;
-  transition: 0.2s;
-}
-
-.portal-btn:hover {
-  background: #aa88ff;
-  color: #000;
-  box-shadow: 0 0 15px #aa88ff, 0 0 25px #aa88ff;
-}
-
-#chatScreen {
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-  height: 100vh;
-  padding-top: 3rem;
-}
-
-#chatContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 3rem); 
-  margin-top: 3rem;
-  margin-right: 1rem;
-}
-
-#chatMessages, #privateChatMessages {
-  flex: 1;
-  width: 100%;
-  max-height: 35vh;
-  overflow-y: auto;
-  border: 1px solid #aa88ff;
-  padding: 0.5rem;
-  background: rgba(0,0,0,0.5);
-  box-shadow: 0 0 10px #aa88ff;
-}
-
-#chatInput, #sendBtn, #imageInput {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
-  border: 1px solid #aa88ff;
-  background: #111;
-  color: #aa88ff;
-}
-
-#connectedUsers {
-  width: 200px;
-  border: 1px solid #aa88ff;
-  background: rgba(0,0,0,0.5);
-  padding: 0.5rem;
-  overflow-y: auto;
-  list-style: none;
-}
-
-#connectedUsers li {
-  margin: 0.3rem 0;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-#connectedUsers li:hover {
-  color: #fff;
-}
-
-#totalUsersCounter {
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-#rootBar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: auto;
-  background: rgba(40,0,70,0.95);
-  border-bottom: 1px solid #aa88ff;
-  display: flex;
-  justify-content: flex-start;
-  gap: 0.5rem;
-  padding: 0.4rem;
-  z-index: 1000;
-  box-sizing: border-box;
-}
-
-#rootBar span {
-  margin-right: 1rem;
-  font-weight: bold;
-  color: #ff66ff;
-  text-shadow: 0 0 10px #ff66ff;
-}
-
-#rootBar button {
-  background: #111;
-  border: 1px solid #aa88ff;
-  color: #aa88ff;
-  cursor: pointer;
-  padding: 0.3rem 0.6rem;
-  white-space: nowrap;
-}
-
-#rootBar button:hover {
+button:hover {
   background: #aa88ff;
   color: #000;
   box-shadow: 0 0 10px #aa88ff, 0 0 20px #aa88ff;
 }
 
-.emoji {
-  cursor: pointer;
-  margin: 0.2rem;
-  font-size: 1.5rem;
-  transition: 0.2s;
+#roomsListScreen, #chatScreen { flex-direction: column; align-items:center; }
+
+.portal-btn {
+  margin:0.5rem;
+  padding:0.8rem 1.5rem;
+  font-size:1.2rem;
 }
 
-.emoji:hover {
-  transform: scale(1.3);
+#chatScreen { flex-direction: row; justify-content:space-between; width:100%; height:100vh; padding-top:3rem; }
+
+#chatContainer { flex:1; display:flex; flex-direction:column; margin:1rem; height:calc(100%-3rem); }
+
+#chatMessages, #privateChatMessages {
+  flex:1;
+  width:100%;
+  overflow-y:auto;
+  border:1px solid #aa88ff;
+  padding:0.5rem;
+  background:rgba(0,0,0,0.5);
 }
 
-.glow {
-  text-shadow: 0 0 5px #aa88ff, 0 0 10px #aa88ff, 0 0 20px #aa88ff;
+#connectedUsers {
+  width:200px;
+  border:1px solid #aa88ff;
+  background:rgba(0,0,0,0.5);
+  padding:0.5rem;
+  list-style:none;
+  overflow-y:auto;
 }
 
-canvas#particles {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
+#connectedUsers li { margin:0.3rem 0; cursor:pointer; transition:0.2s; }
+#connectedUsers li:hover { color:#fff; }
+
+#rootBar {
+  position:fixed; top:0; left:0; width:100%; background:rgba(40,0,70,0.95); border-bottom:1px solid #aa88ff;
+  display:flex; justify-content:flex-start; gap:0.5rem; padding:0.4rem; z-index:1000;
 }
+
+canvas#particles { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+
+.glow { text-shadow:0 0 5px #aa88ff,0 0 10px #aa88ff,0 0 20px #aa88ff; }
