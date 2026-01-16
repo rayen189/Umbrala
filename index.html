@@ -3,22 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <title>Umbrala</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#7a7cff">
-
+  <meta name="theme-color" content="#0b0d18">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <canvas id="particles"></canvas>
 
-<!-- PANTALLA INICIAL -->
+<!-- BOOT -->
 <div id="boot" class="screen center">
-  <div class="terminal">
+  <div class="terminal glitch">
     <p>UMBRALA v1.0</p>
     <p>Sistema latente…</p>
-    <p>Comunicación efímera preparada.</p>
+    <p>Comunicación efímera lista.</p>
     <button id="initBtn">INICIALIZAR</button>
   </div>
 </div>
@@ -27,14 +25,14 @@
 <div id="rooms" class="screen hidden">
   <header>
     <h1 id="logo">UMBRALA</h1>
+    <span id="userCount">👁 1</span>
     <button id="exitBtn">Salir</button>
   </header>
 
-  <!-- 👇 LAS SALAS VAN DENTRO -->
   <div class="room-list">
     <button onclick="enterRoom('Norte')">🌵 Norte</button>
-    <button onclick="enterRoom('Centro')">🏙️ Centro</button>
-    <button onclick="enterRoom('Sur')">❄️ Sur</button>
+    <button onclick="enterRoom('Centro')">🏙 Centro</button>
+    <button onclick="enterRoom('Sur')">❄ Sur</button>
     <button onclick="enterRoom('Global')">🌍 Global</button>
     <button onclick="enterRoom('Curiosidades')">🧠 Curiosidades</button>
   </div>
@@ -44,10 +42,16 @@
 <div id="chat" class="screen hidden">
   <header>
     <span id="roomName"></span>
+    <span id="privateWith"></span>
     <button onclick="backRooms()">←</button>
   </header>
 
-  <div id="messages" class="dropzone"></div>
+  <div class="chat-container">
+    <aside id="users"></aside>
+    <div id="messages" class="dropzone"></div>
+  </div>
+
+  <div id="typing"></div>
 
   <form id="chatForm">
     <input type="file" id="imgInput" accept="image/*,.gif" hidden>
@@ -56,6 +60,8 @@
     <button type="submit">➤</button>
   </form>
 </div>
+
+<audio id="glitchSound" src="https://assets.mixkit.co/sfx/preview/mixkit-glitchy-click-1114.mp3"></audio>
 
 <script src="js/particles.js"></script>
 <script src="js/main.js"></script>
