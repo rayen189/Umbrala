@@ -19,7 +19,7 @@
     <h1>UMBRALA</h1>
     <p>
       Comunica en las sombras<br>
-    Solo tú, tu mensaje, y el vacío.<br>
+      Solo tú, tu mensaje, y el vacío.<br>
       <br>
       <strong>Anónimo:</strong> Sin rastro, sin identidad<br>
       <strong>Efímero:</strong> Los mensajes desaparecen<br>
@@ -35,6 +35,7 @@
   ========================= -->
   <div id="roomsListScreen" class="screen" style="display:none;">
     <h2>Salas <span id="totalUsersCounter"></span></h2>
+    <button id="backToStartBtn">← Volver al Inicio</button>
     <div id="roomsList"></div>
   </div>
 
@@ -46,6 +47,7 @@
     <!-- CHAT IZQUIERDO -->
     <div id="chatContainer">
       <h3 id="chatTitle">Sala</h3>
+      <button id="backToRoomsBtn">← Volver a Salas</button>
       <div id="chatMessages" class="chat-container"></div>
       <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
       <button id="sendBtn">Enviar</button>
