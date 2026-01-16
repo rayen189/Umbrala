@@ -35,7 +35,6 @@
 
   <!-- CHAT -->
   <div id="chatScreen" class="screen" style="display:none;">
-    <!-- Barra Root -->
     <div id="rootBar" style="display:none;">
       <span>Stalkerless</span>
       <button id="shadowBtn">ShadowBan</button>
@@ -45,24 +44,24 @@
       <button id="vanishBtn">Vanish</button>
     </div>
 
-    <!-- Sala -->
     <div id="chatContainer">
       <h3 id="currentRoomName"></h3>
       <div id="chatMessages" class="chat-container"></div>
+
       <div id="privateChatContainer" style="display:none; flex-direction: column;">
         <h4>Chat privado con <span id="privateChatName"></span></h4>
         <div id="privateChatMessages" class="chat-container"></div>
       </div>
+
       <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
       <button id="sendBtn">Enviar</button>
       <button id="backToRoomsBtn">Volver a Salas</button>
     </div>
 
-    <!-- Usuarios conectados -->
     <ul id="connectedUsers"></ul>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPTS al final -->
   <script src="js/particles.js"></script>
   <script src="js/main.js"></script>
 </body>
