@@ -20,9 +20,9 @@ body.page, .screen {
 h1.clickable-title {
   font-size: 3rem;
   cursor: pointer;
+  text-align: center;
   text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
   transition: 0.3s;
-  text-align: center;
 }
 
 h1.clickable-title:hover {
@@ -85,7 +85,7 @@ ul li button {
   margin-left: 0.2rem;
 }
 
-input {
+input[type="text"], #chatInput {
   padding: 0.5rem;
   margin: 0.2rem;
   border: 1px solid #0ff;
