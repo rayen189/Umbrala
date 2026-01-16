@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Umbrala</title>
+  <title>Umbrela</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#7a7cff">
   <link rel="stylesheet" href="css/style.css">
@@ -14,15 +14,8 @@
   <!-- PANTALLA INICIAL -->
   <div id="landingScreen" class="screen active">
     <h1>UMBRALA</h1>
-    <p>Cargando...<br>
-    </p>
-    <ul>
-      <li>Anónimo - Sin rastro, sin identidad</li>
-      <li>Efímero - Los mensajes desaparecen</li>
-      <li>Seguro - Conexión encriptada</li>
-      <li>Privado - No logs, no tracking</li>
-    </ul>
-    <button id="initializeBtn">Inicializar</button>
+    <div id="terminalText"></div>
+    <button id="initializeBtn" style="display:none;">Inicializar</button>
     <button id="rootLoginBtn">Login Stalkerless</button>
   </div>
 
@@ -47,29 +40,14 @@
 
     <div id="chatContainer">
       <h3 id="currentRoomName"></h3>
-      <div id="chatUsersCount">Usuarios en sala: 0</div>
       <div id="chatMessages" class="chat-container"></div>
-
       <div id="privateChatContainer" style="display:none; flex-direction: column;">
         <h4>Chat privado con <span id="privateChatName"></span></h4>
         <div id="privateChatMessages" class="chat-container"></div>
       </div>
-
-      <div id="chatControls">
-        <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
-        <input id="imageInput" type="file" accept="image/*" style="display:none;">
-        <button id="imageBtn">📷 Imagen</button>
-        <button id="sendBtn">Enviar</button>
-      </div>
-
-      <div id="emojiContainer">
-        <span class="emoji">😀</span>
-        <span class="emoji">😎</span>
-        <span class="emoji">🔥</span>
-        <span class="emoji">💀</span>
-        <span class="emoji">🌌</span>
-      </div>
-
+      <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
+      <input id="imageInput" type="file" accept="image/*">
+      <button id="sendBtn">Enviar</button>
       <button id="backToRoomsBtn">Volver a Salas</button>
     </div>
 
