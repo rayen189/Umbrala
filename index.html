@@ -12,15 +12,12 @@
   <!-- CANVAS DE PARTICULAS -->
   <canvas id="particles"></canvas>
 
-  <!-- =========================
-       PANTALLA INICIO
-  ========================= -->
+  <!-- PANTALLA INICIO -->
   <div id="landingScreen" class="screen">
     <h1>UMBRALA</h1>
     <p>
       Comunica en las sombras<br>
-      Solo tú, tu mensaje, y el vacío.<br>
-      <br>
+      Solo tú, tu mensaje, y el vacío.<br><br>
       <strong>Anónimo:</strong> Sin rastro, sin identidad<br>
       <strong>Efímero:</strong> Los mensajes desaparecen<br>
       <strong>Seguro:</strong> Conexión encriptada<br>
@@ -30,20 +27,26 @@
     <button id="stalkerlessBtn">Modo Stalkerless</button>
   </div>
 
-  <!-- =========================
-       PANTALLA SALAS
-  ========================= -->
+  <!-- PANTALLA SALAS -->
   <div id="roomsListScreen" class="screen" style="display:none;">
     <h2>Salas <span id="totalUsersCounter"></span></h2>
     <button id="backToStartBtn">← Volver al Inicio</button>
     <div id="roomsList"></div>
   </div>
 
-  <!-- =========================
-       PANTALLA CHAT
-  ========================= -->
+  <!-- PANTALLA CHAT -->
   <div id="chatScreen" class="screen" style="display:none; flex-direction: row; justify-content: space-between;">
-    
+
+    <!-- ROOT BAR -->
+    <div id="rootBar" style="display:none;">
+      <span>STALKERLESS</span>
+      <button id="shadowBtn">ShadowBan</button>
+      <button id="viewMapBtn">ViewMap</button>
+      <button id="freezeBtn">Freeze</button>
+      <button id="godViewBtn">GodView</button>
+      <button id="vanishBtn">Vanish</button>
+    </div>
+
     <!-- CHAT IZQUIERDO -->
     <div id="chatContainer">
       <h3 id="chatTitle">Sala</h3>
@@ -59,11 +62,7 @@
     <ul id="connectedUsers"></ul>
   </div>
 
-  <!-- =========================
-       SCRIPTS
-  ========================= -->
   <script src="js/particles.js"></script>
   <script src="js/main.js"></script>
-
 </body>
 </html>
