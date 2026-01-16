@@ -1,186 +1,140 @@
-/* ===============================
-   UMBRALA MAIN SYSTEM
-   =============================== */
+/* =========================
+   UMBRALA — MAIN SYSTEM
+   ========================= */
 
-const boot = document.getElementById("boot");
-const rooms = document.getElementById("rooms");
-const chat = document.getElementById("chat");
+const bootScreen = document.getElementById("boot");
+const roomsScreen = document.getElementById("rooms");
+const chatScreen = document.getElementById("chat");
 
-const messages = document.getElementById("messages");
-const roomName = document.getElementById("roomName");
+const initBtn = document.getElementById("initBtn");
+const exitBtn = document.getElementById("exitBtn");
+const logo = document.getElementById("logo");
 
+const roomNameEl = document.getElementById("roomName");
+const messagesEl = document.getElementById("messages");
+
+const chatForm = document.getElementById("chatForm");
 const msgInput = document.getElementById("msgInput");
 const imgInput = document.getElementById("imgInput");
 const imgBtn = document.getElementById("imgBtn");
 
-const channel = new BroadcastChannel("umbrala");
+/* =========================
+   STATE
+   ========================= */
 
-let currentRoom = "";
-let isRoot = false;
+let currentRoom = null;
 
-/* ===============================
-   AUDIO GLITCH
-   =============================== */
+/* =========================
+   AUDIO (GLITCH)
+   ========================= */
 
-const AudioCtx = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioCtx();
+const glitchSound = new Audio("data:audio/wav;base64,UklGRjQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=");
+glitchSound.volume = 0.4;
 
-function playGlitch() {
-  if (audioCtx.state === "suspended") audioCtx.resume();
+/* =========================
+   BOOT
+   ========================= */
 
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
+initBtn.addEventListener("click", () => {
+  glitchSound.play();
+  bootScreen.classList.add("hidden");
+  roomsScreen.classList.remove("hidden");
+});
 
-  osc.type = "square";
-  osc.frequency.setValueAtTime(1600, audioCtx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.18);
+/* =========================
+   NAVIGATION
+   ========================= */
 
-  gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+exitBtn.addEventListener("click", () => {
+  glitchSound.play();
+  roomsScreen.classList.add("hidden");
+  bootScreen.classList.remove("hidden");
+});
 
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-
-  osc.start();
-  osc.stop(audioCtx.currentTime + 0.2);
-}
-
-/* ===============================
-   NAVEGACIÓN
-   =============================== */
-
-document.getElementById("initBtn").onclick = () => {
-  boot.classList.add("hidden");
-  rooms.classList.remove("hidden");
-};
-
-document.getElementById("exitBtn").onclick = () => {
-  rooms.classList.add("hidden");
-  boot.classList.remove("hidden");
-};
-
-document.getElementById("logo").onclick = () => {
-  rooms.classList.add("hidden");
-  boot.classList.remove("hidden");
-};
+logo.addEventListener("click", () => {
+  glitchSound.play();
+  roomsScreen.classList.add("hidden");
+  bootScreen.classList.remove("hidden");
+});
 
 function enterRoom(room) {
+  glitchSound.play();
   currentRoom = room;
-  roomName.textContent = room;
-  rooms.classList.add("hidden");
-  chat.classList.remove("hidden");
+  roomNameEl.textContent = room;
+  messagesEl.innerHTML = "";
+  roomsScreen.classList.add("hidden");
+  chatScreen.classList.remove("hidden");
 }
 
-/* ===============================
-   ENVÍO DE MENSAJES
-   =============================== */
+function backRooms() {
+  glitchSound.play();
+  chatScreen.classList.add("hidden");
+  roomsScreen.classList.remove("hidden");
+}
 
-document.getElementById("chatForm").onsubmit = e => {
+/* =========================
+   CHAT
+   ========================= */
+
+chatForm.addEventListener("submit", e => {
   e.preventDefault();
-  const text = msgInput.value.trim();
-  if (!text) return;
-
-  sendMessage({
-    room: currentRoom,
-    type: "text",
-    content: text
-  });
-
+  if (!msgInput.value.trim()) return;
+  sendMessage({ text: msgInput.value });
   msgInput.value = "";
-};
+});
 
-imgBtn.onclick = () => imgInput.click();
+imgBtn.addEventListener("click", () => {
+  imgInput.click();
+});
 
-imgInput.onchange = () => {
+imgInput.addEventListener("change", () => {
   const file = imgInput.files[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = () => {
-    sendMessage({
-      room: currentRoom,
-      type: "img",
-      content: reader.result
-    });
+    sendMessage({ image: reader.result });
   };
   reader.readAsDataURL(file);
-};
-
-/* ===============================
-   BROADCAST
-   =============================== */
-
-function sendMessage(msg) {
-  channel.postMessage(msg);
-  renderMessage(msg);
-}
-
-channel.onmessage = e => {
-  if (e.data.room === currentRoom) {
-    renderMessage(e.data);
-  }
-};
-
-/* ===============================
-   RENDER + EFÍMERO (15s)
-   =============================== */
-
-function renderMessage(msg) {
-  const div = document.createElement("div");
-  div.className = "message";
-
-  if (msg.type === "text") {
-    div.textContent = msg.content;
-  }
-
-  if (msg.type === "img") {
-    const img = document.createElement("img");
-    img.src = msg.content;
-    div.appendChild(img);
-  }
-
-  const timer = document.createElement("span");
-  timer.className = "timer";
-
-  let t = 15; // ⏳ DURACIÓN TOTAL
-  timer.textContent = ` ${t}`;
-  div.appendChild(timer);
-
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
-
-  let glitchPlayed = false;
-
-  const interval = setInterval(() => {
-    t--;
-    timer.textContent = ` ${t}`;
-
-    /* BLUR PROGRESIVO */
-    if (t === 9) div.classList.add("blur-1");
-    if (t === 6) div.classList.add("blur-2");
-    if (t === 3) div.classList.add("blur-3");
-
-    /* GLITCH + SONIDO FINAL */
-    if (t === 1 && !glitchPlayed) {
-      div.classList.add("glitch");
-      playGlitch();
-      glitchPlayed = true;
-    }
-
-    if (t <= 0) {
-      div.remove();
-      clearInterval(interval);
-    }
-  }, 1000);
-}
-
-/* ===============================
-   ROOT MODE (SECRETO)
-   =============================== */
-
-document.addEventListener("keydown", e => {
-  if (e.ctrlKey && e.key.toLowerCase() === "r") {
-    isRoot = true;
-    enterRoom("ROOT");
-  }
+  imgInput.value = "";
 });
+
+/* =========================
+   MESSAGE HANDLER
+   ========================= */
+
+function sendMessage({ text = null, image = null }) {
+  glitchSound.currentTime = 0;
+  glitchSound.play();
+
+  const msg = document.createElement("div");
+  msg.className = "message glitch";
+
+  if (text) {
+    msg.textContent = text;
+  }
+
+  if (image) {
+    const img = document.createElement("img");
+    img.src = image;
+    msg.appendChild(img);
+  }
+
+  messagesEl.appendChild(msg);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+
+  setTimeout(() => msg.classList.remove("glitch"), 300);
+
+  // Ephemeral destruction (15s)
+  setTimeout(() => {
+    msg.style.opacity = "0";
+    setTimeout(() => msg.remove(), 400);
+  }, 15000);
+}
+
+/* =========================
+   GLOBAL ACCESS (HTML)
+   ========================= */
+
+window.enterRoom = enterRoom;
+window.backRooms = backRooms;
