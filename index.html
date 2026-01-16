@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Umbrela</title>
+  <title>Umbrala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#7a7cff">
   <link rel="stylesheet" href="css/style.css">
@@ -12,23 +12,28 @@
   <canvas id="particles"></canvas>
 
   <!-- PANTALLA INICIAL -->
-  <div id="landingScreen" class="screen active">
+  <div id="landingScreen" class="screen">
     <h1>UMBRALA</h1>
-    <div id="terminalText"></div>
-    <button id="initializeBtn" style="display:none;">Inicializar</button>
+    <div id="landingText">
+      <p>Chat efímero...</p>
+      <p>Conversaciones anónimas...</p>
+      <p>Sin registro, sin rastros...</p>
+      <p>Solo tú y tu mensaje...</p>
+    </div>
+    <button id="initializeBtn">Inicializar</button>
     <button id="rootLoginBtn">Login Stalkerless</button>
   </div>
 
   <!-- SALAS -->
-  <div id="roomsListScreen" class="screen inactive">
-    <h2>Salas</h2>
-    <div id="totalUsersCounter">Usuarios conectados: 0</div>
+  <div id="roomsListScreen" class="screen" style="display:none;">
+    <h2>Salas <span id="totalUsersCounter">Usuarios conectados: 0</span></h2>
     <div id="roomsList"></div>
     <button id="backToStartBtn">Volver al inicio</button>
   </div>
 
   <!-- CHAT -->
-  <div id="chatScreen" class="screen inactive">
+  <div id="chatScreen" class="screen" style="display:none;">
+    <!-- Barra Root -->
     <div id="rootBar" style="display:none;">
       <span>Stalkerless</span>
       <button id="shadowBtn">ShadowBan</button>
@@ -38,22 +43,28 @@
       <button id="vanishBtn">Vanish</button>
     </div>
 
+    <!-- Sala / Chat -->
     <div id="chatContainer">
       <h3 id="currentRoomName"></h3>
       <div id="chatMessages" class="chat-container"></div>
+
+      <!-- Chat privado -->
       <div id="privateChatContainer" style="display:none; flex-direction: column;">
         <h4>Chat privado con <span id="privateChatName"></span></h4>
         <div id="privateChatMessages" class="chat-container"></div>
       </div>
+
       <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
       <input id="imageInput" type="file" accept="image/*">
       <button id="sendBtn">Enviar</button>
       <button id="backToRoomsBtn">Volver a Salas</button>
     </div>
 
+    <!-- Usuarios conectados -->
     <ul id="connectedUsers"></ul>
   </div>
 
+  <!-- SCRIPTS -->
   <script src="js/particles.js"></script>
   <script src="js/main.js"></script>
 </body>
