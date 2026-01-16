@@ -257,3 +257,16 @@ window.purge = ()=> {
   chatMessages.innerHTML = "";
   alert("Mensajes eliminados localmente");
 };
+
+// Botón volver al inicio desde Salas
+document.getElementById("backToStartBtn").onclick = ()=>{
+  showScreen(landingScreen);
+  currentRoom = null;
+};
+
+// Botón volver a Salas desde Chat
+document.getElementById("backToRoomsBtn").onclick = ()=>{
+  showScreen(roomsListScreen);
+  activePrivateChat = null;
+  renderRooms();
+};
