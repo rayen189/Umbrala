@@ -11,7 +11,7 @@
 
   <canvas id="particles"></canvas>
 
-  <!-- PANTALLA INICIO TERMINAL -->
+  <!-- INICIO TERMINAL -->
   <div id="landingScreen" class="screen">
     <div class="terminal-box">
       <div class="line glow">UMBRALA</div>
@@ -28,7 +28,7 @@
 
   <!-- SALAS -->
   <div id="roomsListScreen" class="screen" style="display:none;">
-    <div style="display:flex; align-items:center; gap:1rem;">
+    <div style="display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap: wrap;">
       <h1 class="clickable-title">Salas de Umbrala</h1>
       <div id="totalUsersCounter">Usuarios conectados: 0</div>
     </div>
@@ -38,43 +38,20 @@
 
   <!-- CHAT -->
   <div id="chatScreen" class="screen chat-screen" style="display:none;">
-    <div style="flex:1; display:flex; flex-direction:column; align-items:center;">
-      <h1 id="chatTitle">Sala</h1>
+    <div class="chat-left">
+      <h1 id="chatTitle" class="chat-title">Sala</h1>
       <div id="chatMessages" class="chat-container"></div>
-      <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
-      <button id="sendBtn">Enviar</button>
-      <input type="file" id="imageInput" accept="image/*">
-      <div id="emoji-picker"></div>
+      <div class="chat-inputs">
+        <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
+        <button id="sendBtn">Enviar</button>
+        <input type="file" id="imageInput" accept="image/*">
+        <div id="emoji-picker"></div>
+      </div>
       <button id="exitChatBtn">Salir a salas</button>
     </div>
-    <div class="users-container">
+    <div class="chat-right">
       <h3>Usuarios conectados</h3>
       <ul id="connectedUsers"></ul>
-    </div>
-  </div>
-
-  <!-- ROOT -->
-  <div id="rootScreen" class="screen" style="display:none;">
-    <h1>UMBRALA ROOT</h1>
-    <div id="rootDashboard">
-      <div class="root-section">
-        <h2>Usuarios</h2>
-        <ul id="rootUsers"></ul>
-      </div>
-      <div class="root-section">
-        <h2>Salas</h2>
-        <ul id="rootRooms"></ul>
-      </div>
-      <div class="root-section">
-        <h2>Sistema</h2>
-        <button id="freezeGlobalBtn">Freeze Global</button>
-        <button id="godViewBtn">God View</button>
-        <button id="shutdownBtn">Apagar Umbrala</button>
-      </div>
-      <div class="root-section">
-        <h2>Timeline</h2>
-        <div id="root-console" class="chat-container"></div>
-      </div>
     </div>
   </div>
 
