@@ -14,7 +14,9 @@
   <!-- PANTALLA INICIAL -->
   <div id="landingScreen" class="screen active">
     <h1>UMBRALA</h1>
-    <p>Comunica en las sombras<br>Solo tú, tu mensaje, y el vacío.</p>
+    <p>Cargando...<br>
+      Chat efímero · Conversaciones anónimas · Sin rastros
+    </p>
     <ul>
       <li>Anónimo - Sin rastro, sin identidad</li>
       <li>Efímero - Los mensajes desaparecen</li>
@@ -35,7 +37,6 @@
 
   <!-- CHAT -->
   <div id="chatScreen" class="screen inactive">
-    <!-- Barra Root -->
     <div id="rootBar" style="display:none;">
       <span>Stalkerless</span>
       <button id="shadowBtn">ShadowBan</button>
@@ -47,6 +48,7 @@
 
     <div id="chatContainer">
       <h3 id="currentRoomName"></h3>
+      <div id="chatUsersCount">Usuarios en sala: 0</div>
       <div id="chatMessages" class="chat-container"></div>
 
       <div id="privateChatContainer" style="display:none; flex-direction: column;">
