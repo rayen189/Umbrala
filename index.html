@@ -1,61 +1,52 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Umbrala</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#00ffff">
+  <meta name="theme-color" content="#7a7cff">
+  <meta name="description" content="Comunicación efímera y anónima">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-  <!-- FONDO -->
+  <!-- PARTÍCULAS -->
   <canvas id="particles"></canvas>
-  <div class="overlay"></div>
 
-  <!-- HOME -->
-  <section id="home" class="screen">
-    <h1 class="clickable-title" id="rootTrigger">UMBRALA</h1>
+  <!-- APP -->
+  <div class="app">
 
-    <select id="roomSelect">
-      <option value="">Selecciona una sala</option>
-      <option value="global">Global</option>
-      <option value="chile">Chile</option>
-      <option value="norte">Norte de Chile</option>
-      <option value="sur">Sur de Chile</option>
-      <option value="laserena">La Serena</option>
-    </select>
+    <h1 id="rootTrigger">UMBRALA</h1>
 
-    <button id="enterRoom">Entrar</button>
-  </section>
-
-  <!-- CHAT -->
-  <section id="chat" class="screen hidden">
-    <div class="chat-header">
-      <span id="roomName"></span>
-      <button id="exitRoom">Salir</button>
+    <!-- SALAS -->
+    <div class="rooms">
+      <button onclick="enterRoom('norte')">Norte</button>
+      <button onclick="enterRoom('centro')">Centro</button>
+      <button onclick="enterRoom('sur')">Sur</button>
     </div>
 
-    <div id="messages" class="chat-container"></div>
+    <!-- CHAT -->
+    <div id="chat" class="hidden">
+      <div id="messages"></div>
 
-    <form id="chatForm">
-      <input id="messageInput" placeholder="Mensaje efímero..." autocomplete="off" required>
-      <button type="submit">Enviar</button>
-    </form>
-  </section>
+      <form id="chatForm">
+        <input id="messageInput" placeholder="Escribe algo efímero..." autocomplete="off">
+        <button>➤</button>
+      </form>
+    </div>
 
-  <!-- ROOT PANEL -->
-  <section id="rootPanel" class="screen hidden">
-    <h2>ROOT MODE</h2>
-    <p id="rootInfo"></p>
-    <button id="clearMessages">Borrar mensajes</button>
-    <button id="forceExit">Forzar salida</button>
-    <button id="shutdown">Apagar Umbrala</button>
-    <button id="exitRoot">Salir Root</button>
-  </section>
+  </div>
 
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <script src="js/firebase.js"></script>
   <script src="js/particles.js"></script>
   <script src="js/main.js"></script>
+
 </body>
 </html>
