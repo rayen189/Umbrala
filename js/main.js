@@ -1,3 +1,14 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const boot = document.getElementById("boot");
+  const rooms = document.getElementById("rooms");
+  const chat = document.getElementById("chat");
+  const initBtn = document.getElementById("initBtn");
+
+  initBtn.onclick = () => {
+    boot.classList.add("hidden");
+    rooms.classList.remove("hidden");
+  };
+});
 const WS_URL = "wss://TU-PROYECTO.up.railway.app"; // CAMBIAR
 const socket = new WebSocket(WS_URL);
 
