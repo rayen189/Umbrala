@@ -5,38 +5,46 @@
   <title>Umbrala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#7a7cff">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page">
 
   <canvas id="particles"></canvas>
 
-  <!-- PANTALLA PRINCIPAL -->
+  <!-- PANTALLA INICIO TERMINAL -->
   <div id="landingScreen" class="screen">
-    <h1 id="site-title" class="clickable-title">UMBRALA</h1>
-    <p>Comunicación efímera · Presencia sin rastro · Sistema liminal</p>
-    <button id="initializeBtn">Entrar a salas</button>
-    <button id="rootLoginBtn">Modo Root</button>
+    <div class="terminal-box">
+      <div class="line glow">UMBRALA</div>
+      <div class="line">Comunica en las sombras</div>
+      <div class="line">Chat anónimo y efímero. Sin registro. Sin rastros.</div>
+      <div class="line">Solo tú, tu mensaje, y el vacío.</div>
+      <div class="line">Anónimo: Sin rastro, sin identidad</div>
+      <div class="line">Efímero: Los mensajes desaparecen</div>
+      <div class="line">Seguro: Conexión encriptada</div>
+      <div class="line">Privado: No logs, no tracking</div>
+    </div>
+    <button id="initializeBtn">Inicializar</button>
   </div>
 
-  <!-- LISTA DE SALAS -->
-<div id="roomsListScreen" class="screen" style="display:none;">
-  <h1 class="clickable-title">Salas de Umbrala</h1>
-  <div id="roomsList" class="portal-list"></div>
-  <button id="exitRoomsListBtn">Salir a landing</button>
-</div>
-  <!-- PANTALLA DE CHAT -->
+  <!-- PANTALLA DE SALAS -->
+  <div id="roomsListScreen" class="screen" style="display:none;">
+    <h1 class="clickable-title">Salas de Umbrala</h1>
+    <div id="roomsList" class="portal-list"></div>
+    <button id="exitRoomsListBtn">Salir a inicio</button>
+  </div>
+
+  <!-- PANTALLA CHAT -->
   <div id="chatScreen" class="screen" style="display:none;">
-    <h1 class="clickable-title">Chat</h1>
+    <h1 id="chatTitle">Sala</h1>
     <div id="chatMessages" class="chat-container"></div>
     <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
     <button id="sendBtn">Enviar</button>
-    <button id="exitChatBtn">Salir de chat</button>
+    <input type="file" id="imageInput" accept="image/*">
     <div id="emoji-picker"></div>
-    <input type="file" id="imageInput" accept="image/*" style="margin-top:5px;">
+    <button id="exitChatBtn">Salir a salas</button>
   </div>
 
-  <!-- DASHBOARD ROOT -->
+  <!-- PANTALLA ROOT -->
   <div id="rootScreen" class="screen" style="display:none;">
     <h1>UMBRALA ROOT</h1>
     <div id="rootDashboard">
@@ -61,7 +69,7 @@
     </div>
   </div>
 
-  <script src="./js/particles.js"></script>
-  <script src="./js/main.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
