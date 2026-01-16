@@ -19,7 +19,7 @@ class Particle {
     this.radius = Math.random() * 1.8 + 0.6;
     this.speedY = Math.random() * 0.25 + 0.05;
     this.alpha = Math.random() * 0.6 + 0.3;
-    this.color = "120, 180, 255";
+    this.color = "138,43,226"; // violeta
   }
   update() {
     this.y -= this.speedY;
