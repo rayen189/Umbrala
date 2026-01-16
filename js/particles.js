@@ -34,8 +34,15 @@ class Particle {
   }
 }
 
-function initParticles(){ particles=[]; for(let i=0;i<PARTICLE_COUNT;i++){ particles.push(new Particle()); } }
-function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
+function initParticles(){ 
+  particles=[]; 
+  for(let i=0;i<PARTICLE_COUNT;i++){ particles.push(new Particle()); } 
+}
+function animate(){ 
+  ctx.clearRect(0,0,canvas.width,canvas.height); 
+  particles.forEach(p=>{p.update();p.draw();}); 
+  requestAnimationFrame(animate); 
+}
 
 initParticles();
 animate();
