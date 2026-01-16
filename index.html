@@ -9,37 +9,35 @@
 </head>
 <body class="page">
 
-  <!-- CANVAS DE PARTICULAS -->
   <canvas id="particles"></canvas>
 
-  <!-- PANTALLA INICIO -->
+  <!-- PANTALLA INICIAL -->
   <div id="landingScreen" class="screen">
     <h1>UMBRALA</h1>
-    <p>
-      Comunica en las sombras<br>
-      Solo tú, tu mensaje, y el vacío.<br><br>
-      <strong>Anónimo:</strong> Sin rastro, sin identidad<br>
-      <strong>Efímero:</strong> Los mensajes desaparecen<br>
-      <strong>Seguro:</strong> Conexión encriptada<br>
-      <strong>Privado:</strong> No logs, no tracking
-    </p>
+    <p>Comunica en las sombras<br> Solo tú, tu mensaje, y el vacío.</p>
+    <ul>
+      <li>Anónimo - Sin rastro, sin identidad</li>
+      <li>Efímero - Los mensajes desaparecen</li>
+      <li>Seguro - Conexión encriptada</li>
+      <li>Privado - No logs, no tracking</li>
+    </ul>
     <button id="initializeBtn">Inicializar</button>
-    <button id="stalkerlessBtn">Modo Stalkerless</button>
+    <button id="rootLoginBtn">Login Stalkerless</button>
   </div>
 
-  <!-- PANTALLA SALAS -->
+  <!-- SALAS -->
   <div id="roomsListScreen" class="screen" style="display:none;">
-    <h2>Salas <span id="totalUsersCounter"></span></h2>
-    <button id="backToStartBtn">← Volver al Inicio</button>
+    <h2>Salas</h2>
+    <div id="totalUsersCounter">Usuarios conectados: 0</div>
     <div id="roomsList"></div>
+    <button id="backToStartBtn">Volver al inicio</button>
   </div>
 
-  <!-- PANTALLA CHAT -->
-  <div id="chatScreen" class="screen" style="display:none; flex-direction: row; justify-content: space-between;">
-
-    <!-- ROOT BAR -->
+  <!-- CHAT -->
+  <div id="chatScreen" class="screen" style="display:none;">
+    <!-- Barra Root -->
     <div id="rootBar" style="display:none;">
-      <span>STALKERLESS</span>
+      <span>Stalkerless</span>
       <button id="shadowBtn">ShadowBan</button>
       <button id="viewMapBtn">ViewMap</button>
       <button id="freezeBtn">Freeze</button>
@@ -47,21 +45,24 @@
       <button id="vanishBtn">Vanish</button>
     </div>
 
-    <!-- CHAT IZQUIERDO -->
+    <!-- Sala -->
     <div id="chatContainer">
-      <h3 id="chatTitle">Sala</h3>
-      <button id="backToRoomsBtn">← Volver a Salas</button>
+      <h3 id="currentRoomName"></h3>
       <div id="chatMessages" class="chat-container"></div>
+      <div id="privateChatContainer" style="display:none; flex-direction: column;">
+        <h4>Chat privado con <span id="privateChatName"></span></h4>
+        <div id="privateChatMessages" class="chat-container"></div>
+      </div>
       <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
       <button id="sendBtn">Enviar</button>
-      <input type="file" id="imageInput" accept="image/*">
-      <div id="emoji-picker"></div>
+      <button id="backToRoomsBtn">Volver a Salas</button>
     </div>
 
-    <!-- USUARIOS DERECHA -->
+    <!-- Usuarios conectados -->
     <ul id="connectedUsers"></ul>
   </div>
 
+  <!-- SCRIPTS -->
   <script src="js/particles.js"></script>
   <script src="js/main.js"></script>
 </body>
