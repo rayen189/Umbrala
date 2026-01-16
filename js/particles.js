@@ -8,7 +8,6 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
-
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
@@ -36,7 +35,9 @@ class Particle {
 
 function initParticles(){ 
   particles=[]; 
-  for(let i=0;i<PARTICLE_COUNT;i++){ particles.push(new Particle()); } 
+  for(let i=0;i<PARTICLE_COUNT;i++){ 
+    particles.push(new Particle()); 
+  } 
 }
 function animate(){ 
   ctx.clearRect(0,0,canvas.width,canvas.height); 
