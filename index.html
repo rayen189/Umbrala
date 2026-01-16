@@ -1,90 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Umbrala</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#7a7cff" />
-
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7a7cff">
+  <link rel="stylesheet" href="css/style.css">
 </head>
+<body class="page">
 
-<body>
+  <canvas id="particles"></canvas>
 
-<!-- FONDO PARTÍCULAS -->
-<canvas id="particles"></canvas>
-
-<!-- ===============================
-     PANTALLA INICIAL / BOOT
-================================ -->
-<div id="boot" class="screen center">
-  <div class="terminal">
-    <p class="title">UMBRALA v1.0</p>
-    <p>Sistema latente…</p>
-    <p>Comunicación efímera preparada.</p>
-
-    <button id="initBtn" class="primary">INICIALIZAR</button>
+  <!-- PANTALLA PRINCIPAL -->
+  <div id="landingScreen" class="screen">
+    <h1 id="site-title" class="clickable-title">UMBRALA</h1>
+    <p>Comunicación efímera y anónima con estilo cyberpunk</p>
+    <button id="initializeBtn">Inicializar</button>
+    <button id="rootLoginBtn">Login Root</button>
   </div>
-</div>
 
-<!-- ===============================
-     SALAS
-================================ -->
-<div id="rooms" class="screen hidden center">
-  <header class="topbar">
-    <h1 id="logo">UMBRALA</h1>
-    <button id="exitBtn">Salir</button>
-  </header>
-
-  <div class="room-list">
-    <button onclick="enterRoom('Norte')">🌵 Norte</button>
-    <button onclick="enterRoom('Centro')">🏙️ Centro</button>
-    <button onclick="enterRoom('Sur')">❄️ Sur</button>
-    <button onclick="enterRoom('Global')">🌍 Global</button>
-    <button onclick="enterRoom('Curiosidades')">🧠 Curiosidades</button>
+  <!-- SALAS -->
+  <div id="roomsScreen" class="screen" style="display:none;">
+    <h1 id="site-title-rooms" class="clickable-title">UMBRALA</h1>
+    <div id="roomsList"></div>
+    <div id="chatContainer">
+      <div id="chatMessages" class="chat-container"></div>
+      <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
+      <button id="sendBtn">Enviar</button>
+      <button id="exitRoomBtn">Salir</button>
+      <div id="emoji-picker"></div>
+    </div>
   </div>
-</div>
 
-<!-- ===============================
-     CHAT
-================================ -->
-<div id="chat" class="screen hidden">
-  <header class="chat-header">
-    <span id="roomName">Sala</span>
-    <button onclick="backRooms()">←</button>
-  </header>
+  <!-- DASHBOARD ROOT -->
+  <div id="rootScreen" class="screen" style="display:none;">
+    <h1>UMBRALA ROOT</h1>
+    <div id="rootDashboard">
+      <div class="root-section">
+        <h2>Usuarios</h2>
+        <ul id="rootUsers"></ul>
+      </div>
+      <div class="root-section">
+        <h2>Salas</h2>
+        <ul id="rootRooms"></ul>
+      </div>
+      <div class="root-section">
+        <h2>Sistema</h2>
+        <button id="freezeGlobalBtn">Freeze Global</button>
+        <button id="godViewBtn">God View</button>
+        <button id="shutdownBtn">Apagar Umbrala</button>
+      </div>
+      <div class="root-section">
+        <h2>Timeline</h2>
+        <div id="root-console" class="chat-container"></div>
+      </div>
+    </div>
+  </div>
 
-  <div id="messages" class="messages"></div>
-
-  <form id="chatForm" class="chat-input">
-    <input
-      type="file"
-      id="imgInput"
-      accept="image/*,video/*"
-      hidden
-    />
-
-    <button type="button" id="imgBtn" title="Enviar imagen o video">
-      📷
-    </button>
-
-    <input
-      id="msgInput"
-      type="text"
-      placeholder="Mensaje efímero…"
-      autocomplete="off"
-    />
-
-    <button type="submit" title="Enviar">
-      ➤
-    </button>
-  </form>
-</div>
-
-<!-- SCRIPTS -->
-<script src="js/particles.js"></script>
-<script src="js/main.js"></script>
-
+  <script src="js/particles.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
