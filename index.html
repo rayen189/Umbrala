@@ -3,65 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <title>Umbrala</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#7a7cff">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
 <canvas id="particles"></canvas>
 
-<!-- PANTALLA INICIO -->
-<div id="screen-init" class="screen active">
+<!-- PANTALLA INICIAL -->
+<div id="boot" class="screen center">
   <div class="terminal">
-    <div class="terminal-text">
-      UMBRALA v1.0<br>
-      Sistema latente…<br>
-      Comunicación efímera preparada.
-    </div>
-
+    <p>UMBRALA v1.0</p>
+    <p>Sistema latente…</p>
+    <p>Comunicación efímera preparada.</p>
     <button id="initBtn">INICIALIZAR</button>
-
-    <div class="root-login">
-      <input id="rootUser" placeholder="root user">
-      <input id="rootPass" type="password" placeholder="password">
-      <button id="rootLoginBtn">login root</button>
-    </div>
   </div>
 </div>
 
-<!-- PANTALLA SALAS -->
-<div id="screen-rooms" class="screen">
+<!-- SALAS -->
+<div id="rooms" class="screen hidden">
   <header>
-    <h1 id="goHome">UMBRALA</h1>
-    <button id="exitBtn">SALIR</button>
+    <h1 id="logo">UMBRALA</h1>
+    <button id="exitBtn">Salir</button>
   </header>
 
-  <div class="rooms">
-    <button onclick="enterRoom('norte')">Norte</button>
-    <button onclick="enterRoom('centro')">Centro</button>
-    <button onclick="enterRoom('sur')">Sur</button>
-    <button onclick="enterRoom('global')">Global</button>
-    <button onclick="enterRoom('curiosidades')">Curiosidades</button>
-    <button id="rootRoomBtn" class="hidden" onclick="enterRoom('root')">🜏 Root</button>
+  <div class="room-list">
+    <button onclick="enterRoom('Norte')">Norte</button>
+    <button onclick="enterRoom('Centro')">Centro</button>
+    <button onclick="enterRoom('Sur')">Sur</button>
+    <button onclick="enterRoom('Global')">Global</button>
+    <button onclick="enterRoom('Curiosidades')">Curiosidades</button>
   </div>
 </div>
 
-<!-- PANTALLA CHAT -->
-<div id="screen-chat" class="screen">
+<!-- CHAT -->
+<div id="chat" class="screen hidden">
   <header>
     <span id="roomName"></span>
-    <button onclick="backToRooms()">← Salir</button>
+    <button onclick="backRooms()">←</button>
   </header>
 
   <div id="messages" class="dropzone"></div>
 
   <form id="chatForm">
-    <input id="imageInput" type="file" accept="image/*,.gif" hidden>
-    <button type="button" id="imageBtn">📷</button>
-    <input id="messageInput" placeholder="Mensaje efímero…">
-    <button>➤</button>
+    <input type="file" id="imgInput" accept="image/*,.gif" hidden>
+    <button type="button" id="imgBtn">📷</button>
+    <input id="msgInput" placeholder="Mensaje efímero…" autocomplete="off">
+    <button type="submit">➤</button>
   </form>
 </div>
 
