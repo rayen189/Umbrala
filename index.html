@@ -19,18 +19,22 @@
     <button id="rootLoginBtn">Modo Root</button>
   </div>
 
-  <!-- SALAS -->
-  <div id="roomsScreen" class="screen" style="display:none;">
-    <h1 class="clickable-title">UMBRALA</h1>
+  <!-- LISTA DE SALAS -->
+  <div id="roomsListScreen" class="screen" style="display:none;">
+    <h1 class="clickable-title">Salas de Umbrala</h1>
     <div id="roomsList"></div>
-    <div id="chatContainer">
-      <div id="chatMessages" class="chat-container"></div>
-      <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
-      <button id="sendBtn">Enviar</button>
-      <button id="exitRoomBtn">Salir</button>
-      <div id="emoji-picker"></div>
-      <input type="file" id="imageInput" accept="image/*" style="margin-top:5px;">
-    </div>
+    <button id="exitRoomsListBtn">Salir a landing</button>
+  </div>
+
+  <!-- PANTALLA DE CHAT -->
+  <div id="chatScreen" class="screen" style="display:none;">
+    <h1 class="clickable-title">Chat</h1>
+    <div id="chatMessages" class="chat-container"></div>
+    <input id="chatInput" type="text" placeholder="Escribe tu mensaje...">
+    <button id="sendBtn">Enviar</button>
+    <button id="exitChatBtn">Salir de chat</button>
+    <div id="emoji-picker"></div>
+    <input type="file" id="imageInput" accept="image/*" style="margin-top:5px;">
   </div>
 
   <!-- DASHBOARD ROOT -->
