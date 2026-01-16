@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <title>Umbrala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b0d18">
+  <meta name="theme-color" content="#7a7cff">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
 <canvas id="particles"></canvas>
@@ -16,7 +17,7 @@
   <div class="terminal glitch">
     <p>UMBRALA v1.0</p>
     <p>Sistema latente…</p>
-    <p>Comunicación efímera lista.</p>
+    <p>Comunicación efímera preparada.</p>
     <button id="initBtn">INICIALIZAR</button>
   </div>
 </div>
@@ -25,14 +26,14 @@
 <div id="rooms" class="screen hidden">
   <header>
     <h1 id="logo">UMBRALA</h1>
-    <span id="userCount">👁 1</span>
+    <div id="userCounter">👁 1</div>
     <button id="exitBtn">Salir</button>
   </header>
 
   <div class="room-list">
     <button onclick="enterRoom('Norte')">🌵 Norte</button>
-    <button onclick="enterRoom('Centro')">🏙 Centro</button>
-    <button onclick="enterRoom('Sur')">❄ Sur</button>
+    <button onclick="enterRoom('Centro')">🏙️ Centro</button>
+    <button onclick="enterRoom('Sur')">❄️ Sur</button>
     <button onclick="enterRoom('Global')">🌍 Global</button>
     <button onclick="enterRoom('Curiosidades')">🧠 Curiosidades</button>
   </div>
@@ -42,16 +43,16 @@
 <div id="chat" class="screen hidden">
   <header>
     <span id="roomName"></span>
-    <span id="privateWith"></span>
+    <span id="chatWith"></span>
     <button onclick="backRooms()">←</button>
   </header>
 
-  <div class="chat-container">
+  <div class="chat-body">
     <aside id="users"></aside>
     <div id="messages" class="dropzone"></div>
   </div>
 
-  <div id="typing"></div>
+  <div id="typing">Alguien está escribiendo…</div>
 
   <form id="chatForm">
     <input type="file" id="imgInput" accept="image/*,.gif" hidden>
@@ -61,7 +62,7 @@
   </form>
 </div>
 
-<audio id="glitchSound" src="https://assets.mixkit.co/sfx/preview/mixkit-glitchy-click-1114.mp3"></audio>
+<audio id="glitchSound" src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA="></audio>
 
 <script src="js/particles.js"></script>
 <script src="js/main.js"></script>
