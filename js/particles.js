@@ -8,6 +8,7 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 }
+
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
@@ -19,16 +20,16 @@ class Particle {
     this.radius = Math.random() * 1.8 + 0.6;
     this.speedY = Math.random() * 0.25 + 0.05;
     this.alpha = Math.random() * 0.6 + 0.3;
-    this.color = "138,43,226"; // violeta
+    this.color = "120, 180, 255";
   }
   update() {
     this.y -= this.speedY;
-    if (this.y < -10) { this.y = canvas.height + 10; this.x = Math.random() * canvas.width; }
+    if(this.y < -10) { this.y = canvas.height + 10; this.x = Math.random()*canvas.width; }
   }
   draw() {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.color},${this.alpha})`;
     ctx.fill();
   }
 }
