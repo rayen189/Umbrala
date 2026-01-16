@@ -19,6 +19,33 @@ let currentRoom = "";
 let isRoot = false;
 
 /* ===============================
+   AUDIO GLITCH (WEB AUDIO)
+   =============================== */
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioCtx();
+
+function playGlitch() {
+  if (audioCtx.state === "suspended") audioCtx.resume();
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = "square";
+  osc.frequency.setValueAtTime(1400, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.12);
+
+  gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.15);
+}
+
+/* ===============================
    NAVEGACIÓN
    =============================== */
 
@@ -42,11 +69,6 @@ function enterRoom(room) {
   roomName.textContent = room;
   rooms.classList.add("hidden");
   chat.classList.remove("hidden");
-}
-
-function backRooms() {
-  chat.classList.add("hidden");
-  rooms.classList.remove("hidden");
 }
 
 /* ===============================
@@ -126,6 +148,8 @@ function renderMessage(msg) {
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
 
+  let glitchPlayed = false;
+
   const interval = setInterval(() => {
     t--;
     timer.textContent = ` ${t}`;
@@ -135,8 +159,12 @@ function renderMessage(msg) {
     if (t === 4) div.classList.add("blur-2");
     if (t === 2) div.classList.add("blur-3");
 
-    /* GLITCH FINAL */
-    if (t === 1) div.classList.add("glitch");
+    /* GLITCH + SONIDO FINAL */
+    if (t === 1 && !glitchPlayed) {
+      div.classList.add("glitch");
+      playGlitch();
+      glitchPlayed = true;
+    }
 
     if (t <= 0) {
       div.remove();
