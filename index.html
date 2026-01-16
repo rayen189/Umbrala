@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Umbrala</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#7a7cff">
-  <link rel="stylesheet" href="css/style.css">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#7a7cff" />
+
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
 
+<!-- FONDO PARTÍCULAS -->
 <canvas id="particles"></canvas>
 
-<!-- BOOT -->
+<!-- ===============================
+     PANTALLA INICIAL / BOOT
+================================ -->
 <div id="boot" class="screen center">
   <div class="terminal">
-    <p>UMBRALA v1.0</p>
+    <p class="title">UMBRALA v1.0</p>
     <p>Sistema latente…</p>
     <p>Comunicación efímera preparada.</p>
-    <button id="initBtn">INICIALIZAR</button>
+
+    <button id="initBtn" class="primary">INICIALIZAR</button>
   </div>
 </div>
 
-<!-- ROOMS -->
-<div id="rooms" class="screen hidden">
+<!-- ===============================
+     SALAS
+================================ -->
+<div id="rooms" class="screen hidden center">
   <header class="topbar">
     <h1 id="logo">UMBRALA</h1>
+    <button id="exitBtn">Salir</button>
   </header>
 
-  <div class="room-list center">
+  <div class="room-list">
     <button onclick="enterRoom('Norte')">🌵 Norte</button>
     <button onclick="enterRoom('Centro')">🏙️ Centro</button>
     <button onclick="enterRoom('Sur')">❄️ Sur</button>
@@ -36,24 +46,45 @@
   </div>
 </div>
 
-<!-- CHAT -->
+<!-- ===============================
+     CHAT
+================================ -->
 <div id="chat" class="screen hidden">
-  <header class="topbar">
-    <span id="roomName"></span>
+  <header class="chat-header">
+    <span id="roomName">Sala</span>
     <button onclick="backRooms()">←</button>
   </header>
 
-  <div id="messages" class="messages center"></div>
+  <div id="messages" class="messages"></div>
 
-  <form id="chatForm" class="chat-input center">
-    <input type="file" id="mediaInput" accept="image/*,video/*" hidden>
-    <button type="button" id="mediaBtn">📎</button>
-    <input id="msgInput" placeholder="Mensaje efímero…" autocomplete="off">
-    <button type="submit">➤</button>
+  <form id="chatForm" class="chat-input">
+    <input
+      type="file"
+      id="imgInput"
+      accept="image/*,video/*"
+      hidden
+    />
+
+    <button type="button" id="imgBtn" title="Enviar imagen o video">
+      📷
+    </button>
+
+    <input
+      id="msgInput"
+      type="text"
+      placeholder="Mensaje efímero…"
+      autocomplete="off"
+    />
+
+    <button type="submit" title="Enviar">
+      ➤
+    </button>
   </form>
 </div>
 
+<!-- SCRIPTS -->
 <script src="js/particles.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>
