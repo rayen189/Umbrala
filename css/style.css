@@ -95,7 +95,7 @@ body.page {
 #chatMessages, #privateChatMessages {
   flex: 1;
   width: 100%;
-  max-height: 50vh;
+  max-height: 35vh;
   overflow-y: auto;
   border: 1px solid #aa88ff;
   padding: 0.5rem;
