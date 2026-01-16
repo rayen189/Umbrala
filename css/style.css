@@ -1,7 +1,5 @@
 body.page, .screen {
   font-family: 'Courier New', monospace;
-  background: #000;
-  color: #0ff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9,12 +7,16 @@ body.page, .screen {
   height: 100vh;
   margin: 0;
   overflow: hidden;
+  position: relative;
 }
 
 .screen {
   width: 100%;
   height: 100%;
   padding: 1rem;
+  position: relative;
+  z-index: 1;
+  background: rgba(0,0,0,0.7); /* semitransparente para ver partículas */
 }
 
 h1.clickable-title {
@@ -111,11 +113,13 @@ input[type="text"], #chatInput {
   transform: scale(1.3);
 }
 
+/* PARTICULAS */
 canvas#particles {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0; /* detrás de todo */
+  pointer-events: none;
 }
