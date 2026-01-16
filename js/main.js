@@ -1,81 +1,77 @@
-window.onload=()=>{
+/* =========================
+   PARTICULAS
+========================= */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
 
-let isStalkerless=false, currentRoom=null, activePrivateChat=null;
-let timeline=[], privateTimeline=[];
-let globalFreeze=false;
+let particles = [];
+const PARTICLE_COUNT = 120;
 
-let rooms=[
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+class Particle {
+  constructor() { this.reset(); }
+  reset(){
+    this.x = Math.random()*canvas.width;
+    this.y = Math.random()*canvas.height;
+    this.radius = Math.random()*1.8+0.6;
+    this.speedY = Math.random()*0.25+0.05;
+    this.alpha = Math.random()*0.6+0.3;
+    this.color="120,180,255";
+  }
+  update(){
+    this.y -= this.speedY;
+    if(this.y<-10){ this.y=canvas.height+10; this.x=Math.random()*canvas.width; }
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${this.color},${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+function initParticles(){ particles=[]; for(let i=0;i<PARTICLE_COUNT;i++){ particles.push(new Particle()); } }
+function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
+
+initParticles();
+animate();
+
+/* =========================
+   VARIABLES GLOBALES
+========================= */
+let isStalkerless = false;
+let currentRoom = null;
+let activePrivateChat = null;
+
+let users = [];
+let rooms = [
   {name:"Norte de Chile 🌵", users:[]},
   {name:"Sur de Chile 🗻", users:[]},
   {name:"Centro 🌃", users:[]},
   {name:"Global 🌎", users:[]},
-  {name:"Curiosidades 🧠", users:[]},
   {name:"Directo al 🕳️", users:[], hidden:true}
 ];
 
-const landingScreen=document.getElementById('landingScreen');
-const roomsListScreen=document.getElementById('roomsListScreen');
-const chatScreen=document.getElementById('chatScreen');
+let globalFreeze = false;
+let timeline = [];
+let privateTimeline = [];
 
-const chatInput=document.getElementById('chatInput');
-const chatMessages=document.getElementById('chatMessages');
-const privateChatMessages=document.getElementById('privateChatMessages');
-const sendBtn=document.getElementById('sendBtn');
-const roomsList=document.getElementById('roomsList');
-const connectedUsersList=document.getElementById('connectedUsers');
-const totalUsersCounter=document.getElementById('totalUsersCounter');
+/* =========================
+   ELEMENTOS HTML
+========================= */
+const landingScreen = document.getElementById('landingScreen');
+const roomsListScreen = document.getElementById('roomsListScreen');
+const chatScreen = document.getElementById('chatScreen');
 
-const rootBar=document.getElementById('rootBar');
-const shadowBtn=document.getElementById('shadowBtn');
-const viewMapBtn=document.getElementById('viewMapBtn');
-const freezeBtn=document.getElementById('freezeBtn');
-const godViewBtn=document.getElementById('godViewBtn');
-const vanishBtn=document.getElementById('vanishBtn');
+const chatInput = document.getElementById('chatInput');
+const chatMessages = document.getElementById('chatMessages');
+const sendBtn = document.getElementById('sendBtn');
+const roomsList = document.getElementById('roomsList');
 
-const privateChatContainer=document.getElementById('privateChatContainer');
-const privateChatName=document.getElementById('privateChatName');
-
-const imageBtn=document.getElementById('imageBtn');
-const imageInput=document.getElementById('imageInput');
-
-function showScreen(screen){
-  document.querySelectorAll('.screen').forEach(s=>{s.classList.remove('active'); s.classList.add('inactive');});
-  screen.classList.remove('inactive'); screen.classList.add('active');
-}
-
-function updateTotalUsers(){
-  let allUsers=[]; rooms.forEach(r=>allUsers.push(...r.users));
-  const unique=[...new Set(allUsers)];
-  totalUsersCounter.textContent=`Usuarios conectados: ${unique.length}`;
-}
-
-function renderRooms(){
-  roomsList.innerHTML='';
-  rooms.forEach((r,i)=>{
-    if(r.hidden && !isStalkerless) return;
-    const btn=document.createElement('button');
-    btn.textContent=`${r.name} (${r.users.length})`;
-    btn.className='portal-btn';
-    btn.onclick=()=>enterRoom(i);
-    roomsList.appendChild(btn);
-  });
-  updateTotalUsers();
-}
-
-function enterRoom(i){
-  currentRoom=i; chatMessages.innerHTML='';
-  const user=isStalkerless?'Stalkerless':'User'+Math.floor(Math.random()*1000);
-  rooms[i].users.push(user); renderRooms(); showScreen(chatScreen);
-  document.getElementById('currentRoomName').textContent=rooms[i].name;
-  renderConnectedUsers();
-}
-
-function appendMessage(d){
-  const div=document.createElement('div');
-  if(d.img) { const img=document.createElement('img'); img.src=d.img; img.style.maxWidth='150px'; div.appendChild(img); }
-  div.appendChild(document.createTextNode(d.msg ? ` ${d.msg}` : ''));
-  div.className='glow'; chatMessages.appendChild(div); chatMessages.scrollTop=chatMessages.scrollHeight;
-}
-function appendPrivateMessage(d){
-  const div=document.createElement('div');
- 
+const imageBtn = document.getElementById('imageBtn
