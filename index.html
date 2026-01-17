@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>Umbrala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1f14">
+  <meta name="theme-color" content="#050b08">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <canvas id="particles"></canvas>
 
-<!-- BOOT -->
+<!-- BOOT / TERMINAL -->
 <section id="bootScreen" class="screen active">
   <div class="terminal">
     <div class="terminal-header">
@@ -27,18 +27,54 @@
 
 <!-- SALAS -->
 <section id="roomsScreen" class="screen">
+  <header class="rooms-header">
+    <span id="userCounter">👥 0</span>
+    <button id="rootBtn">ROOT</button>
+  </header>
+
   <h2 class="title">SALAS ACTIVAS</h2>
-  <button class="room" data-room="norte">🌵 Norte de Chile</button>
-  <button class="room" data-room="centro">🌃 Centro - Santiago</button>
-  <button class="room" data-room="sur">🗻 Sur de Chile</button>
-  <button class="room" data-room="global">🌎 Global</button>
+
+  <div class="rooms">
+    <button class="room" data-room="Norte de Chile">🌵 Norte de Chile</button>
+    <button class="room" data-room="Centro - Santiago">🌃 Centro - Santiago</button>
+    <button class="room" data-room="Sur de Chile">🗻 Sur de Chile</button>
+    <button class="room" data-room="Global">🌎 Global</button>
+    <button class="room void" data-room="Directo al Vacío">🕳️ Directo al Vacío</button>
+  </div>
 </section>
 
 <!-- CHAT -->
 <section id="chatScreen" class="screen">
-  <h2 class="title" id="chatTitle"></h2>
-  <div class="chat-box" id="chatBox"></div>
-  <input id="chatInput" placeholder="Escribe algo…" />
+  <header class="chat-header">
+    <button id="backRooms">⟵</button>
+    <span id="roomTitle"></span>
+    <span id="roomUsers">👥 0</span>
+  </header>
+
+  <!-- ROOT BAR -->
+  <div id="rootBar">
+    <button data-action="shadow">Shadow</button>
+    <button data-action="freeze">Freeze</button>
+    <button data-action="vanish">Vanish</button>
+    <button data-action="god">GodView</button>
+  </div>
+
+  <div class="chat-layout">
+    <div class="chat-area">
+      <div id="messages"></div>
+
+      <div class="chat-input">
+        <input id="msgInput" placeholder="Escribe...">
+        <input type="file" id="imgInput" accept="image/*">
+        <button id="sendBtn">➤</button>
+      </div>
+    </div>
+
+    <aside class="users-panel">
+      <h4>Usuarios</h4>
+      <ul id="usersList"></ul>
+    </aside>
+  </div>
 </section>
 
 <script src="js/particles.js"></script>
