@@ -1,221 +1,89 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===============================
-     SCREENS
-     =============================== */
-
-  const bootScreen     = document.getElementById("bootScreen");
-  const roomsScreen    = document.getElementById("roomsScreen");
+  const bootScreen = document.getElementById("bootScreen");
+  const roomsScreen = document.getElementById("roomsScreen");
   const identityScreen = document.getElementById("identityScreen");
-  const chatScreen     = document.getElementById("chatScreen");
+  const chatScreen = document.getElementById("chatScreen");
 
-  function show(screen){
+  const rooms = document.querySelectorAll(".room");
+  const roomCounts = document.querySelectorAll(".room-count");
+  const globalCount = document.getElementById("globalCount");
+
+  const joiningRoomTitle = document.getElementById("joiningRoomTitle");
+  const nicknameInput = document.getElementById("nicknameInput");
+  const randomNickBtn = document.getElementById("randomNick");
+  const enterChatBtn = document.getElementById("enterChatBtn");
+  const backToRoomsBtn = document.getElementById("backToRooms");
+
+  const messagesBox = document.getElementById("messages");
+  const chatInput = document.getElementById("chatInput");
+  const sendBtn = document.getElementById("sendBtn");
+
+  let nickname = "";
+  let selectedRoom = "";
+
+  function show(screen) {
     [bootScreen, roomsScreen, identityScreen, chatScreen]
       .forEach(s => s.classList.remove("active"));
     screen.classList.add("active");
   }
 
-  /* ===============================
-     BOOT SEQUENCE
-     =============================== */
-
-  const terminalOutput = document.getElementById("terminalOutput");
-
-  const bootLines = [
-    "Inicializando Umbrala...",
-    "",
-    "modo: anónimo",
-    "rastros: deshabilitados",
-    "identidad: inexistente",
-    "mensajes: efímeros",
-    "persistencia: nula",
-    "",
-    "seguridad: activa",
-    "conexión: encriptada",
-    "privacidad: total",
-    "logs: deshabilitados",
-    "tracking: ninguno",
-    "",
-    "estado: estable",
-    "abriendo umbral..."
-  ];
-
-  let bootIndex = 0;
-
-  function typeLine(text, cb){
-    let i = 0;
-    const interval = setInterval(() => {
-      terminalOutput.textContent += text.charAt(i);
-      i++;
-      if(i >= text.length){
-        clearInterval(interval);
-        terminalOutput.textContent += "\n";
-        setTimeout(cb, 250);
-      }
-    }, 30);
+  function generateNick() {
+    return "anon_" + Math.floor(Math.random() * 9000 + 1000);
   }
 
-  function runBoot(){
-    if(bootIndex >= bootLines.length){
-      setTimeout(() => show(roomsScreen), 800);
-      return;
-    }
-    typeLine(bootLines[bootIndex], () => {
-      bootIndex++;
-      runBoot();
-    });
-  }
+  /* CONTADORES */
+  let totalUsers = Math.floor(Math.random() * 12) + 3;
+  globalCount.textContent = totalUsers;
 
-  terminalOutput.textContent = "";
-  runBoot();
+  roomCounts.forEach(c => {
+    c.textContent = "👤 " + (Math.floor(Math.random() * 8) + 1);
+  });
 
-  /* ===============================
-     ROOMS → IDENTITY
-     =============================== */
-
-  const rooms = document.querySelectorAll(".room");
-  const joiningRoomTitle = document.getElementById("joiningRoomTitle");
-
+  /* SALAS */
   rooms.forEach(room => {
     room.onclick = () => {
-      joiningRoomTitle.textContent = `JOINING ROOM: ${room.textContent}`;
+      const counter = room.querySelector(".room-count");
+      let n = parseInt(counter.textContent.replace(/\D/g, ""));
+      counter.textContent = "👤 " + (n + 1);
+
+      selectedRoom = room.dataset.room;
+      joiningRoomTitle.textContent = `JOINING ROOM\n${room.textContent}`;
       show(identityScreen);
     };
   });
 
-  /* ===============================
-     IDENTITY
-     =============================== */
-
-  const nicknameInput = document.getElementById("nicknameInput");
-  const randomNick    = document.getElementById("randomNick");
-  const enterChatBtn  = document.getElementById("enterChatBtn");
-  const backToRooms   = document.getElementById("backToRooms");
-
-  let nickname = "";
-
-  randomNick.onclick = () => {
-    nicknameInput.value = "anon_" + Math.floor(Math.random() * 9000 + 1000);
+  randomNickBtn.onclick = () => {
+    nicknameInput.value = generateNick();
   };
 
-  backToRooms.onclick = () => show(roomsScreen);
+  backToRoomsBtn.onclick = () => {
+    show(roomsScreen);
+  };
 
   enterChatBtn.onclick = () => {
-    nickname = nicknameInput.value.trim();
-    if(!nickname){
-      alert("Elige un nickname");
+    if (!nicknameInput.value.trim()) {
+      alert("Debes elegir un nickname");
       return;
     }
-    currentChat = "public";
-    show(chatScreen);
-    systemMsg("Has entrado a la sala");
-  };
-
-  /* ===============================
-     CHAT CORE
-     =============================== */
-
-  const messagesBox = document.getElementById("messages");
-  const msgInput    = document.getElementById("msgInput");
-  const sendBtn     = document.getElementById("sendBtn");
-  const imgInput    = document.getElementById("imgInput");
-
-  const chatTabs = document.getElementById("chatTabs");
-  const backRooms = document.getElementById("backRooms");
-
-  let currentChat = "public";
-
-  const chatHistories = {
-    public: []
-  };
-
-  function renderChat(chatName){
+    nickname = nicknameInput.value.trim();
     messagesBox.innerHTML = "";
-    const history = chatHistories[chatName] || [];
+    systemMessage(`Has entrado a ${selectedRoom}`);
+    systemMessage(`Tu identidad: ${nickname}`);
+    show(chatScreen);
+  };
 
-    history.forEach(html => {
-      const div = document.createElement("div");
-      div.className = "message";
-      div.innerHTML = html;
-      messagesBox.appendChild(div);
-    });
-
-    messagesBox.scrollTop = messagesBox.scrollHeight;
-  }
-
-  function systemMsg(text){
-    if(!chatHistories[currentChat]) chatHistories[currentChat] = [];
-    chatHistories[currentChat].push(text);
-    renderChat(currentChat);
-  }
-
-  function userMsg(text){
-    const html = `<b>${nickname}:</b> ${text}`;
-    if(!chatHistories[currentChat]) chatHistories[currentChat] = [];
-    chatHistories[currentChat].push(html);
-    renderChat(currentChat);
+  function systemMessage(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    messagesBox.appendChild(div);
   }
 
   sendBtn.onclick = () => {
-    const text = msgInput.value.trim();
-    if(!text) return;
-    userMsg(text);
-    msgInput.value = "";
+    if (!chatInput.value.trim()) return;
+    systemMessage(`${nickname}: ${chatInput.value}`);
+    chatInput.value = "";
   };
 
-  msgInput.addEventListener("keydown", e => {
-    if(e.key === "Enter") sendBtn.click();
-  });
-
-  imgInput.onchange = () => {
-    const file = imgInput.files[0];
-    if(!file) return;
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      const html = `<b>${nickname}:</b><br><img src="${reader.result}">`;
-      if(!chatHistories[currentChat]) chatHistories[currentChat] = [];
-      chatHistories[currentChat].push(html);
-      renderChat(currentChat);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  /* ===============================
-     PRIVATE CHATS (TABS)
-     =============================== */
-
-  const users = document.querySelectorAll(".user-item");
-
-  users.forEach(user => {
-    user.onclick = () => {
-      const name = user.textContent;
-
-      if(document.querySelector(`[data-chat="${name}"]`)) return;
-
-      const tab = document.createElement("span");
-      tab.className = "chat-tab";
-      tab.dataset.chat = name;
-      tab.textContent = "🔒 " + name;
-      chatTabs.appendChild(tab);
-
-      tab.onclick = () => {
-        document.querySelectorAll(".chat-tab")
-          .forEach(t => t.classList.remove("active"));
-
-        tab.classList.add("active");
-        currentChat = name;
-
-        if(!chatHistories[name]){
-          chatHistories[name] = [];
-          chatHistories[name].push(`Chat privado con ${name}`);
-        }
-
-        renderChat(name);
-      };
-    };
-  });
-
-  backRooms.onclick = () => show(roomsScreen);
-
+  show(roomsScreen);
 });
