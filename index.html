@@ -37,19 +37,32 @@
 </section>
 
 <!-- IDENTIDAD -->
+<!-- PANTALLA IDENTIDAD -->
 <section id="identityScreen" class="screen">
-  <h3 id="identityRoom"></h3>
+  <div class="identity-box">
+    <h3 id="joiningRoomTitle">JOINING ROOM</h3>
 
-  <input id="nicknameInput" placeholder="Elige tu nickname">
-  <button id="randomNick">🔀 Aleatorio</button>
+    <label>Tu identidad anónima</label>
 
-  <ul class="info">
-    <li>Identidad efímera</li>
-    <li>Sin registros</li>
-    <li>Mensajes desaparecen</li>
-  </ul>
+    <div class="nick-row">
+      <input id="nicknameInput" placeholder="Elige tu nickname" />
+      <button id="randomNick">🔀</button>
+    </div>
 
-  <button id="enterChat">ENTRAR AL CHAT →</button>
+    <ul class="identity-info">
+      <li>• Identidad efímera</li>
+      <li>• Sin registros</li>
+      <li>• Mensajes desaparecen</li>
+    </ul>
+
+    <button id="enterChatBtn" class="enter-chat">
+      ENTRAR AL CHAT →
+    </button>
+
+    <button id="backToRooms" class="ghost-btn">
+      ← Volver a salas
+    </button>
+  </div>
 </section>
 
 <!-- CHAT -->
