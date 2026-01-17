@@ -23,6 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let nickname = "";
   let currentChat = "public";
+  const chatHistories = {
+  public: []
+};
 
   function show(screen){
     [bootScreen,roomsScreen,identityScreen,chatScreen]
