@@ -1,142 +1,95 @@
-const boot = document.getElementById("bootScreen");
-const rooms = document.getElementById("roomsScreen");
-const chat = document.getElementById("chatScreen");
-
-const out = document.getElementById("terminalOutput");
-const messages = document.getElementById("messages");
-const usersList = document.getElementById("usersList");
-
 let currentRoom = null;
-let nickname = "User" + Math.floor(Math.random()*999);
+let currentUser = null;
 let users = [];
 
-/* BOOT */
-const lines = [
- "> UMBRALA SYSTEM",
- "> Secure routing enabled",
- "> Anonymous mode active",
- "> Loading nodes...",
- "> Ready."
-];
-let i = 0;
-
-function type(){
-  if(i < lines.length){
-    out.textContent += lines[i++] + "\n";
-    setTimeout(type, 400);
-  } else {
-    setTimeout(() => switchScreen(boot, rooms), 800);
-  }
-}
-type();
-
-/* SCREEN SWITCH */
-function switchScreen(from, to){
-  from.classList.add("exit");
-  setTimeout(()=>{
-    from.classList.remove("active","exit");
-    to.classList.add("active");
-  },600);
+function switchScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-/* ROOMS */
-document.querySelectorAll(".room").forEach(btn=>{
-  btn.onclick = () => enterRoom(btn.dataset.room);
-});
+/* ===== ROOMS ===== */
+function goToRooms(){
+  switchScreen('roomsScreen');
+}
 
-function enterRoom(room){
+/* ===== OPEN ROOM ===== */
+function openRoom(room){
   currentRoom = room;
-  messages.innerHTML = "";
-  usersList.innerHTML = "";
-  users = [nickname];
+  joinRoomName.textContent = room;
+  joinScreen.classList.remove('hidden');
+}
 
-  document.getElementById("roomTitle").textContent = room;
+/* ===== RANDOM NICK ===== */
+randomNick.onclick = ()=>{
+  const base = ["Ghost","Umbra","Void","Echo","Null"];
+  nicknameInput.value =
+    base[Math.floor(Math.random()*base.length)] +
+    Math.floor(Math.random()*99);
+};
+
+/* ===== ENTER CHAT ===== */
+enterChat.onclick = ()=>{
+  const nick = nicknameInput.value.trim();
+  if(!nick) return alert("Elige un nickname");
+
+  currentUser = nick;
+  users = [nick];
+
+  joinScreen.classList.add('hidden');
+  roomTitle.textContent = currentRoom;
+  switchScreen('chatScreen');
+
+  messages.innerHTML="";
+  addSystem(`Has entrado a ${currentRoom}`);
   updateUsers();
+};
 
-  systemMessage(`Has entrado a ${room}`);
-  switchScreen(rooms, chat);
-}
-
-/* USERS */
-function updateUsers(){
-  document.getElementById("roomUsers").textContent = "👥 " + users.length;
-  usersList.innerHTML = "";
-  users.forEach(u=>{
-    const li = document.createElement("li");
-    li.textContent = u;
-    li.onclick = () => privateChat(u);
-    usersList.appendChild(li);
-  });
-}
-
-/* MESSAGES */
-document.getElementById("sendBtn").onclick = sendMessage;
-
+/* ===== SEND MESSAGE ===== */
 function sendMessage(){
-  const input = document.getElementById("msgInput");
-  if(!input.value) return;
-
-  addMessage(nickname, input.value);
-  input.value = "";
+  const txt = msgInput.value.trim();
+  if(!txt) return;
+  addMessage(currentUser, txt);
+  msgInput.value="";
 }
 
-function addMessage(user, text){
-  const div = document.createElement("div");
-  div.className = "message";
-  div.textContent = user + ": " + text;
-  messages.appendChild(div);
+function addMessage(user,text){
+  const d = document.createElement('div');
+  d.className="message";
+  d.textContent = `${user}: ${text}`;
+  messages.appendChild(d);
   messages.scrollTop = messages.scrollHeight;
 }
 
-function systemMessage(text){
-  const div = document.createElement("div");
-  div.className = "message";
-  div.style.opacity = ".6";
-  div.textContent = "[SYSTEM] " + text;
-  messages.appendChild(div);
+function addSystem(text){
+  const d = document.createElement('div');
+  d.className="message";
+  d.textContent = `[SYSTEM] ${text}`;
+  messages.appendChild(d);
 }
 
-/* IMAGE UPLOAD */
-document.getElementById("imgInput").onchange = e =>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = () =>{
-    const img = document.createElement("img");
-    img.src = reader.result;
-    img.style.maxWidth = "120px";
-    const wrap = document.createElement("div");
-    wrap.className = "message";
-    wrap.appendChild(img);
-    messages.appendChild(wrap);
-  };
-  reader.readAsDataURL(file);
-};
-
-/* BACK */
-document.getElementById("backRooms").onclick = () =>{
-  switchScreen(chat, rooms);
-};
-
-/* ROOT */
-document.getElementById("rootBtn").onclick = ()=>{
-  const u = prompt("root");
-  const p = prompt("password");
-  if(u === "stalkerless" && p === "1234"){
-    document.getElementById("rootBar").classList.add("active");
-    systemMessage("ROOT MODE ENABLED");
-  }
-};
-
-function privateChat(user){
-  alert("Chat privado con " + user + " (en desarrollo)");
+/* ===== USERS ===== */
+function updateUsers(){
+  userCount.textContent = `👥 ${users.length}`;
 }
 
-const usersPanel = document.querySelector(".users-panel");
-const usersToggle = document.getElementById("usersToggle");
-
-if(usersToggle){
-  usersToggle.onclick = ()=>{
-    usersPanel.classList.toggle("active");
-  };
+/* ===== BACK ===== */
+function backToRooms(){
+  switchScreen('roomsScreen');
 }
+
+/* ===== ROOT ===== */
+function openRoot(){
+  rootPanel.classList.toggle('hidden');
+}
+
+/* ===== IMAGE UPLOAD ===== */
+imgInput.onchange = ()=>{
+  const f = imgInput.files[0];
+  if(!f) return;
+  const url = URL.createObjectURL(f);
+  const img = document.createElement("img");
+  img.src = url;
+  img.style.maxWidth="160px";
+  img.style.border="1px solid #3cff8f";
+  messages.appendChild(img);
+};
