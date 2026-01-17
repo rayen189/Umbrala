@@ -137,9 +137,38 @@ document.addEventListener("DOMContentLoaded", () => {
   sendBtn.onclick = () => {
     if (!chatInput.value.trim()) return;
     systemMessage(`${nickname}: ${chatInput.value}`);
-    chatInput.value = "";
+    chatInput.value = ""
+    
   };
 
+  // ===============================
+// ENVIAR MENSAJE CON ENTER
+// ===============================
+
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+
+function sendMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  // 👉 aquí llamas a tu lógica real de envío
+  // ejemplo:
+  addMessage("yo", text);
+
+  chatInput.value = "";
+}
+
+sendBtn.addEventListener("click", sendMessage);
+
+chatInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // evita salto de línea
+    sendMessage();
+  }
+});
+  
+  
   /* ===============================
      START (CLAVE)
      =============================== */
