@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   /* SCREENS */
-  const bootScreen = document.getElementById("bootScreen");
-  const roomsScreen = document.getElementById("roomsScreen");
+  const bootScreen     = document.getElementById("bootScreen");
+  const roomsScreen    = document.getElementById("roomsScreen");
   const identityScreen = document.getElementById("identityScreen");
-  const chatScreen = document.getElementById("chatScreen");
+  const chatScreen     = document.getElementById("chatScreen");
+
+  const allScreens = [bootScreen, roomsScreen, identityScreen, chatScreen];
 
   const terminalOutput = document.getElementById("terminalOutput");
 
@@ -29,16 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedRoom = "";
 
   /* ===============================
-     SCREEN HANDLER
+     SCREEN CONTROL (FORZADO)
      =============================== */
   function show(screen) {
-    [bootScreen, roomsScreen, identityScreen, chatScreen]
-      .forEach(s => s.classList.remove("active"));
+    allScreens.forEach(s => s.classList.remove("active"));
     screen.classList.add("active");
   }
 
   /* ===============================
-     BOOT SEQUENCE (UMBRALA)
+     BOOT SEQUENCE
      =============================== */
   const bootLines = [
     "Inicializando UMBRALA...",
@@ -46,7 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     "Anónimo",
     "Sin rastros",
     "Sin identidad",
-    "Mensajes efímeros",
+    "Efímero",
+    "Mensajes desaparecen",
+    "Seguro",
     "Conexión encriptada",
     "Privado",
     "No log",
@@ -65,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       setTimeout(() => {
         show(roomsScreen);
-      }, 600);
+      }, 700);
     }
   }
 
@@ -138,8 +141,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /* ===============================
-     START
+     START (CLAVE)
      =============================== */
+  allScreens.forEach(s => s.classList.remove("active")); // ← CLAVE
+  terminalOutput.textContent = "";
   show(bootScreen);
   bootSequence();
 
