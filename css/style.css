@@ -1,93 +1,56 @@
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
   font-family: "Courier New", monospace;
 }
 
 body {
-  background: #0b0f14;
-  color: #7cffb2;
+  margin: 0;
+  background: #000;
+  color: #aaffcc;
   overflow: hidden;
 }
 
 canvas {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
 }
 
 .screen {
   position: absolute;
   inset: 0;
   display: none;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  z-index: 1;
-  padding: 20px;
+  justify-content: center;
+  text-align: center;
 }
 
 .screen.active {
   display: flex;
 }
 
-.terminal {
-  background: rgba(0,0,0,0.6);
-  border: 1px solid #1aff7c;
-  padding: 30px;
-  max-width: 500px;
-  text-align: center;
-}
-
-.terminal h1 {
-  font-size: 32px;
-  margin-bottom: 15px;
-}
-
-.typing {
-  opacity: 0.9;
-  margin-bottom: 20px;
-}
-
-.features {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
+.glow {
+  text-shadow: 0 0 10px #aaffcc;
 }
 
 button {
-  background: transparent;
-  border: 1px solid #1aff7c;
-  color: #1aff7c;
+  margin-top: 15px;
   padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #aaffcc;
+  color: #aaffcc;
   cursor: pointer;
 }
 
 button:hover {
-  background: #1aff7c;
+  background: #aaffcc;
   color: #000;
 }
 
-.topbar {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.rooms {
-  width: 100%;
-  max-width: 600px;
-}
-
-.room-card {
-  border: 1px solid #1aff7c;
-  padding: 15px;
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
+#roomsList button {
+  width: 300px;
+  margin: 5px;
 }
 
 .chat-layout {
@@ -96,7 +59,7 @@ button:hover {
   height: 80%;
 }
 
-.chat-area {
+.chat-panel {
   flex: 2;
   display: flex;
   flex-direction: column;
@@ -104,49 +67,35 @@ button:hover {
 
 .messages {
   flex: 1;
-  overflow-y: auto;
-  border: 1px solid #1aff7c;
+  border: 1px solid #aaffcc;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .message {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
-.fade-out {
+.fade {
   opacity: 0;
   transition: opacity 1s;
 }
 
-.input-area {
+.input-bar {
   display: flex;
   gap: 5px;
-  margin-top: 5px;
 }
 
-.input-area input[type="text"] {
+.input-bar input[type="text"] {
   flex: 1;
   background: black;
-  border: 1px solid #1aff7c;
-  color: #1aff7c;
+  border: 1px solid #aaffcc;
+  color: #aaffcc;
   padding: 5px;
 }
 
-.users {
+.users-panel {
   flex: 1;
-  border-left: 1px solid #1aff7c;
-  padding-left: 10px;
-}
-
-.users ul {
-  list-style: none;
-}
-
-.users li {
-  cursor: pointer;
-  margin-bottom: 5px;
-}
-
-.back {
-  margin-top: 15px;
+  border-left: 1px solid #aaffcc;
+  padding: 10px;
 }
