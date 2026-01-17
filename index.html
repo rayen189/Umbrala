@@ -1,114 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Umbrala</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0b1f14">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
-<canvas id="particles"></canvas>
+<!-- ================= PANTALLA SALAS ================= -->
+<section id="roomsScreen" class="screen active">
+  <h1>Umbrala</h1>
 
-<!-- BOOT -->
-<section id="bootScreen" class="screen active">
-  <div class="terminal">
-    <div class="terminal-header">
-      <span class="dot red"></span>
-      <span class="dot yellow"></span>
-      <span class="dot green"></span>
-      <span class="path">umbrala@secure:~</span>
-    </div>
-    <pre id="terminalOutput"></pre>
-    <span class="cursor">█</span>
+  <div class="rooms">
+    <button class="room-btn" data-room="Sala Alpha">Sala Alpha</button>
+    <button class="room-btn" data-room="Sala Beta">Sala Beta</button>
+    <button class="room-btn" data-room="Sala Gamma">Sala Gamma</button>
   </div>
 </section>
 
-<!-- SALAS -->
-<section id="roomsScreen" class="screen">
-  <h2 class="title">SALAS ACTIVAS</h2>
-
-  <div id="globalUsers" class="users-counter">
-    👥 Usuarios conectados: <span id="globalCount">1</span>
-  </div>
-
-  <div class="room" data-room="norte">
-    🌵 Norte de Chile <span class="room-count">👤 0</span>
-  </div>
-
-  <div class="room" data-room="centro">
-    🌃 Centro - Santiago <span class="room-count">👤 0</span>
-  </div>
-
-  <div class="room" data-room="sur">
-    🗻 Sur de Chile <span class="room-count">👤 0</span>
-  </div>
-
-  <div class="room" data-room="global">
-    🌎 Global <span class="room-count">👤 0</span>
-  </div>
-
-  <div class="room" data-room="vacio">
-    🕳️ Directo al Vacío <span class="room-count">👤 0</span>
-  </div>
-</section>
-
-<!-- IDENTIDAD -->
-<section id="identityScreen" class="screen">
-  <div class="identity-box">
-    <h3 id="joiningRoomTitle">JOINING ROOM</h3>
-
-    <label>Tu identidad anónima</label>
-
-    <div class="nick-row">
-      <input id="nicknameInput" placeholder="Elige tu nickname" />
-      <button id="randomNick">🔀</button>
-    </div>
-
-    <ul class="identity-info">
-      <li>• Identidad efímera</li>
-      <li>• Sin registros</li>
-      <li>• Mensajes desaparecen</li>
-    </ul>
-
-    <button id="enterChatBtn" class="enter-chat">
-      ENTRAR AL CHAT →
-    </button>
-
-    <button id="backToRooms" class="ghost-btn">
-      ← Volver a salas
-    </button>
-  </div>
-</section>
-
-<!-- CHAT -->
+<!-- ================= CHAT ================= -->
 <section id="chatScreen" class="screen">
+
   <header class="chat-header">
     <button id="backRooms">← Salas</button>
     <span id="roomTitle"></span>
+    <button id="toggleUsers">👥</button>
   </header>
 
   <div class="chat-layout">
+    <div id="messages" class="messages"></div>
 
-  <div id="messages" class="messages">
-    <!-- mensajes -->
+    <div id="usersList" class="users hidden">
+      <h3>Usuarios</h3>
+      <ul id="users"></ul>
+    </div>
   </div>
-
-  <div id="usersList" class="users">
-    <!-- usuarios conectados -->
-  </div>
-
-</div>
 
   <div class="chat-input">
-    <input id="chatInput" placeholder="Escribe...">
+    <input id="chatInput" type="text" placeholder="Escribe un mensaje…">
     <input type="file" id="imgInput" accept="image/*">
-    <button id="sendBtn">➤</button>
+    <button id="sendBtn">▶️</button>
   </div>
+
 </section>
 
-<script src="js/particles.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
