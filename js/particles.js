@@ -1,45 +1,36 @@
-const canvas = document.getElementById("particles");
-const ctx = canvas.getContext("2d");
+const canvas = document.getElementById("particles")
+const ctx = canvas.getContext("2d")
 
-let W, H;
 function resize(){
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
+  canvas.width = innerWidth
+  canvas.height = innerHeight
 }
-resize();
-window.addEventListener("resize", resize);
+resize()
+addEventListener("resize", resize)
 
-const particles = [];
-const COUNT = window.innerWidth < 600 ? 60 : 90;
-
-for(let i=0;i<COUNT;i++){
-  particles.push({
-    x: Math.random()*W,
-    y: Math.random()*H,
-    vx:(Math.random()-.5)*0.25,
-    vy:(Math.random()-.5)*0.25,
-    r:Math.random()*2+0.5,
-    a:Math.random()*0.8+0.2
-  });
+const dots=[]
+for(let i=0;i<70;i++){
+  dots.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    vx:(Math.random()-.5)*.3,
+    vy:(Math.random()-.5)*.3,
+    r:Math.random()*2+1
+  })
 }
 
-function draw(){
-  ctx.clearRect(0,0,W,H);
-
-  particles.forEach(p=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-
-    if(p.x<0||p.x>W) p.vx*=-1;
-    if(p.y<0||p.y>H) p.vy*=-1;
-
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(60,255,143,${p.a})`;
-    ctx.fill();
-  });
-
-  requestAnimationFrame(draw);
+function loop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height)
+  dots.forEach(d=>{
+    d.x+=d.vx
+    d.y+=d.vy
+    if(d.x<0||d.x>canvas.width) d.vx*=-1
+    if(d.y<0||d.y>canvas.height) d.vy*=-1
+    ctx.beginPath()
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2)
+    ctx.fillStyle="rgba(60,255,143,.6)"
+    ctx.fill()
+  })
+  requestAnimationFrame(loop)
 }
-
-draw();
+loop()
