@@ -49,6 +49,21 @@ canvas{position:fixed;inset:0;z-index:-1}
 /* Users */
 .users-panel{width:140px;border-left:1px solid #3cff8f;padding:6px}
 
-/* Root */
-#rootBar{display:none;gap:6px;padding:6px}
-#rootBar.active{display:flex}
+/* ROOT BUTTON */
+#rootBtn{
+  background:linear-gradient(135deg,#00ff9c22,#00ff9c55);
+  border:1px solid #3cff8f;
+  color:#3cff8f;
+  padding:6px 14px;
+  border-radius:14px;
+  font-weight:bold;
+  letter-spacing:1px;
+  cursor:pointer;
+  box-shadow:0 0 12px #3cff8f55;
+  transition:.3s;
+}
+
+#rootBtn:hover{
+  box-shadow:0 0 24px #3cff8f;
+  background:#3cff8f22;
+}
