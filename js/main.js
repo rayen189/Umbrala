@@ -1,74 +1,96 @@
-const screens = {
-  boot: bootScreen,
-  rooms: roomsScreen,
-  join: joinScreen,
-  chat: chatScreen
-}
+const bootScreen = document.getElementById("bootScreen");
+const roomsScreen = document.getElementById("roomsScreen");
+const chatScreen = document.getElementById("chatScreen");
 
-let currentRoom = ""
-let isRoot = false
+const terminalOutput = document.getElementById("terminalOutput");
+const roomTitle = document.getElementById("roomTitle");
+const messagesBox = document.getElementById("messages");
 
-const terminalLines = [
-  "> UMBRALA",
-  "> Inicializando núcleo…",
-  "> Encriptación activa",
-  "> Identidad efímera",
-  "> Sistema listo"
-]
+const privateTab = document.getElementById("privateTab");
+const privateUserSpan = document.getElementById("privateUser");
+const closePrivateBtn = document.getElementById("closePrivate");
 
-let i = 0
-function boot(){
-  if(i < terminalLines.length){
-    terminalOutput.textContent += terminalLines[i++] + "\n"
-    setTimeout(boot, 400)
+let currentRoom = null;
+let privateChatUser = null;
+
+/* TERMINAL */
+const bootLines = [
+  "> UMBRALA SYSTEM v3.0",
+  "> Initializing anonymous core...",
+  "> [OK] Encryption enabled",
+  "> [OK] No logs policy active",
+  "> Loading rooms...",
+  "",
+  "> Ready."
+];
+
+let line = 0;
+function typeTerminal(){
+  if(line < bootLines.length){
+    terminalOutput.textContent += bootLines[line] + "\n";
+    line++;
+    setTimeout(typeTerminal, 420);
   }else{
-    setTimeout(()=>switchTo("rooms"), 1000)
+    setTimeout(()=>{
+      bootScreen.classList.remove("active");
+      roomsScreen.classList.add("active");
+    }, 900);
   }
 }
-boot()
+typeTerminal();
 
-function switchTo(name){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))
-  screens[name].classList.add("active")
-}
-
+/* SALAS */
 document.querySelectorAll(".room").forEach(btn=>{
   btn.onclick = ()=>{
-    currentRoom = btn.dataset.room
-    joinRoomName.textContent = currentRoom
-    switchTo("join")
+    currentRoom = btn.textContent;
+    openChat();
+  };
+});
+
+function openChat(){
+  roomsScreen.classList.remove("active");
+  chatScreen.classList.add("active");
+  roomTitle.textContent = currentRoom;
+}
+
+/* MENSAJES */
+function addMessage(text, type="public"){
+  const div = document.createElement("div");
+  div.className = "message" + (type==="private" ? " private":"");
+  div.textContent = text;
+  messagesBox.appendChild(div);
+  messagesBox.scrollTop = messagesBox.scrollHeight;
+}
+
+/* CHAT PRIVADO */
+document.querySelectorAll(".user-item").forEach(u=>{
+  u.onclick = ()=>{
+    openPrivateChat(u.dataset.nick);
+  };
+});
+
+function openPrivateChat(nick){
+  privateChatUser = nick;
+  privateUserSpan.textContent = "@"+nick;
+  privateTab.classList.remove("hidden");
+  addMessage(`Chat privado con @${nick}`);
+}
+
+closePrivateBtn.onclick = ()=>{
+  privateChatUser = null;
+  privateTab.classList.add("hidden");
+  addMessage("Volviste a la sala");
+};
+
+/* INPUT */
+document.getElementById("sendBtn").onclick = ()=>{
+  const input = document.getElementById("msgInput");
+  if(!input.value.trim()) return;
+
+  if(privateChatUser){
+    addMessage(`(Privado → @${privateChatUser}) ${input.value}`,"private");
+  }else{
+    addMessage(input.value);
   }
-})
-
-enterChat.onclick = ()=>{
-  roomTitle.textContent = currentRoom
-  switchTo("chat")
-}
-
-backRooms.onclick = ()=>switchTo("rooms")
-
-rootBtn.onclick = ()=>{
-  const pass = prompt("Root password")
-  if(pass === "1234"){
-    isRoot = true
-    rootPanel.classList.remove("hidden")
-    alert("ROOT ACTIVADO")
-  }
-}
-
-sendMsg.onclick = ()=>{
-  if(!msgInput.value) return
-  const d = document.createElement("div")
-  d.textContent = msgInput.value
-  messages.appendChild(d)
-  msgInput.value=""
-}
-
-imgInput.onchange = ()=>{
-  const file = imgInput.files[0]
-  if(!file) return
-  const img = document.createElement("img")
-  img.src = URL.createObjectURL(file)
-  img.style.maxWidth="120px"
-  messages.appendChild(img)
-}
+  input.value="";
+};
