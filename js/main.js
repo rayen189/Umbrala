@@ -11,7 +11,7 @@ const toggleUsers = document.getElementById("toggleUsers");
 const usersList = document.getElementById("usersList");
 const usersUl = document.getElementById("users");
 
-// ===== ROOMS =====
+/* ===== ROOMS ===== */
 document.querySelectorAll(".room-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     roomTitle.textContent = btn.dataset.room;
@@ -26,22 +26,21 @@ backRooms.addEventListener("click", () => {
   roomsScreen.classList.add("active");
 });
 
-// ===== USERS =====
+/* ===== USERS ===== */
 toggleUsers.addEventListener("click", () => {
   usersList.classList.toggle("hidden");
 });
 
-// fake users demo
-["Xime", "Oracle", "Specter"].forEach(u => {
+["Xime", "Oracle", "Specter"].forEach(name => {
   const li = document.createElement("li");
-  li.textContent = u;
+  li.textContent = name;
   usersUl.appendChild(li);
 });
 
-// ===== CHAT =====
+/* ===== CHAT ===== */
 function addMessage(author, text) {
   const div = document.createElement("div");
-  div.className = "message " + (author === "yo" ? "me" : "");
+  div.className = "message" + (author === "yo" ? " me" : "");
   div.textContent = `${author}: ${text}`;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
@@ -55,10 +54,8 @@ function sendMessage() {
   chatInput.value = "";
 }
 
-// botón
 sendBtn.addEventListener("click", sendMessage);
 
-// Enter (PC + móvil)
 chatInput.addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
