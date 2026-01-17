@@ -2,68 +2,73 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Umbrela</title>
+  <title>Umbrala</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0f14">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
 <canvas id="particles"></canvas>
 
-<!-- HEADER -->
-<header class="top-bar">
-  <div class="logo">❯_ UMBRELA</div>
-  <div class="status">[root]</div>
-</header>
+<!-- PANTALLA INICIO -->
+<section id="landingScreen" class="screen active">
+  <div class="terminal">
+    <h1>UMBRALA</h1>
+    <p class="typing">
 
-<!-- LANDING -->
-<section id="landing" class="screen active">
-  <h1>Comunica en las sombras</h1>
-  <p class="subtitle">
-    Chat anónimo y efímero.<br>
-    Sin registro. Sin rastros.<br>
-    Solo tú, tu mensaje, y el vacío.
-  </p>
+    <div class="features">
+      <div>Anónimo</div>
+      <div>Efímero</div>
+      <div>Privado</div>
+      <div>Sin rastros</div>
+    </div>
 
-  <div class="features">
-    <div class="card">👻 <strong>Anónimo</strong><br>Sin identidad</div>
-    <div class="card">⚡ <strong>Efímero</strong><br>Desaparece</div>
-    <div class="card">🛡️ <strong>Seguro</strong><br>Cifrado</div>
-    <div class="card">👁️ <strong>Privado</strong><br>No logs</div>
+    <button id="initBtn">Inicializar</button>
   </div>
-
-  <button class="primary-btn" onclick="goRooms()">Inicializar</button>
 </section>
 
-<!-- SALAS -->
-<section id="rooms" class="screen">
-  <h2>● SALAS ACTIVAS</h2>
+<!-- PANTALLA SALAS -->
+<section id="roomsScreen" class="screen">
+  <header class="topbar">
+    <span>SALAS ACTIVAS</span>
+    <span>Usuarios: <b id="globalUserCount">0</b></span>
+  </header>
 
-  <div class="room-card" onclick="enterRoom('Norte')">
-    <span class="zone">ZONA NORTE</span>
-    <h3>Norte de Chile</h3>
-    <p>Arica, Iquique, Antofagasta</p>
-    <span class="live">🟢 12 LIVE</span>
+  <div id="roomsContainer" class="rooms"></div>
+
+  <button id="backToStartBtn" class="back">Volver a Umbrala</button>
+</section>
+
+<!-- PANTALLA CHAT -->
+<section id="chatScreen" class="screen">
+  <header class="topbar">
+    <button id="backToRoomsBtn">← Salas</button>
+    <h2 id="roomTitle"></h2>
+  </header>
+
+  <div class="chat-layout">
+    <div class="chat-area">
+      <div id="messages" class="messages"></div>
+
+      <div class="input-area">
+        <input id="messageInput" type="text" placeholder="Escribe algo que desaparecerá…">
+        <input id="imageInput" type="file" accept="image/*">
+        <button id="sendBtn">Enviar</button>
+      </div>
+    </div>
+
+    <aside class="users">
+      <h3>Presencias</h3>
+      <ul id="usersList"></ul>
+    </aside>
   </div>
-
-  <div class="room-card" onclick="enterRoom('Centro')">
-    <span class="zone">REGIÓN METROPOLITANA</span>
-    <h3>Centro - Santiago</h3>
-    <p>La capital y comunas</p>
-    <span class="live">🟢 45 LIVE</span>
-  </div>
-
-  <div class="room-card" onclick="enterRoom('Sur')">
-    <span class="zone">ZONA SUR</span>
-    <h3>Sur de Chile</h3>
-    <p>Temuco a Punta Arenas</p>
-    <span class="live">🟢 8 LIVE</span>
-  </div>
-
-  <button class="ghost-btn" onclick="goLanding()">← Volver a Umbrela</button>
 </section>
 
 <script src="js/particles.js"></script>
 <script src="js/main.js"></script>
+
 </body>
 </html>
