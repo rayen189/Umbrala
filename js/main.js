@@ -1,95 +1,74 @@
-let currentRoom = null;
-let currentUser = null;
-let users = [];
-
-function switchScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+const screens = {
+  boot: bootScreen,
+  rooms: roomsScreen,
+  join: joinScreen,
+  chat: chatScreen
 }
 
-/* ===== ROOMS ===== */
-function goToRooms(){
-  switchScreen('roomsScreen');
+let currentRoom = ""
+let isRoot = false
+
+const terminalLines = [
+  "> UMBRALA",
+  "> Inicializando núcleo…",
+  "> Encriptación activa",
+  "> Identidad efímera",
+  "> Sistema listo"
+]
+
+let i = 0
+function boot(){
+  if(i < terminalLines.length){
+    terminalOutput.textContent += terminalLines[i++] + "\n"
+    setTimeout(boot, 400)
+  }else{
+    setTimeout(()=>switchTo("rooms"), 1000)
+  }
+}
+boot()
+
+function switchTo(name){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))
+  screens[name].classList.add("active")
 }
 
-/* ===== OPEN ROOM ===== */
-function openRoom(room){
-  currentRoom = room;
-  joinRoomName.textContent = room;
-  joinScreen.classList.remove('hidden');
-}
+document.querySelectorAll(".room").forEach(btn=>{
+  btn.onclick = ()=>{
+    currentRoom = btn.dataset.room
+    joinRoomName.textContent = currentRoom
+    switchTo("join")
+  }
+})
 
-/* ===== RANDOM NICK ===== */
-randomNick.onclick = ()=>{
-  const base = ["Ghost","Umbra","Void","Echo","Null"];
-  nicknameInput.value =
-    base[Math.floor(Math.random()*base.length)] +
-    Math.floor(Math.random()*99);
-};
-
-/* ===== ENTER CHAT ===== */
 enterChat.onclick = ()=>{
-  const nick = nicknameInput.value.trim();
-  if(!nick) return alert("Elige un nickname");
-
-  currentUser = nick;
-  users = [nick];
-
-  joinScreen.classList.add('hidden');
-  roomTitle.textContent = currentRoom;
-  switchScreen('chatScreen');
-
-  messages.innerHTML="";
-  addSystem(`Has entrado a ${currentRoom}`);
-  updateUsers();
-};
-
-/* ===== SEND MESSAGE ===== */
-function sendMessage(){
-  const txt = msgInput.value.trim();
-  if(!txt) return;
-  addMessage(currentUser, txt);
-  msgInput.value="";
+  roomTitle.textContent = currentRoom
+  switchTo("chat")
 }
 
-function addMessage(user,text){
-  const d = document.createElement('div');
-  d.className="message";
-  d.textContent = `${user}: ${text}`;
-  messages.appendChild(d);
-  messages.scrollTop = messages.scrollHeight;
+backRooms.onclick = ()=>switchTo("rooms")
+
+rootBtn.onclick = ()=>{
+  const pass = prompt("Root password")
+  if(pass === "1234"){
+    isRoot = true
+    rootPanel.classList.remove("hidden")
+    alert("ROOT ACTIVADO")
+  }
 }
 
-function addSystem(text){
-  const d = document.createElement('div');
-  d.className="message";
-  d.textContent = `[SYSTEM] ${text}`;
-  messages.appendChild(d);
+sendMsg.onclick = ()=>{
+  if(!msgInput.value) return
+  const d = document.createElement("div")
+  d.textContent = msgInput.value
+  messages.appendChild(d)
+  msgInput.value=""
 }
 
-/* ===== USERS ===== */
-function updateUsers(){
-  userCount.textContent = `👥 ${users.length}`;
-}
-
-/* ===== BACK ===== */
-function backToRooms(){
-  switchScreen('roomsScreen');
-}
-
-/* ===== ROOT ===== */
-function openRoot(){
-  rootPanel.classList.toggle('hidden');
-}
-
-/* ===== IMAGE UPLOAD ===== */
 imgInput.onchange = ()=>{
-  const f = imgInput.files[0];
-  if(!f) return;
-  const url = URL.createObjectURL(f);
-  const img = document.createElement("img");
-  img.src = url;
-  img.style.maxWidth="160px";
-  img.style.border="1px solid #3cff8f";
-  messages.appendChild(img);
-};
+  const file = imgInput.files[0]
+  if(!file) return
+  const img = document.createElement("img")
+  img.src = URL.createObjectURL(file)
+  img.style.maxWidth="120px"
+  messages.appendChild(img)
+}
