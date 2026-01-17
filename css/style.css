@@ -224,3 +224,57 @@ pre{
 .user-item:hover{
   background:#3cff8f22;
 }
+
+.identity-box{
+  width:100%;
+  max-width:420px;
+  background:rgba(0,0,0,.75);
+  border:1px solid #3cff8f;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 0 30px #3cff8f55;
+}
+
+.nick-row{
+  display:flex;
+  gap:8px;
+  margin:12px 0;
+}
+
+.nick-row input{
+  flex:1;
+  padding:10px;
+  background:#000;
+  border:1px solid #3cff8f;
+  color:#3cff8f;
+  border-radius:10px;
+}
+
+.nick-row button{
+  width:42px;
+  background:#061a11;
+  border:1px solid #3cff8f;
+  color:#3cff8f;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.enter-chat{
+  width:100%;
+  margin-top:15px;
+  padding:12px;
+  background:#0f3;
+  color:#000;
+  font-weight:bold;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.ghost-btn{
+  margin-top:10px;
+  background:transparent;
+  border:none;
+  color:#3cff8f;
+  cursor:pointer;
+}
