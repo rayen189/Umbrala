@@ -145,25 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ENVIAR MENSAJE CON ENTER
 // ===============================
 
-const chatInput = document.getElementById("chatInput");
-const sendBtn = document.getElementById("sendBtn");
-
-function sendMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-
-  // 👉 aquí llamas a tu lógica real de envío
-  // ejemplo:
-  addMessage("yo", text);
-
-  chatInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
-
-  }
-
+  
 sendBtn.addEventListener("click", sendMessage);
 
 chatInput.addEventListener("keydown", (e) => {
