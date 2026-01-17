@@ -1,176 +1,103 @@
-*{
-  box-sizing:border-box;
-  font-family:monospace;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
-  margin:0;
-  background:#020706;
+  background:#050b08;
   color:#3cff8f;
+  font-family:monospace;
   overflow:hidden;
 }
 
-/* ===== PARTICLES ===== */
 canvas{
   position:fixed;
   inset:0;
   z-index:-1;
 }
 
-/* ===== GENERIC ===== */
 .screen{
+  position:absolute;
+  inset:0;
   display:none;
-  height:100vh;
-  width:100vw;
+  padding:14px;
 }
 
 .screen.active{
   display:flex;
   flex-direction:column;
+  animation:fade .6s ease;
 }
 
-.hidden{display:none}
+@keyframes fade{
+  from{opacity:0;filter:blur(12px)}
+  to{opacity:1;filter:none}
+}
 
-/* ===== TERMINAL ===== */
+/* TERMINAL */
 .terminal{
   margin:auto;
-  text-align:left;
-  padding:20px;
-}
-
-.terminal button{
-  margin-top:20px;
-  background:#000;
+  width:95%;
+  max-width:420px;
+  background:#000c;
   border:1px solid #3cff8f;
-  color:#3cff8f;
-  padding:10px 16px;
-  border-radius:12px;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 0 30px #3cff8f55;
 }
 
-/* ===== ROOMS ===== */
-header{
+.terminal-header{
+  display:flex;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.dot{width:10px;height:10px;border-radius:50%;margin-right:6px}
+.red{background:#ff5555}
+.yellow{background:#ffaa00}
+.green{background:#00ff66}
+
+.cursor{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ROOMS */
+.rooms-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:10px 14px;
 }
 
-.rooms{
-  padding:16px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.rooms button{
+.room{
+  margin:8px 0;
   padding:14px;
-  border-radius:14px;
   border:1px solid #3cff8f;
-  background:#000;
+  background:#0009;
   color:#3cff8f;
-  font-size:16px;
-  box-shadow:0 0 12px #3cff8f33;
+  border-radius:10px;
+  cursor:pointer;
 }
 
-/* ===== ROOT BUTTON ===== */
 #rootBtn{
   background:#000;
-  border:1px solid #7cffef;
-  color:#7cffef;
-  padding:8px 14px;
-  border-radius:14px;
-  box-shadow:0 0 12px #7cffef55;
+  border:1px solid #ff3c8f;
+  color:#ff3c8f;
+  padding:6px 12px;
+  border-radius:12px;
+  box-shadow:0 0 12px #ff3c8f66;
 }
 
-/* ===== JOIN SCREEN ===== */
-.join-screen{
-  position:fixed;
-  inset:0;
-  background:#020706;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  animation:portalIn .6s ease;
-}
-
-@keyframes portalIn{
-  from{transform:scale(.8);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-
+/* JOIN */
 .join-box{
-  width:90%;
-  max-width:420px;
-  border:1px solid #3cff8f55;
-  border-radius:18px;
-  padding:20px;
-  box-shadow:0 0 30px #3cff8f22;
-}
-
-.join-title{
-  font-size:14px;
-  opacity:.7;
-}
-
-.join-room{
-  font-size:22px;
-  margin:6px 0 14px;
-}
-
-.join-input{
-  display:flex;
-  gap:8px;
-}
-
-.join-input input{
-  flex:1;
-  background:#000;
+  margin:auto;
+  width:95%;
+  max-width:400px;
   border:1px solid #3cff8f;
-  color:#3cff8f;
-  padding:10px;
-  border-radius:10px;
+  padding:16px;
+  border-radius:12px;
 }
 
-.join-input button{
-  background:#000;
-  border:1px solid #3cff8f;
-  color:#3cff8f;
-  padding:10px;
-  border-radius:10px;
-}
-
-.join-info{
-  font-size:13px;
-  opacity:.7;
-  padding-left:16px;
-}
-
-.join-btn{
-  width:100%;
-  margin-top:16px;
-  padding:12px;
-  border-radius:14px;
-  background:#0b2416;
-  border:1px solid #3cff8f;
-  color:#3cff8f;
-}
-
-/* ===== CHAT ===== */
+/* CHAT */
 .chat-header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:8px 10px;
-  border-bottom:1px solid #3cff8f33;
-}
-
-#backRooms{
-  background:transparent;
-  border:1px solid #3cff8f;
-  color:#3cff8f;
-  padding:6px 10px;
-  border-radius:10px;
-  box-shadow:0 0 10px #3cff8f55;
 }
 
 .chat-body{
@@ -185,30 +112,15 @@ header{
   overflow-y:auto;
 }
 
-.message{
-  margin-bottom:6px;
-  animation:fadeFloat 6s forwards;
-}
-
-@keyframes fadeFloat{
-  0%{opacity:1}
-  100%{opacity:.35}
-}
-
-/* ===== USERS PANEL ===== */
 #usersPanel{
-  width:140px;
-  border-left:1px solid #3cff8f33;
+  width:90px;
+  border-left:1px solid #3cff8f44;
   padding:6px;
-  font-size:13px;
 }
 
-/* ===== INPUT ===== */
 .chat-input{
   display:flex;
   gap:6px;
-  padding:8px;
-  border-top:1px solid #3cff8f33;
 }
 
 .chat-input input,
@@ -217,28 +129,21 @@ header{
   border:1px solid #3cff8f;
   color:#3cff8f;
   border-radius:8px;
-  padding:8px;
-}
-
-/* ===== ROOT PANEL ===== */
-.root-panel{
-  position:fixed;
-  top:70px;
-  right:10px;
-  background:#000;
-  border:1px solid #7cffef;
-  padding:10px;
-  border-radius:14px;
-  box-shadow:0 0 20px #7cffef55;
-}
-
-.root-panel button{
-  display:block;
-  width:100%;
-  margin-bottom:6px;
-  background:#000;
-  border:1px solid #7cffef;
-  color:#7cffef;
-  border-radius:10px;
   padding:6px;
 }
+
+#backRooms{
+  background:transparent;
+  border:1px solid #3cff8f;
+  color:#3cff8f;
+  padding:6px 10px;
+  border-radius:10px;
+}
+
+#rootPanel{
+  display:flex;
+  gap:6px;
+  margin-top:6px;
+}
+
+.hidden{display:none}
