@@ -153,6 +153,14 @@ sendBtn.onclick = () => {
   msgInput.value = "";
 };
 
+// Enviar mensaje con ENTER (PC y móvil)
+msgInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault(); // evita salto de línea
+    sendBtn.click();    // reutiliza la lógica existente
+  }
+});
+
 fileBtn.onclick = () => fileInput.click();
 
 fileInput.onchange = () => {
