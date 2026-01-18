@@ -205,3 +205,21 @@ backBtn.onclick = () => {
   chatScreen.classList.remove("active");
   roomsScreen.classList.add("active");
 };
+
+function startFade(element, seconds) {
+  let remaining = seconds;
+  const total = seconds;
+
+  const interval = setInterval(() => {
+    remaining--;
+
+    // degradado progresivo
+    const opacity = remaining / total;
+    element.style.opacity = opacity;
+
+    if (remaining <= 0) {
+      clearInterval(interval);
+      element.remove();
+    }
+  }, 1000);
+}
