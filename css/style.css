@@ -136,3 +136,9 @@ body {
 .me {
   text-align: right;
 }
+
+.counter {
+  font-size: 0.85rem;
+  margin-left: 8px;
+  opacity: 0.85;
+}
