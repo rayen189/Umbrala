@@ -1,8 +1,27 @@
+/* ===============================
+   REFERENCIAS
+================================ */
 const terminal = document.getElementById("terminal");
 const terminalScreen = document.getElementById("terminalScreen");
 const roomsScreen = document.getElementById("roomsScreen");
 const chatScreen = document.getElementById("chatScreen");
 
+const chatHeader = document.getElementById("chatHeader");
+const backBtn = document.getElementById("backBtn");
+
+const messages = document.getElementById("messages");
+const input = document.getElementById("messageInput");
+const fileInput = document.getElementById("fileInput");
+const sendBtn = document.getElementById("sendBtn");
+
+const usersList = document.getElementById("usersList");
+const roomCount = document.getElementById("roomCount");
+
+const tabs = document.getElementById("privateTabs");
+
+/* ===============================
+   BOOT TERMINAL
+================================ */
 const bootLines = [
   "cargando núcleo...",
   "montando salas...",
@@ -11,11 +30,12 @@ const bootLines = [
   "iniciando UMBRALA"
 ];
 
-let i = 0;
+let bootIndex = 0;
+
 function boot() {
-  if (i < bootLines.length) {
-    terminal.innerHTML += "> " + bootLines[i] + "<br>";
-    i++;
+  if (bootIndex < bootLines.length) {
+    terminal.innerHTML += "> " + bootLines[bootIndex] + "<br>";
+    bootIndex++;
     setTimeout(boot, 700);
   } else {
     setTimeout(() => {
@@ -24,107 +44,149 @@ function boot() {
     }, 1000);
   }
 }
+
 boot();
 
-/* SALAS */
+/* ===============================
+   ESTADO GLOBAL
+================================ */
+let activeTab = "";
+let currentRoom = "";
+
+const users = ["neo", "void", "umbra", "cypher"];
+
+/* ===============================
+   ENTRAR A SALA
+================================ */
 document.querySelectorAll(".room").forEach(room => {
-  room.onclick = () => {
+  room.addEventListener("click", () => {
+    currentRoom = room.textContent;
+
     roomsScreen.classList.remove("active");
     chatScreen.classList.add("active");
-    document.getElementById("chatHeader").textContent = room.textContent;
-    initRoom();
-  };
+
+    chatHeader.textContent = currentRoom;
+
+    initRoom(currentRoom);
+  });
 });
 
-/* VOLVER */
-document.getElementById("backBtn").onclick = () => {
+/* ===============================
+   VOLVER A SALAS
+================================ */
+backBtn.addEventListener("click", () => {
   chatScreen.classList.remove("active");
   roomsScreen.classList.add("active");
-};
 
-/* USUARIOS DEMO */
-const users = ["neo", "void", "umbra", "cypher"];
-const usersList = document.getElementById("usersList");
-const roomCount = document.getElementById("roomCount");
+  messages.innerHTML = "";
+  tabs.innerHTML = "";
+});
 
-function initRoom() {
+/* ===============================
+   INICIALIZAR SALA
+================================ */
+function initRoom(roomName) {
   usersList.innerHTML = "";
-  users.forEach(u => {
+  tabs.innerHTML = "";
+  messages.innerHTML = "";
+
+  /* TAB DE SALA */
+  const roomTab = document.createElement("div");
+  roomTab.className = "tab active";
+  roomTab.textContent = roomName;
+  roomTab.addEventListener("click", () => setTab(roomTab));
+  tabs.appendChild(roomTab);
+
+  activeTab = roomName;
+
+  /* USUARIOS */
+  users.forEach(user => {
     const div = document.createElement("div");
     div.className = "user";
-    div.textContent = u;
-    div.onclick = () => openTab(u);
+    div.textContent = user;
+    div.addEventListener("click", () => openPrivateTab(user));
     usersList.appendChild(div);
   });
+
   roomCount.textContent = users.length;
 }
 
-/* TABS */
-const tabs = document.getElementById("privateTabs");
-let activeTab = "sala";
+/* ===============================
+   TABS PRIVADOS
+================================ */
+function openPrivateTab(username) {
+  if ([...tabs.children].some(t => t.textContent === username)) return;
 
-function openTab(name) {
-  if ([...tabs.children].some(t => t.textContent === name)) return;
   const tab = document.createElement("div");
   tab.className = "tab";
-  tab.textContent = name;
-  tab.onclick = () => setTab(tab);
+  tab.textContent = username;
+  tab.addEventListener("click", () => setTab(tab));
+
   tabs.appendChild(tab);
 }
 
 function setTab(tab) {
   [...tabs.children].forEach(t => t.classList.remove("active"));
   tab.classList.add("active");
+
   activeTab = tab.textContent;
 }
 
-/* CHAT */
-const messages = document.getElementById("messages");
-const input = document.getElementById("messageInput");
-const fileInput = document.getElementById("fileInput");
+/* ===============================
+   ENVÍO DE MENSAJES
+================================ */
+sendBtn.addEventListener("click", sendMessage);
 
-document.getElementById("sendBtn").onclick = () => {
-  if (input.value) {
-    addMessage(`[${activeTab}] ${input.value}`);
+function sendMessage() {
+  if (input.value.trim() !== "") {
+    addTextMessage(`[${activeTab}] ${input.value}`);
     input.value = "";
   }
+
   if (fileInput.files[0]) {
-    const f = fileInput.files[0];
-    let el;
-    if (f.type.startsWith("image")) {
-      el = document.createElement("img");
-      el.src = URL.createObjectURL(f);
-      el.style.maxWidth = "180px";
-    } else {
-      el = document.createElement("audio");
-      el.src = URL.createObjectURL(f);
-      el.controls = true;
+    const file = fileInput.files[0];
+    let element;
+
+    if (file.type.startsWith("image")) {
+      element = document.createElement("img");
+      element.src = URL.createObjectURL(file);
+      element.style.maxWidth = "180px";
+    } else if (file.type.startsWith("audio")) {
+      element = document.createElement("audio");
+      element.src = URL.createObjectURL(file);
+      element.controls = true;
     }
-    addEphemeral(el);
+
+    if (element) addEphemeral(element);
     fileInput.value = "";
   }
-};
+}
 
-function addMessage(text) {
+/* ===============================
+   MENSAJES EFÍMEROS
+================================ */
+function addTextMessage(text) {
   const div = document.createElement("div");
   div.className = "message";
   div.textContent = text;
   addEphemeral(div);
 }
 
-function addEphemeral(el) {
-  messages.appendChild(el);
-  let t = 30;
+function addEphemeral(element) {
+  messages.appendChild(element);
+
+  let time = 30;
   const timer = document.createElement("div");
   timer.className = "timer";
-  el.appendChild(timer);
+  element.appendChild(timer);
 
   const interval = setInterval(() => {
-    t--;
-    timer.textContent = t <= 5 ? t : "";
-    if (t <= 0) {
+    time--;
+    timer.textContent = time <= 5 ? time : "";
+
+    if (time <= 0) {
       clearInterval(interval);
-      el.remove();
+      element.remove();
     }
   }, 1000);
 }
