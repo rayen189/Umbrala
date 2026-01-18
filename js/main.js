@@ -1,130 +1,147 @@
-// ===== UMBRALA MAIN.JS (NO EVAL / GITHUB SAFE) =====
+/* ===============================
+   UMBRALA MAIN.JS — FINAL
+   Compatible con tu index.html
+================================ */
 
-const screens = document.querySelectorAll(".screen");
-const terminalOutput = document.getElementById("terminalOutput");
+// ---------- ESTADO GLOBAL ----------
+let currentRoom = null;
+let nickname = null;
+let usersInRoom = [];
 
-let currentRoom = "";
-let nickname = "";
+// ---------- ELEMENTOS ----------
+const roomsScreen = document.getElementById("roomsScreen");
+const chatScreen = document.getElementById("chatScreen");
 
-// ---------- UTIL ----------
-function showScreen(id) {
-  screens.forEach(s => s.classList.remove("active"));
-  const screen = document.getElementById(id);
-  if (screen) screen.classList.add("active");
+const roomButtons = document.querySelectorAll(".room-btn");
+const roomTitle = document.getElementById("roomTitle");
+
+const backRoomsBtn = document.getElementById("backRooms");
+const toggleUsersBtn = document.getElementById("toggleUsers");
+
+const messagesBox = document.getElementById("messages");
+const chatInput = document.getElementById("chatInput");
+const sendBtn = document.getElementById("sendBtn");
+const imgInput = document.getElementById("imgInput");
+
+const usersList = document.getElementById("usersList");
+const usersUl = document.getElementById("users");
+
+const roomUserCountRooms = document.getElementById("roomUserCount");
+const roomUserCountChat = document.querySelector(".chat-header .counter span");
+
+// ---------- UTILIDADES ----------
+function showScreen(screen) {
+  roomsScreen.classList.remove("active");
+  chatScreen.classList.remove("active");
+  screen.classList.add("active");
 }
-
-// ---------- BOOT ----------
-const bootLines = [
-  "> UMBRALA v1.0",
-  "> Inicializando sistema...",
-  "> Conexión anónima establecida",
-  "> Cargando nodos de salas...",
-  "> Acceso permitido"
-];
-
-let bootIndex = 0;
-
-function bootSequence() {
-  if (bootIndex < bootLines.length) {
-    terminalOutput.textContent += bootLines[bootIndex] + "\n";
-    bootIndex++;
-    setTimeout(bootSequence, 600);
-  } else {
-    setTimeout(() => showScreen("roomsScreen"), 800);
-  }
-}
-
-const terminalText = document.getElementById("terminalText");
-
-if (terminalText) {
-  bootSequence();
-}
-
-// ---------- SALAS ----------
-document.querySelectorAll(".room").forEach(btn => {
-  btn.addEventListener("click", () => {
-    currentRoom = btn.textContent.trim();
-    document.getElementById("joiningRoomTitle").textContent = "JOINING ROOM";
-    showScreen("identityScreen");
-  });
-});
-
-// ---------- IDENTIDAD ----------
-const nicknameInput = document.getElementById("nicknameInput");
-const randomNickBtn = document.getElementById("randomNick");
 
 function generateRandomNick() {
-  return "anon_" + Math.floor(Math.random() * 9999);
+  const names = ["Sombra", "Eco", "Void", "Niebla", "Pulso", "Spectro", "Nodo"];
+  const num = Math.floor(Math.random() * 999);
+  return names[Math.floor(Math.random() * names.length)] + num;
 }
 
-randomNickBtn.addEventListener("click", () => {
-  nicknameInput.value = generateRandomNick();
-});
-
-document.getElementById("enterChatBtn").addEventListener("click", () => {
-  nickname = nicknameInput.value.trim();
-  if (!nickname) {
-    nickname = generateRandomNick();
-  }
-  enterChat();
-});
-
-document.getElementById("backToRooms").addEventListener("click", () => {
-  showScreen("roomsScreen");
-});
-
-// ---------- CHAT ----------
-function enterChat() {
-  document.getElementById("roomTitle").textContent = currentRoom;
-  document.getElementById("messages").innerHTML = `
-    <div class="system-msg">
-      [SYSTEM] ${nickname} ha entrado a ${currentRoom}
-    </div>
-  `;
-  showScreen("chatScreen");
+function updateUserCount() {
+  if (roomUserCountRooms) roomUserCountRooms.textContent = usersInRoom.length;
+  if (roomUserCountChat) roomUserCountChat.textContent = usersInRoom.length;
 }
 
-document.getElementById("backRooms").addEventListener("click", () => {
-  showScreen("roomsScreen");
-});
+function renderUsers() {
+  usersUl.innerHTML = "";
+  usersInRoom.forEach(user => {
+    const li = document.createElement("li");
+    li.textContent = user;
+    usersUl.appendChild(li);
+  });
+}
 
 // ---------- MENSAJES ----------
-const msgInput = document.getElementById("msgInput");
-const sendBtn = document.getElementById("sendBtn");
-const messagesBox = document.getElementById("messages");
+function addMessage(author, content, isImage = false) {
+  const msg = document.createElement("div");
+  msg.className = "message";
 
-function addMessage(text, type = "user") {
-  const div = document.createElement("div");
-  div.className = type === "system" ? "system-msg" : "msg";
-  div.textContent = text;
-  messagesBox.appendChild(div);
+  if (isImage) {
+    msg.innerHTML = `<strong>${author}:</strong><br><img src="${content}" class="chat-img">`;
+  } else {
+    msg.innerHTML = `<strong>${author}:</strong> ${content}`;
+  }
+
+  messagesBox.appendChild(msg);
   messagesBox.scrollTop = messagesBox.scrollHeight;
 }
 
-sendBtn.addEventListener("click", sendMessage);
-msgInput.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendMessage();
+// ---------- SALAS ----------
+roomButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    currentRoom = btn.dataset.room;
+
+    // pedir nickname
+    let inputNick = prompt(
+      `Entrando a ${currentRoom}\n\nElige tu nickname (o deja vacío para uno aleatorio):`
+    );
+
+    nickname = inputNick && inputNick.trim() !== ""
+      ? inputNick.trim()
+      : generateRandomNick();
+
+    enterRoom();
+  });
 });
 
-function sendMessage() {
-  const text = msgInput.value.trim();
-  if (!text) return;
-  addMessage(`${nickname}: ${text}`);
-  msgInput.value = "";
+function enterRoom() {
+  showScreen(chatScreen);
+
+  roomTitle.textContent = currentRoom;
+  messagesBox.innerHTML = "";
+
+  usersInRoom = [nickname];
+  updateUserCount();
+  renderUsers();
+
+  addMessage("Sistema", `Has entrado a ${currentRoom} como ${nickname}`);
 }
 
-// ---------- IMÁGENES ----------
-document.getElementById("imgInput").addEventListener("change", e => {
-  const file = e.target.files[0];
+// ---------- VOLVER A SALAS ----------
+backRoomsBtn.addEventListener("click", () => {
+  showScreen(roomsScreen);
+  currentRoom = null;
+  nickname = null;
+  usersInRoom = [];
+});
+
+// ---------- ENVIAR TEXTO ----------
+sendBtn.addEventListener("click", sendTextMessage);
+chatInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendTextMessage();
+});
+
+function sendTextMessage() {
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  addMessage(nickname, text);
+  chatInput.value = "";
+}
+
+// ---------- ENVIAR IMAGEN ----------
+imgInput.addEventListener("change", () => {
+  const file = imgInput.files[0];
   if (!file) return;
 
   const reader = new FileReader();
   reader.onload = () => {
-    const img = document.createElement("img");
-    img.src = reader.result;
-    img.className = "chat-image";
-    messagesBox.appendChild(img);
-    messagesBox.scrollTop = messagesBox.scrollHeight;
+    addMessage(nickname, reader.result, true);
   };
   reader.readAsDataURL(file);
+
+  imgInput.value = "";
 });
+
+// ---------- TOGGLE USUARIOS ----------
+toggleUsersBtn.addEventListener("click", () => {
+  usersList.classList.toggle("hidden");
+});
+
+// ---------- INICIO ----------
+showScreen(roomsScreen);
