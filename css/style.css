@@ -92,22 +92,35 @@ h1 {
   text-shadow: 0 0 15px var(--neon);
 }
 
+/* CONTENEDOR DE SALAS */
 .rooms {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
 .room {
-  padding: 15px;
-  border: 1px solid var(--neon);
+  padding: 14px 22px;
+  min-width: 140px;
   text-align: center;
+
+  border: 1px solid var(--neon);
+  border-radius: 999px; /* 👈 OVALADO */
+  background: rgba(0,0,0,0.45);
+  color: var(--neon);
+
   cursor: pointer;
-  box-shadow: 0 0 15px #7f3cff55;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 12px rgba(0,255,136,0.15);
 }
 
 .room:hover {
-  background: #2a0a4a55;
+  background: rgba(0,255,136,0.15);
+  box-shadow: 0 0 18px rgba(0,255,136,0.35);
+  transform: translateY(-2px);
 }
 
 /* CHAT */
@@ -230,4 +243,23 @@ input, button {
   top: 0;
   font-size: 10px;
   color: var(--neon);
+}
+
+/* ===============================
+   PANTALLA SALAS – LAYOUT
+================================ */
+#roomsScreen {
+  display: flex;
+  flex-direction: column; /* CLAVE */
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+  gap: 24px;
+}
+
+.room .count {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.85;
 }
