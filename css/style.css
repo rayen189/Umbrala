@@ -1,8 +1,8 @@
 :root {
-  --bg: #050b08;          /* fondo negro verdoso */
-  --neon: #3dffb0;        /* verde neón suave */
-  --neon-soft: #3dffb055; /* glow controlado */
-  --text: #c9fce3;        /* texto legible */
+  --bg: #050b08;
+  --neon: #3dffb0;
+  --neon-soft: #3dffb055;
+  --text: #c9fce3;
 }
 
 * {
@@ -18,16 +18,13 @@ body {
   overflow: hidden;
 }
 
-/* FONDO */
 #particles {
   position: fixed;
   inset: 0;
   z-index: -1;
 }
 
-/* ===============================
-   SCREENS
-================================ */
+/* SCREENS */
 .screen {
   display: none;
   height: 100vh;
@@ -43,9 +40,7 @@ body {
   justify-content: center;
 }
 
-/* ===============================
-   TERMINAL (INICIO)
-================================ */
+/* TERMINAL */
 .terminal-window {
   width: 90%;
   max-width: 600px;
@@ -91,103 +86,72 @@ body {
   text-shadow: 0 0 6px var(--neon);
 }
 
-/* ===============================
-   SALAS
-================================ */
+/* SALAS */
 #roomsScreen {
-  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
   padding-top: 40px;
   gap: 18px;
 }
 
 .global-counter {
   color: var(--neon);
-  font-size: 14px;
   text-shadow: 0 0 6px var(--neon);
 }
 
-/* LISTA DE SALAS */
 .rooms {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 14px;
 }
 
-/* BOTÓN SALA */
 .room {
   width: 260px;
-  padding: 14px 0;
+  padding: 14px;
   text-align: center;
-
   border: 1px solid var(--neon);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.45);
-  color: var(--neon);
-
   cursor: pointer;
-  transition: all 0.25s ease;
+  color: var(--neon);
   box-shadow: 0 0 10px var(--neon-soft);
+  transition: all 0.25s ease;
 }
 
 .room:hover {
-  background: rgba(61, 255, 176, 0.15);
-  box-shadow: 0 0 16px var(--neon);
+  background: rgba(61,255,176,0.15);
   transform: translateY(-2px);
 }
 
-/* ===============================
-   CHAT
-================================ */
+/* CHAT */
 #chatScreen {
   flex-direction: column;
   padding: 10px;
 }
 
-/* TOP BAR */
 .chat-top {
   display: flex;
-  align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 #chatHeader {
   color: var(--neon);
-  text-shadow: 0 0 6px var(--neon);
 }
 
 .user-count {
   margin-left: auto;
   color: var(--neon);
-  font-size: 13px;
-  text-shadow: 0 0 6px var(--neon);
 }
 
-#backBtn {
-  background: transparent;
-  border: 1px solid var(--neon);
-  color: var(--text);
-  padding: 6px 12px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-/* CUERPO CHAT */
 .chat-body {
   display: flex;
-  gap: 10px;
   flex: 1;
+  gap: 10px;
 }
 
-/* MENSAJES */
 #messages {
   flex: 1;
   overflow-y: auto;
-  padding-right: 6px;
 }
 
 .message {
@@ -195,16 +159,13 @@ body {
   position: relative;
 }
 
-/* TIMER */
 .timer {
   position: absolute;
   right: -26px;
-  top: 0;
   font-size: 10px;
   color: var(--neon);
 }
 
-/* PANEL USUARIOS */
 #usersPanel {
   width: 160px;
   border-left: 1px solid var(--neon);
@@ -214,14 +175,6 @@ body {
 .users-title {
   text-align: center;
   margin-bottom: 6px;
-  color: var(--neon);
-  text-shadow: 0 0 6px var(--neon);
-}
-
-#usersList {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
 }
 
 .user {
@@ -231,10 +184,9 @@ body {
 }
 
 .user:hover {
-  background: rgba(61, 255, 176, 0.15);
+  background: rgba(61,255,176,0.15);
 }
 
-/* TABS PRIVADOS */
 #privateTabs {
   display: flex;
   gap: 6px;
@@ -242,25 +194,23 @@ body {
 }
 
 .tab {
-  padding: 4px 10px;
   border: 1px solid var(--neon);
   border-radius: 20px;
+  padding: 4px 10px;
   cursor: pointer;
-  background: rgba(0, 0, 0, 0.4);
 }
 
 .tab.active {
-  background: rgba(61, 255, 176, 0.2);
+  background: rgba(61,255,176,0.2);
 }
 
-/* INPUT */
 .inputBar {
   display: flex;
   gap: 5px;
 }
 
 input, button {
-  background: rgba(10, 25, 18, 0.9);
+  background: rgba(10,25,18,0.9);
   border: 1px solid var(--neon);
   color: var(--text);
   padding: 8px;
