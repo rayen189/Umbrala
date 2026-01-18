@@ -6,19 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-
 <body>
 
 <canvas id="particles"></canvas>
 
-<!-- INICIO / TERMINAL -->
-<div id="terminalScreen" class="screen center active">
+<!-- ===== PANTALLA TERMINAL ===== -->
+<div id="bootScreen" class="screen active center">
   <div class="terminal-window">
     <div class="terminal-bar">
       <div class="buttons">
-        <div class="btn red"></div>
-        <div class="btn yellow"></div>
-        <div class="btn green"></div>
+        <span class="btn red"></span>
+        <span class="btn yellow"></span>
+        <span class="btn green"></span>
       </div>
       <div class="title">UMBRALA</div>
     </div>
@@ -26,28 +25,23 @@
   </div>
 </div>
 
-<!-- SALAS -->
-<div id="roomsScreen" class="screen">
-  <div class="terminal-window">
-    <div class="terminal-bar">
-      <div class="title">UMBRALA</div>
+<!-- ===== SALAS ===== -->
+<div id="roomsScreen" class="screen center">
+  <div class="rooms-box">
+    <h1>Salas</h1>
+    <div class="global-count">👥 <span id="globalCount">0</span></div>
+
+    <div class="rooms">
+      <div class="room">🌵 Norte</div>
+      <div class="room">🏙 Centro</div>
+      <div class="room">🏔 Sur</div>
+      <div class="room">🌍 Global</div>
+      <div class="room">🕳 Vacío</div>
     </div>
-  </div>
-
-  <div class="global-counter">
-    👥 Usuarios conectados: <span id="globalCount">18</span>
-  </div>
-
-  <div class="rooms">
-    <div class="room">🌵 Norte de Chile</div>
-    <div class="room">🏙 Centro</div>
-    <div class="room">🌊 Sur</div>
-    <div class="room">🌍 Global</div>
-    <div class="room">🕳 Vacío</div>
   </div>
 </div>
 
-<!-- CHAT -->
+<!-- ===== CHAT ===== -->
 <div id="chatScreen" class="screen">
   <div class="chat-top">
     <button id="backBtn">⟵ Volver</button>
@@ -67,13 +61,23 @@
   </div>
 
   <div class="inputBar">
-    <input id="messageInput" placeholder="Escribe algo…" />
-    <input type="file" id="fileInput" accept="image/*,audio/*" />
-    <button id="sendBtn">➤</button>
+    <input id="msgInput" placeholder="Escribe..." />
+    <button id="sendBtn">Enviar</button>
   </div>
 </div>
 
-<script src="js/particles.js"></script>
+<!-- ===== MODAL NICKNAME ===== -->
+<div id="nickModal" class="modal">
+  <div class="modal-box">
+    <h2 id="modalTitle"></h2>
+    <input id="nickInput" placeholder="nickname" />
+    <button id="randomNick">🎲 Nick aleatorio</button>
+    <button id="enterRoom">Entrar</button>
+    <div id="nickError"></div>
+  </div>
+</div>
+
 <script src="js/main.js"></script>
+<script src="js/particles.js"></script>
 </body>
 </html>
