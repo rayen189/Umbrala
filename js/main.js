@@ -1,147 +1,101 @@
-/* ===============================
-   UMBRALA MAIN.JS — FINAL
-   Compatible con tu index.html
-================================ */
-
-// ---------- ESTADO GLOBAL ----------
-let currentRoom = null;
-let nickname = null;
-let usersInRoom = [];
-
-// ---------- ELEMENTOS ----------
+/* ================= PANTALLAS ================= */
+const bootScreen = document.getElementById("bootScreen");
 const roomsScreen = document.getElementById("roomsScreen");
-const chatScreen = document.getElementById("chatScreen");
+const chatScreen  = document.getElementById("chatScreen");
 
+const terminalOutput = document.getElementById("terminalOutput");
+
+/* ================= BOOT TERMINAL ================= */
+const bootLines = [
+  "> UMBRALA v2.9",
+  "> Inicializando comunicación efímera…",
+  "> Enrutamiento anónimo activo",
+  "> Sin registros · Sin rastros",
+  "> Cargando nodos de conversación…",
+  "> Sistema listo",
+];
+
+let lineIndex = 0;
+
+function typeBoot() {
+  if (lineIndex < bootLines.length) {
+    terminalOutput.textContent += bootLines[lineIndex] + "\n";
+    lineIndex++;
+    setTimeout(typeBoot, 450);
+  } else {
+    setTimeout(openRooms, 1000);
+  }
+}
+
+function openRooms() {
+  bootScreen.classList.remove("active");
+  roomsScreen.classList.add("active");
+}
+
+typeBoot();
+
+/* ================= SALAS ================= */
 const roomButtons = document.querySelectorAll(".room-btn");
 const roomTitle = document.getElementById("roomTitle");
 
-const backRoomsBtn = document.getElementById("backRooms");
-const toggleUsersBtn = document.getElementById("toggleUsers");
+roomButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const roomName = btn.dataset.room;
+    enterRoom(roomName);
+  });
+});
 
-const messagesBox = document.getElementById("messages");
+function enterRoom(roomName) {
+  roomsScreen.classList.remove("active");
+  chatScreen.classList.add("active");
+  roomTitle.textContent = roomName;
+}
+
+/* ================= VOLVER A SALAS ================= */
+document.getElementById("backRooms").onclick = () => {
+  chatScreen.classList.remove("active");
+  roomsScreen.classList.add("active");
+};
+
+/* ================= CHAT ================= */
+const messages = document.getElementById("messages");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
 const imgInput = document.getElementById("imgInput");
 
-const usersList = document.getElementById("usersList");
-const usersUl = document.getElementById("users");
+sendBtn.onclick = sendMessage;
+chatInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendMessage();
+});
 
-const roomUserCountRooms = document.getElementById("roomUserCount");
-const roomUserCountChat = document.querySelector(".chat-header .counter span");
+function sendMessage() {
+  if (!chatInput.value && !imgInput.files.length) return;
 
-// ---------- UTILIDADES ----------
-function showScreen(screen) {
-  roomsScreen.classList.remove("active");
-  chatScreen.classList.remove("active");
-  screen.classList.add("active");
-}
-
-function generateRandomNick() {
-  const names = ["Sombra", "Eco", "Void", "Niebla", "Pulso", "Spectro", "Nodo"];
-  const num = Math.floor(Math.random() * 999);
-  return names[Math.floor(Math.random() * names.length)] + num;
-}
-
-function updateUserCount() {
-  if (roomUserCountRooms) roomUserCountRooms.textContent = usersInRoom.length;
-  if (roomUserCountChat) roomUserCountChat.textContent = usersInRoom.length;
-}
-
-function renderUsers() {
-  usersUl.innerHTML = "";
-  usersInRoom.forEach(user => {
-    const li = document.createElement("li");
-    li.textContent = user;
-    usersUl.appendChild(li);
-  });
-}
-
-// ---------- MENSAJES ----------
-function addMessage(author, content, isImage = false) {
   const msg = document.createElement("div");
-  msg.className = "message";
+  msg.className = "message me";
 
-  if (isImage) {
-    msg.innerHTML = `<strong>${author}:</strong><br><img src="${content}" class="chat-img">`;
-  } else {
-    msg.innerHTML = `<strong>${author}:</strong> ${content}`;
+  if (chatInput.value) {
+    msg.textContent = chatInput.value;
   }
 
-  messagesBox.appendChild(msg);
-  messagesBox.scrollTop = messagesBox.scrollHeight;
-}
+  if (imgInput.files.length) {
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(imgInput.files[0]);
+    img.style.maxWidth = "120px";
+    img.style.display = "block";
+    msg.appendChild(img);
+    imgInput.value = "";
+  }
 
-// ---------- SALAS ----------
-roomButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    currentRoom = btn.dataset.room;
-
-    // pedir nickname
-    let inputNick = prompt(
-      `Entrando a ${currentRoom}\n\nElige tu nickname (o deja vacío para uno aleatorio):`
-    );
-
-    nickname = inputNick && inputNick.trim() !== ""
-      ? inputNick.trim()
-      : generateRandomNick();
-
-    enterRoom();
-  });
-});
-
-function enterRoom() {
-  showScreen(chatScreen);
-
-  roomTitle.textContent = currentRoom;
-  messagesBox.innerHTML = "";
-
-  usersInRoom = [nickname];
-  updateUserCount();
-  renderUsers();
-
-  addMessage("Sistema", `Has entrado a ${currentRoom} como ${nickname}`);
-}
-
-// ---------- VOLVER A SALAS ----------
-backRoomsBtn.addEventListener("click", () => {
-  showScreen(roomsScreen);
-  currentRoom = null;
-  nickname = null;
-  usersInRoom = [];
-});
-
-// ---------- ENVIAR TEXTO ----------
-sendBtn.addEventListener("click", sendTextMessage);
-chatInput.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendTextMessage();
-});
-
-function sendTextMessage() {
-  const text = chatInput.value.trim();
-  if (!text) return;
-
-  addMessage(nickname, text);
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
   chatInput.value = "";
+
+  // efímero
+  setTimeout(() => msg.remove(), 30000);
 }
 
-// ---------- ENVIAR IMAGEN ----------
-imgInput.addEventListener("change", () => {
-  const file = imgInput.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    addMessage(nickname, reader.result, true);
-  };
-  reader.readAsDataURL(file);
-
-  imgInput.value = "";
-});
-
-// ---------- TOGGLE USUARIOS ----------
-toggleUsersBtn.addEventListener("click", () => {
-  usersList.classList.toggle("hidden");
-});
-
-// ---------- INICIO ----------
-showScreen(roomsScreen);
+/* ================= USERS TOGGLE ================= */
+document.getElementById("toggleUsers").onclick = () => {
+  document.getElementById("usersList").classList.toggle("hidden");
+};
