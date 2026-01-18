@@ -39,18 +39,33 @@
 
 <!-- CHAT -->
 <div id="chatScreen" class="screen">
+
   <div class="chat-top">
     <button id="backBtn">⟵ Volver</button>
     <div id="chatHeader"></div>
+    <div class="user-count">👥 <span id="roomCount">1</span></div>
   </div>
 
-  <div id="messages"></div>
+  <div class="chat-body">
+    <!-- MENSAJES -->
+    <div id="messages"></div>
+
+    <!-- PANEL USUARIOS -->
+    <div id="usersPanel">
+      <div class="users-title">Usuarios</div>
+      <div id="usersList"></div>
+    </div>
+  </div>
+
+  <!-- TABS PRIVADOS -->
+  <div id="privateTabs"></div>
 
   <div class="inputBar">
     <input type="text" id="messageInput" placeholder="Escribe algo…">
     <input type="file" id="fileInput" accept="image/*,audio/*">
     <button id="sendBtn">➤</button>
   </div>
+
 </div>
 
 <script src="js/particles.js"></script>
