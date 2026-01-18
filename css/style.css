@@ -1,18 +1,16 @@
 :root {
   --bg: #050b08;
-  --neon: #3dffb0;
-  --neon-soft: #3dffb055;
-  --text: #c9fce3;
+  --neon: #00ff88cc;
+  --text: #d7ffe9;
 }
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   font-family: "Courier New", monospace;
 }
 
 body {
+  margin: 0;
   background: var(--bg);
   color: var(--text);
   overflow: hidden;
@@ -27,8 +25,8 @@ body {
 /* SCREENS */
 .screen {
   display: none;
-  height: 100vh;
   width: 100vw;
+  height: 100vh;
 }
 
 .screen.active {
@@ -45,16 +43,14 @@ body {
   width: 90%;
   max-width: 600px;
   border: 1px solid var(--neon);
-  background: rgba(5, 15, 10, 0.85);
-  box-shadow: 0 0 20px var(--neon-soft);
+  box-shadow: 0 0 20px var(--neon);
 }
 
 .terminal-bar {
   display: flex;
   align-items: center;
-  padding: 8px;
-  background: rgba(10, 25, 18, 0.9);
-  border-bottom: 1px solid var(--neon);
+  padding: 6px;
+  background: #0c1a12;
 }
 
 .buttons {
@@ -68,58 +64,43 @@ body {
   border-radius: 50%;
 }
 
-.red { background: #ff5f56; }
-.yellow { background: #ffbd2e; }
-.green { background: #27c93f; }
+.red { background:#ff5f56 }
+.yellow { background:#ffbd2e }
+.green { background:#27c93f }
 
 .title {
-  margin: 0 auto;
-  font-weight: bold;
+  margin: auto;
   color: var(--neon);
-  text-shadow: 0 0 8px var(--neon);
 }
 
 #terminal {
   padding: 20px;
-  font-size: 14px;
-  line-height: 1.6;
-  text-shadow: 0 0 6px var(--neon);
 }
 
 /* SALAS */
-#roomsScreen {
-  flex-direction: column;
-  align-items: center;
-  padding-top: 40px;
-  gap: 18px;
-}
-
-.global-counter {
-  color: var(--neon);
-  text-shadow: 0 0 6px var(--neon);
+.rooms-box {
+  text-align: center;
 }
 
 .rooms {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .room {
-  width: 260px;
   padding: 14px;
-  text-align: center;
+  border-radius: 30px;
   border: 1px solid var(--neon);
-  border-radius: 999px;
   cursor: pointer;
-  color: var(--neon);
-  box-shadow: 0 0 10px var(--neon-soft);
-  transition: all 0.25s ease;
 }
 
 .room:hover {
-  background: rgba(61,255,176,0.15);
-  transform: translateY(-2px);
+  background: rgba(0,255,136,0.1);
+}
+
+.global-count {
+  margin-bottom: 10px;
 }
 
 /* CHAT */
@@ -131,22 +112,29 @@ body {
 .chat-top {
   display: flex;
   gap: 10px;
-  margin-bottom: 6px;
+  align-items: center;
 }
 
-#chatHeader {
-  color: var(--neon);
+#privateTabs {
+  display: flex;
+  gap: 6px;
+  margin: 6px 0;
 }
 
-.user-count {
-  margin-left: auto;
-  color: var(--neon);
+.tab {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--neon);
+  cursor: pointer;
+}
+
+.tab.active {
+  background: rgba(0,255,136,0.2);
 }
 
 .chat-body {
-  display: flex;
   flex: 1;
-  gap: 10px;
+  display: flex;
 }
 
 #messages {
@@ -154,64 +142,47 @@ body {
   overflow-y: auto;
 }
 
-.message {
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.timer {
-  position: absolute;
-  right: -26px;
-  font-size: 10px;
-  color: var(--neon);
-}
-
 #usersPanel {
-  width: 160px;
+  width: 150px;
   border-left: 1px solid var(--neon);
   padding: 6px;
 }
 
-.users-title {
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-.user {
-  cursor: pointer;
-  padding: 4px 6px;
-  border-radius: 10px;
-}
-
-.user:hover {
-  background: rgba(61,255,176,0.15);
-}
-
-#privateTabs {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-
-.tab {
-  border: 1px solid var(--neon);
-  border-radius: 20px;
-  padding: 4px 10px;
-  cursor: pointer;
-}
-
-.tab.active {
-  background: rgba(61,255,176,0.2);
-}
-
 .inputBar {
   display: flex;
-  gap: 5px;
+  gap: 6px;
 }
 
 input, button {
-  background: rgba(10,25,18,0.9);
+  background: #0c1a12;
   border: 1px solid var(--neon);
   color: var(--text);
   padding: 8px;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-box {
+  border: 1px solid var(--neon);
+  padding: 20px;
+  background: #06120c;
+  width: 260px;
+  text-align: center;
+}
+
+#nickError {
+  color: #ff8080;
+  margin-top: 6px;
 }
