@@ -1,45 +1,48 @@
-/* Screens */
 const terminalScreen = document.getElementById("terminalScreen");
 const roomsScreen = document.getElementById("roomsScreen");
 const chatScreen = document.getElementById("chatScreen");
 
-/* TERMINAL */
 const terminal = document.getElementById("terminal");
+
 const bootLines = [
-  "booting umbrala.sys",
-  "loading shadow.kernel",
-  "mounting rooms.map",
-  "syncing void.interface",
-  "inicializando Umbrala..."
+  "ejecutando kernel.um",
+  "cargando shadow.core",
+  "montando rooms.map",
+  "sincronizando void.interface",
+  "estado: estable",
+  "inicializando UMBRALA..."
 ];
 
-let line = 0;
+let i = 0;
 
 function boot() {
-  if (line < bootLines.length) {
-    terminal.innerHTML += "> " + bootLines[line] + "<br>";
-    line++;
+  if (i < bootLines.length) {
+    terminal.innerHTML += "> " + bootLines[i] + "<br>";
+    i++;
     setTimeout(boot, 700);
   } else {
     setTimeout(() => {
       terminalScreen.classList.remove("active");
       roomsScreen.classList.add("active");
-    }, 1000);
+    }, 1200);
   }
 }
-
 boot();
 
 /* SALAS */
 document.querySelectorAll(".room").forEach(room => {
   room.onclick = () => {
-    localStorage.setItem("room", room.dataset.room);
     roomsScreen.classList.remove("active");
     chatScreen.classList.add("active");
-    document.getElementById("chatHeader").textContent =
-      "Sala: " + room.textContent;
+    document.getElementById("chatHeader").textContent = room.textContent;
   };
 });
+
+/* VOLVER */
+document.getElementById("backBtn").onclick = () => {
+  chatScreen.classList.remove("active");
+  roomsScreen.classList.add("active");
+};
 
 /* CHAT */
 const messages = document.getElementById("messages");
@@ -49,48 +52,35 @@ const sendBtn = document.getElementById("sendBtn");
 
 const banned = ["puta", "mierda", "fuck", "weon"];
 
-function isClean(text) {
+function clean(text) {
   return !banned.some(w => text.toLowerCase().includes(w));
 }
 
-function makeEphemeral(el) {
-  let t = 30;
-  const timer = setInterval(() => {
-    t--;
-    if (t <= 0) {
-      el.style.opacity = 0;
-      setTimeout(() => el.remove(), 500);
-      clearInterval(timer);
-    }
-  }, 1000);
+function ephemeral(el) {
+  setTimeout(() => {
+    el.style.opacity = 0;
+    setTimeout(() => el.remove(), 500);
+  }, 30000);
 }
 
 sendBtn.onclick = () => {
-  if (input.value && isClean(input.value)) {
-    const msg = document.createElement("div");
-    msg.className = "message";
-    msg.textContent = input.value;
-    messages.appendChild(msg);
-    makeEphemeral(msg);
+  if (input.value && clean(input.value)) {
+    const m = document.createElement("div");
+    m.className = "message";
+    m.textContent = input.value;
+    messages.appendChild(m);
+    ephemeral(m);
   }
 
   if (fileInput.files[0]) {
     const f = fileInput.files[0];
-    let el;
-
-    if (f.type.startsWith("image")) {
-      el = document.createElement("img");
-      el.src = URL.createObjectURL(f);
-      el.style.maxWidth = "200px";
-    } else {
-      el = document.createElement("audio");
-      el.src = URL.createObjectURL(f);
-      el.controls = true;
-    }
+    let el = f.type.startsWith("image")
+      ? Object.assign(document.createElement("img"), { src: URL.createObjectURL(f), style: "max-width:200px" })
+      : Object.assign(document.createElement("audio"), { src: URL.createObjectURL(f), controls: true });
 
     el.className = "message";
     messages.appendChild(el);
-    makeEphemeral(el);
+    ephemeral(el);
   }
 
   input.value = "";
