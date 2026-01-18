@@ -15,6 +15,13 @@ const messages = document.getElementById("messages");
 const globalCount = document.getElementById("globalCount");
 const roomCount = document.getElementById("roomCount");
 
+const msgInput = document.getElementById("msgInput");
+const sendBtn = document.getElementById("sendBtn");
+const backBtn = document.getElementById("backBtn");
+
+const fileInput = document.getElementById("fileInput");
+const fileBtn = document.getElementById("fileBtn");
+
 let currentRoom = "";
 let currentUser = "";
 let activeTab = "";
@@ -23,11 +30,12 @@ let users = [];
 
 const badWords = ["puta", "mierda", "weon"];
 
+/* BOOT */
 function bootSequence() {
   const lines = [
     "Iniciando Umbrala...",
     "Cargando módulos...",
-    "Conectando salas...",
+    "Inicializando salas...",
     "Sistema listo."
   ];
   let i = 0;
@@ -58,9 +66,9 @@ document.querySelectorAll(".room").forEach(room => {
 
 /* MODAL */
 document.getElementById("randomNick").onclick = () => {
-  const names = ["neo", "umbra", "void", "ghost", "green"];
+  const base = ["neo", "umbra", "void", "ghost", "green"];
   nickInput.value =
-    names[Math.floor(Math.random() * names.length)] +
+    base[Math.floor(Math.random() * base.length)] +
     "_" +
     Math.floor(Math.random() * 999);
 };
@@ -93,7 +101,7 @@ document.getElementById("enterRoom").onclick = () => {
   initRoom();
 };
 
-/* CHAT */
+/* CHAT INIT */
 function initRoom() {
   users = [currentUser, "neo", "void"];
   usersList.innerHTML = "";
@@ -110,8 +118,8 @@ function initRoom() {
 
   users.forEach(u => {
     const div = document.createElement("div");
-    div.textContent = u;
     div.className = "user";
+    div.textContent = u;
     div.onclick = () => openTab(u);
     usersList.appendChild(div);
   });
@@ -120,6 +128,7 @@ function initRoom() {
   globalCount.textContent = usedNicknames.length;
 }
 
+/* TABS */
 function openTab(name) {
   if ([...tabs.children].some(t => t.textContent === name)) return;
 
@@ -137,8 +146,56 @@ function setTab(tab) {
   messages.innerHTML = "";
 }
 
+/* MENSAJES */
+sendBtn.onclick = () => {
+  if (!msgInput.value.trim()) return;
+  addMessage("text", msgInput.value.trim());
+  msgInput.value = "";
+};
+
+fileBtn.onclick = () => fileInput.click();
+
+fileInput.onchange = () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  if (file.type.startsWith("image")) {
+    addMessage("image", URL.createObjectURL(file));
+  } else if (file.type.startsWith("audio")) {
+    addMessage("audio", URL.createObjectURL(file));
+  }
+
+  fileInput.value = "";
+};
+
+function addMessage(type, content) {
+  const div = document.createElement("div");
+  div.className = "message";
+
+  if (type === "text") {
+    div.textContent = `${currentUser}: ${content}`;
+  }
+
+  if (type === "image") {
+    const img = document.createElement("img");
+    img.src = content;
+    img.style.maxWidth = "180px";
+    div.appendChild(img);
+  }
+
+  if (type === "audio") {
+    const audio = document.createElement("audio");
+    audio.controls = true;
+    audio.src = content;
+    div.appendChild(audio);
+  }
+
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+}
+
 /* VOLVER */
-document.getElementById("backBtn").onclick = () => {
+backBtn.onclick = () => {
   chatScreen.classList.remove("active");
   roomsScreen.classList.add("active");
 };
