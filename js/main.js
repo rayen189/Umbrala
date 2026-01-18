@@ -172,6 +172,10 @@ function addMessage(type, content) {
   const div = document.createElement("div");
   div.className = "message";
 
+  // 👉 Determinar si es sala o privado
+  const isRoom = activeTab === currentRoom;
+  const lifetime = isRoom ? 60 : 30; // segundos
+
   if (type === "text") {
     div.textContent = `${currentUser}: ${content}`;
   }
@@ -192,6 +196,8 @@ function addMessage(type, content) {
 
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
+
+  startFade(div, lifetime);
 }
 
 /* VOLVER */
