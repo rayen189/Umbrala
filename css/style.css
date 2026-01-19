@@ -1,133 +1,186 @@
 :root {
-  --bg: #050b08;
-  --neon: #00ff88b3;
-  --text: #d7ffe9;
+  --bg:#050b08;
+  --neon:#00ff88b3;
+  --text:#d7ffe9;
 }
 
 * {
-  box-sizing: border-box;
-  font-family: "Courier New", monospace;
+  box-sizing:border-box;
+  font-family:"Courier New", monospace;
 }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  overflow: hidden;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
 }
 
 #particles {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+
+/* SCREENS */
+.screen {
+  display:none;
+  width:100vw;
+  height:100vh;
+}
+
+.screen.active {
+  display:flex;
+}
+
+/* TERMINAL */
+.terminal-window {
+  width:90%;
+  max-width:600px;
+  border:1px solid var(--neon);
+  box-shadow:0 0 12px var(--neon);
+  background:#060f0a;
+  padding:10px;
+}
+
+.terminal-bar {
+  display:flex;
+  align-items:center;
+}
+
+.buttons { display:flex; gap:6px; }
+
+.btn {
+  width:10px;
+  height:10px;
+  border-radius:50%;
+}
+
+.red{background:#ff5f56}
+.yellow{background:#ffbd2e}
+.green{background:#27c93f}
+
+#terminal {
+  padding:15px;
+  min-height:120px;
+}
+
+button,input {
+  background:#0c1a12;
+  border:1px solid var(--neon);
+  color:var(--text);
+  padding:8px;
+}
+
+/* SALAS */
+.rooms-box {
+  text-align:center;
+}
+
+.rooms {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.room {
+  border-radius:30px;
+  padding:14px;
+  cursor:pointer;
+  border:1px solid var(--neon);
 }
 
 /* CHAT */
 #chatScreen {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  flex-direction:column;
 }
 
 .chat-top {
-  display: flex;
-  gap: 10px;
-  padding: 8px;
-  border-bottom: 1px solid rgba(0,255,136,0.3);
+  display:flex;
+  justify-content:space-between;
+  padding:8px;
+  border-bottom:1px solid rgba(0,255,136,.3);
+}
+
+#privateTabs {
+  display:flex;
+  gap:6px;
+  padding:6px;
+}
+
+.tab {
+  border-radius:20px;
+  padding:6px 12px;
+  border:1px solid var(--neon);
+  cursor:pointer;
+}
+
+.tab.active {
+  background:rgba(0,255,136,.2);
 }
 
 .chat-body {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
+  flex:1;
+  display:flex;
+  overflow:hidden;
 }
 
-/* MENSAJES */
 #messages {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  padding-bottom: 80px;
+  flex:1;
+  padding:10px;
+  overflow-y:auto;
 }
 
 .message {
-  margin-bottom: 6px;
-  opacity: 1;
-  transition: opacity linear;
+  margin-bottom:8px;
+  opacity:1;
+  transition:opacity 1s linear;
 }
 
-/* USUARIOS */
+.fade {
+  opacity:0;
+}
+
 #usersPanel {
-  width: 140px;
-  border-left: 1px solid rgba(0,255,136,0.3);
-  padding: 8px;
-  overflow-y: auto;
+  width:140px;
+  border-left:1px solid rgba(0,255,136,.3);
+  padding:8px;
+  overflow-y:auto;
 }
 
-.users-title {
-  text-align: center;
-  color: var(--neon);
-  margin-bottom: 6px;
-}
-
-/* INPUT */
 .inputBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  gap: 6px;
-  padding: 8px;
-  background: var(--bg);
-  border-top: 1px solid rgba(0,255,136,0.3);
+  display:flex;
+  gap:6px;
+  padding:8px;
+  border-top:1px solid rgba(0,255,136,.3);
 }
 
-input, button {
-  background: #0c1a12;
-  border: 1px solid var(--neon);
-  color: var(--text);
-  padding: 8px;
-}
-
-input {
-  flex: 1;
+#fileInput {
+  display:none;
 }
 
 /* MODAL */
 .modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: none;
-  align-items: center;
-  justify-content: center;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
 
-.modal.active {
-  display: flex;
-}
+.modal.active { display:flex; }
 
-.modal-box {
-  background: #06120c;
-  padding: 20px;
-  border: 1px solid var(--neon);
-}
-
-#fileInput {
-  display: none;
-}
-
-/* 📱 MÓVIL */
-@media (max-width: 768px) {
+/* MOBILE */
+@media(max-width:768px){
   .chat-body {
-    flex-direction: column;
+    flex-direction:column;
   }
 
   #usersPanel {
-    width: 100%;
-    max-height: 120px;
-    border-left: none;
-    border-top: 1px solid rgba(0,255,136,0.3);
+    width:100%;
+    max-height:120px;
+    border-left:none;
+    border-top:1px solid rgba(0,255,136,.3);
   }
 }
