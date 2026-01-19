@@ -265,3 +265,19 @@ input {
   }
 
 }
+
+/* =====================
+   CHAT HEADER VISIBILITY
+===================== */
+
+/* Por defecto oculto */
+.chat-top {
+  display: none;
+}
+
+/* SOLO visible cuando el chat está activo */
+#chatScreen.active .chat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
