@@ -6,85 +6,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<canvas id="particles"></canvas>
-
-<!-- BOOT -->
-<section id="boot" class="screen active center">
+<!-- PANTALLA INICIO -->
+<section id="boot" class="screen active">
   <div class="terminal">
-    <pre id="bootText"></pre>
-    <span class="cursor">█</span>
+    <p>> Iniciando Umbrala...</p>
+    <p>> Cargando módulos</p>
+    <p>> Conectando salas</p>
+    <button onclick="enterRooms()">INICIALIZAR</button>
   </div>
 </section>
 
-<!-- SALAS -->
+<!-- PANTALLA SALAS -->
 <section id="rooms" class="screen">
-  <h2 class="section-title">● SALAS ACTIVAS</h2>
-
-  <div class="room-card" data-room="Norte de Chile">
-    <span class="zone">ZONA NORTE</span>
-    <h3>Norte de Chile</h3>
-    <p>Chat para Arica, Iquique y Antofagasta</p>
-    <span class="live">● LIVE 12</span>
-  </div>
-
-  <div class="room-card" data-room="Centro - Santiago">
-    <span class="zone">REGIÓN METROPOLITANA</span>
-    <h3>Centro - Santiago</h3>
-    <p>La capital y sus comunas</p>
-    <span class="live">● LIVE 45</span>
-  </div>
-
-  <div class="room-card" data-room="Sur de Chile">
-    <span class="zone">ZONA SUR</span>
-    <h3>Sur de Chile</h3>
-    <p>Desde Temuco hasta Punta Arenas</p>
-    <span class="live">● LIVE 8</span>
-  </div>
-</section>
-
-<!-- JOIN -->
-<section id="join" class="screen center">
-  <div class="panel">
-    <p class="small">> JOINING ROOM</p>
-    <h2 id="roomName"></h2>
-
-    <label>TU IDENTIDAD ANÓNIMA</label>
-    <div class="nick-row">
-      <input id="nickname" placeholder="Elige tu nickname">
-      <button id="randomNick">⟳</button>
-    </div>
-
-    <ul class="info">
-      <li>• Identidad efímera y anónima</li>
-      <li>• No se guardan logs</li>
-      <li>• Mensajes desaparecen al salir</li>
-    </ul>
-
-    <button id="enterChat" class="primary">ENTRAR AL CHAT →</button>
+  <h1>Umbrala</h1>
+  <div class="room-list">
+    <div class="room" onclick="enterChat('Norte')">🌵 Norte de Chile <span>12</span></div>
+    <div class="room" onclick="enterChat('Centro')">🏙️ Centro <span>34</span></div>
+    <div class="room" onclick="enterChat('Sur')">🌊 Sur <span>18</span></div>
+    <div class="room" onclick="enterChat('Global')">🌍 Global <span>102</span></div>
+    <div class="room" onclick="enterChat('Vacío')">🕳️ Vacío <span>3</span></div>
   </div>
 </section>
 
 <!-- CHAT -->
-<section id="chat" class="screen">
-  <div class="chat-header">
-    <button id="back">⟵</button>
-    <span id="chatRoom"></span>
+<section id="chat" class="screen chat-layout">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active">Sala</div>
   </div>
 
-  <div id="messages"></div>
+  <!-- CHAT AREA -->
+  <div class="chat-area">
+    <div class="messages">
+      <div class="msg"><b>Rayen:</b> Bienvenida a Umbrala</div>
+    </div>
 
-  <div class="chat-input">
-    <input id="messageInput" placeholder="Escribe un mensaje…">
-    <input type="file" id="imageInput" accept="image/*" hidden>
-    <button id="imgBtn">📷</button>
-    <button id="sendBtn">Enviar</button>
+    <div class="input-bar">
+      <input type="text" placeholder="Escribe un mensaje…">
+      <input type="file" accept="image/*">
+      <button>➤</button>
+    </div>
   </div>
+
+  <!-- USUARIOS -->
+  <aside class="users">
+    <h3>Usuarios (5)</h3>
+    <div class="user" onclick="openPrivate('Juan')">Juan</div>
+    <div class="user" onclick="openPrivate('Ana')">Ana</div>
+    <div class="user" onclick="openPrivate('Leo')">Leo</div>
+  </aside>
+
 </section>
 
-<script src="js/main.js"></script>
-<script src="js/particles.js"></script>
+<script src="js/ui.js"></script>
 </body>
 </html>
