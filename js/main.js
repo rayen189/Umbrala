@@ -1,71 +1,109 @@
-let nick = "";
-let room = "Norte";
+const screens = {
+  boot: document.getElementById("bootScreen"),
+  rooms: document.getElementById("roomsScreen"),
+  chat: document.getElementById("chatScreen")
+};
 
+const terminal = document.getElementById("terminal");
+const roomsList = document.getElementById("roomsList");
+const nickModal = document.getElementById("nickModal");
+const nickInput = document.getElementById("nickInput");
+
+const msgInput = document.getElementById("msgInput");
 const messages = document.getElementById("messages");
-const input = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
+const fileBtn = document.getElementById("fileBtn");
 const fileInput = document.getElementById("fileInput");
 
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter") sendMessage();
-});
+let currentRoom = "";
+let nick = "";
 
-function saveNick() {
-  const value = document.getElementById("nickInput").value.trim();
-  if (!value) return;
-  nick = value;
-  document.getElementById("nickModal").classList.remove("active");
-}
-
-function sendMessage(content = null, type = "text", duration = 60000) {
-  const text = content || input.value.trim();
-  if (!text && !fileInput.files.length) return;
-
-  const msg = document.createElement("div");
-  msg.className = "message";
-  msg.style.transitionDuration = duration + "ms";
-
-  if (type === "image") {
-    const img = document.createElement("img");
-    img.src = content;
-    img.style.maxWidth = "120px";
-    msg.appendChild(img);
-  } else if (type === "audio") {
-    const audio = document.createElement("audio");
-    audio.controls = true;
-    audio.src = content;
-    msg.appendChild(audio);
-  } else {
-    msg.textContent = nick + ": " + text;
+/* ===== BOOT ===== */
+const bootLines = [
+  "Inicializando Umbrala...",
+  "Cargando módulos...",
+  "Sistema activo ✔"
+];
+let i = 0;
+const boot = setInterval(() => {
+  terminal.innerHTML += bootLines[i] + "<br>";
+  i++;
+  if (i === bootLines.length) {
+    clearInterval(boot);
+    setTimeout(() => switchScreen("rooms"), 800);
   }
+}, 600);
 
-  messages.appendChild(msg);
-  messages.scrollTop = messages.scrollHeight;
+/* ===== SALAS ===== */
+const rooms = [
+  { name:"🌍 Global", users:3 },
+  { name:"🌵 Norte", users:2 },
+  { name:"🏙 Centro", users:1 },
+  { name:"🌊 Sur", users:0 },
+  { name:"🧠 Curiosidades", users:0 }
+];
 
-  setTimeout(() => msg.style.opacity = "0", 50);
-  setTimeout(() => msg.remove(), duration);
-
-  input.value = "";
-  document.getElementById("sendSound").play();
-}
-
-function openFile() {
-  fileInput.click();
-}
-
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = e => {
-    if (file.type.startsWith("image"))
-      sendMessage(e.target.result, "image", 60000);
-    if (file.type.startsWith("audio"))
-      sendMessage(e.target.result, "audio", 30000);
+rooms.forEach(r=>{
+  const div=document.createElement("div");
+  div.className="room";
+  div.innerText=`${r.name}  👥 ${r.users}`;
+  div.onclick=()=>{
+    currentRoom=r.name;
+    nickModal.classList.add("active");
   };
-  reader.readAsDataURL(file);
+  roomsList.appendChild(div);
 });
 
-function leaveRoom() {
-  location.reload();
+/* ===== NICK ===== */
+document.getElementById("randomNick").onclick=()=>{
+  nickInput.value="ghost_"+Math.floor(Math.random()*999);
+};
+document.getElementById("enterChat").onclick=()=>{
+  nick = nickInput.value || "ghost";
+  nickModal.classList.remove("active");
+  switchScreen("chat");
+};
+
+/* ===== CHAT ===== */
+sendBtn.onclick = sendMessage;
+msgInput.addEventListener("keydown",e=>{
+  if(e.key==="Enter") sendMessage();
+});
+fileBtn.onclick=()=>fileInput.click();
+
+fileInput.onchange=()=>{
+  const f=fileInput.files[0];
+  if(!f) return;
+  const url=URL.createObjectURL(f);
+  if(f.type.startsWith("image")) addMessage("image",url);
+  if(f.type.startsWith("audio")) addMessage("audio",url);
+  fileInput.value="";
+};
+
+function sendMessage(){
+  if(!msgInput.value.trim()) return;
+  addMessage("text",msgInput.value);
+  msgInput.value="";
+}
+
+/* ===== MENSAJES EFÍMEROS ===== */
+function addMessage(type,content){
+  const div=document.createElement("div");
+  div.className="message";
+  if(type==="text") div.textContent=`${nick}: ${content}`;
+  if(type==="image") div.innerHTML=`<img src="${content}" width="120">`;
+  if(type==="audio") div.innerHTML=`<audio src="${content}" controls></audio>`;
+  messages.appendChild(div);
+
+  const duration = 60000; // sala
+  div.style.opacity=1;
+  div.style.transition=`opacity ${duration}ms linear`;
+  setTimeout(()=>div.style.opacity=0,50);
+  setTimeout(()=>div.remove(),duration);
+}
+
+/* ===== UTILS ===== */
+function switchScreen(name){
+  Object.values(screens).forEach(s=>s.classList.remove("active"));
+  screens[name].classList.add("active");
 }
