@@ -1,96 +1,63 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Umbrala</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-
-<body>
-
-<canvas id="particles"></canvas>
-
-<!-- ===== BOOT ===== -->
-<section id="bootScreen" class="screen active center">
-  <div class="terminal-window">
-    <div class="terminal-bar">
-      <div class="buttons">
-        <span class="btn red"></span>
-        <span class="btn yellow"></span>
-        <span class="btn green"></span>
-      </div>
-      <div class="title">UMBRALA</div>
-    </div>
-    <div id="terminal">Inicializando sistema…</div>
-  </div>
-</section>
-
 <!-- ===== SALAS ===== -->
 <section id="roomsScreen" class="screen center hidden">
-  <div class="rooms-box">
-    <h1>SALAS</h1>
+  <div class="rooms-container">
 
-    <div class="rooms">
-      <div class="room">🌵 Norte</div>
-      <div class="room">🏙 Centro</div>
-      <div class="room">🏔 Sur</div>
-      <div class="room">🌍 Global</div>
-      <div class="room">🕳 Vacío</div>
+    <h1 class="rooms-title">● SALAS ACTIVAS</h1>
+
+    <div class="room-card" data-room="norte">
+      <div class="room-meta">
+        <span class="room-zone">📍 ZONA NORTE</span>
+        <span class="room-live">
+          <span class="dot"></span> 12
+        </span>
+      </div>
+      <h2>Norte de Chile</h2>
+      <p>Chat para Arica, Iquique, Antofagasta y alrededores</p>
     </div>
+
+    <div class="room-card" data-room="centro">
+      <div class="room-meta">
+        <span class="room-zone">📍 REGIÓN METROPOLITANA</span>
+        <span class="room-live">
+          <span class="dot"></span> 45
+        </span>
+      </div>
+      <h2>Centro – Santiago</h2>
+      <p>La capital y sus comunas</p>
+    </div>
+
+    <div class="room-card" data-room="sur">
+      <div class="room-meta">
+        <span class="room-zone">📍 ZONA SUR</span>
+        <span class="room-live">
+          <span class="dot"></span> 8
+        </span>
+      </div>
+      <h2>Sur de Chile</h2>
+      <p>Desde Temuco hasta Punta Arenas</p>
+    </div>
+
+    <div class="room-card" data-room="serena">
+      <div class="room-meta">
+        <span class="room-zone">📍 COQUIMBO</span>
+        <span class="room-live">
+          <span class="dot"></span> 5
+        </span>
+      </div>
+      <h2>La Serena</h2>
+      <p>Valle del Elqui y costa</p>
+    </div>
+
+    <div class="room-card" data-room="valpo">
+      <div class="room-meta">
+        <span class="room-zone">📍 QUINTA REGIÓN</span>
+        <span class="room-live">
+          <span class="dot"></span> 15
+        </span>
+      </div>
+      <h2>Valparaíso</h2>
+      <p>El puerto, Viña y alrededores</p>
+    </div>
+
   </div>
 </section>
-
-<!-- ===== CHAT ===== -->
-<section id="chatScreen" class="screen hidden">
-  <div class="chat-top">
-    <button id="backBtn">⟵ Salas</button>
-    <div id="chatHeader">Sala</div>
-  </div>
-
-  <div class="chat-body">
-    <div id="messages"></div>
-  </div>
-
-  <div class="inputBar">
-    <input id="msgInput" placeholder="Escribe…" />
-    <button id="sendBtn">Enviar</button>
-  </div>
-</section>
-
-<!-- ===== MODAL NICKNAME ===== -->
-<div id="nickModal" class="modal hidden">
-  <div class="modal-box">
-
-    <div class="join-header">
-      <span>&gt; JOINING ROOM</span>
-      <h2 id="modalTitle">Sala</h2>
-    </div>
-
-    <div class="identity-box">
-      <h3>TU IDENTIDAD ANÓNIMA</h3>
-
-      <div class="nick-input">
-        <input id="nickInput" placeholder="Elige tu nickname" />
-        <button id="randomNick" title="Nick aleatorio">🔀</button>
-      </div>
-
-      <div class="identity-info">
-        • Tu identidad es efímera y anónima<br>
-        • No se guardan logs de tu sesión<br>
-        • Los mensajes desaparecen al salir
-      </div>
-    </div>
-
-    <button id="enterRoom" class="enter-btn">
-      ENTRAR AL CHAT →
-    </button>
-
-    <div id="nickError"></div>
-  </div>
-</div>
-
-<script src="js/main.js"></script>
-<script src="js/particles.js"></script>
-</body>
-</html>
