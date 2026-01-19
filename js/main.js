@@ -1,62 +1,166 @@
+/* =====================
+   VARIABLES GLOBALES
+===================== */
 const screens = {
   boot: document.getElementById("bootScreen"),
   rooms: document.getElementById("roomsScreen"),
   chat: document.getElementById("chatScreen")
 };
 
-const modal = document.getElementById("nickModal");
-const modalTitle = document.getElementById("modalTitle");
-const nickInput = document.getElementById("nickInput");
-const nickError = document.getElementById("nickError");
-const chatHeader = document.getElementById("chatHeader");
+const terminal = document.getElementById("terminal");
+const rooms = document.querySelectorAll(".room");
 
+const nickModal = document.getElementById("nickModal");
+const nickInput = document.getElementById("nickInput");
+const randomNickBtn = document.getElementById("randomNick");
+const enterRoomBtn = document.getElementById("enterRoom");
+const nickError = document.getElementById("nickError");
+
+const chatHeader = document.getElementById("chatHeader");
+const messages = document.getElementById("messages");
+const msgInput = document.getElementById("msgInput");
+const sendBtn = document.getElementById("sendBtn");
+const backBtn = document.getElementById("backBtn");
+
+/* =====================
+   ESTADO
+===================== */
 let currentRoom = "";
 let nickname = "";
 
-/* ===== SCREEN SWITCH ===== */
+/* =====================
+   UTILIDADES
+===================== */
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove("active"));
   screens[name].classList.add("active");
-  window.scrollTo(0, 0);
 }
 
-/* ===== BOOT ===== */
-setTimeout(() => {
-  showScreen("rooms");
-}, 2000);
+function systemMessage(text) {
+  addMessage("", text, "system");
+}
 
-/* ===== SALAS ===== */
-document.addEventListener("click", e => {
-  const room = e.target.closest(".room");
-  if (!room) return;
+function addMessage(author, text, type = "user") {
+  const div = document.createElement("div");
+  div.className = `message ${type}`;
 
-  currentRoom = room.textContent.trim();
-  modalTitle.textContent = currentRoom;
-  nickInput.value = "";
-  nickError.textContent = "";
-  modal.classList.add("active");
+  div.innerHTML =
+    type === "system"
+      ? `<em>${text}</em>`
+      : `<strong>${author}:</strong> ${text}`;
+
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
+
+  // ⏳ mensajes efímeros
+  const lifetime = type === "system" ? 5000 : 30000;
+  setTimeout(() => {
+    div.style.opacity = "0";
+    setTimeout(() => div.remove(), 500);
+  }, lifetime);
+}
+
+function randomNick() {
+  const pool = ["Shadow", "Void", "Anon", "Ghost", "Umbra", "Echo"];
+  return pool[Math.floor(Math.random() * pool.length)] +
+         Math.floor(Math.random() * 1000);
+}
+
+/* =====================
+   BOOT SEQUENCE
+===================== */
+const bootLines = [
+  "Inicializando sistema…",
+  "Cargando módulos…",
+  "Estableciendo anonimato…",
+  "Umbrala listo."
+];
+
+let bootIndex = 0;
+
+function bootSequence() {
+  if (bootIndex < bootLines.length) {
+    terminal.innerHTML += bootLines[bootIndex] + "<br>";
+    bootIndex++;
+    setTimeout(bootSequence, 600);
+  } else {
+    setTimeout(() => showScreen("rooms"), 800);
+  }
+}
+
+bootSequence();
+
+/* =====================
+   SALAS
+===================== */
+rooms.forEach(room => {
+  room.addEventListener("click", () => {
+    currentRoom = room.textContent.trim();
+    openNickModal();
+  });
 });
 
-/* ===== ENTRAR ===== */
-document.getElementById("enterRoom").onclick = () => {
+/* =====================
+   MODAL NICK
+===================== */
+function openNickModal() {
+  nickModal.classList.add("active");
+  nickInput.value = "";
+  nickError.textContent = "";
+}
+
+function closeNickModal() {
+  nickModal.classList.remove("active");
+}
+
+randomNickBtn.addEventListener("click", () => {
+  nickInput.value = randomNick();
+});
+
+enterRoomBtn.addEventListener("click", () => {
   const value = nickInput.value.trim();
-  if (value.length < 2) {
-    nickError.textContent = "Nickname muy corto";
+
+  if (!value) {
+    nickError.textContent = "Debes ingresar un nickname";
     return;
   }
 
   nickname = value;
-  modal.classList.remove("active");
-  chatHeader.textContent = currentRoom;
+  closeNickModal();
+  enterRoom();
+});
+
+/* =====================
+   CHAT
+===================== */
+function enterRoom() {
   showScreen("chat");
-};
+  chatHeader.textContent = currentRoom;
+  messages.innerHTML = "";
+  systemMessage(`Entraste a ${currentRoom} como ${nickname}`);
+}
 
-/* ===== RANDOM NICK ===== */
-document.getElementById("randomNick").onclick = () => {
-  nickInput.value = "anon" + Math.floor(Math.random() * 9999);
-};
+sendBtn.addEventListener("click", sendMessage);
+msgInput.addEventListener("keydown", e => {
+  if (e.key === "Enter") sendMessage();
+});
 
-/* ===== VOLVER ===== */
-document.getElementById("backBtn").onclick = () => {
+function sendMessage() {
+  const text = msgInput.value.trim();
+  if (!text) return;
+
+  addMessage(nickname, text);
+  msgInput.value = "";
+}
+
+backBtn.addEventListener("click", () => {
   showScreen("rooms");
-};
+  messages.innerHTML = "";
+});
+
+/* =====================
+   FIX MÓVIL (FOCUS INPUT)
+===================== */
+msgInput.addEventListener("focus", () => {
+  document.body.scrollTop = document.body.scrollHeight;
+});
