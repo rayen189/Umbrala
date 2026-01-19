@@ -19,7 +19,6 @@ const roomTitle = document.getElementById("roomTitle");
 const roomCount = document.getElementById("roomCount");
 const usersList = document.getElementById("usersList");
 
-let currentRoom = "";
 let nick = "";
 
 /* ================= BOOT ================= */
@@ -33,18 +32,18 @@ const bootLines = [
   "Sistema activo ✔"
 ];
 
-let bootIndex = 0;
+let i = 0;
 
-const bootInterval = setInterval(() => {
-  terminal.innerHTML += bootLines[bootIndex] + "<br>";
-  bootIndex++;
-  if (bootIndex === bootLines.length) {
-    clearInterval(bootInterval);
+const boot = setInterval(() => {
+  terminal.innerHTML += bootLines[i] + "<br>";
+  i++;
+  if (i === bootLines.length) {
+    clearInterval(boot);
     setTimeout(() => switchScreen("rooms"), 700);
   }
 }, 450);
 
-/* ================= SALAS ================= */
+/* ================= ROOMS ================= */
 
 const rooms = [
   { name:"🌍 Global", users:3 },
@@ -57,18 +56,15 @@ const rooms = [
 
 roomsList.innerHTML = "";
 
-rooms.forEach(room => {
+rooms.forEach(r => {
   const div = document.createElement("div");
   div.className = "room";
-  div.innerHTML = `${room.name} <span>👥 ${room.users}</span>`;
-
+  div.innerHTML = `${r.name} <span>👥 ${r.users}</span>`;
   div.onclick = () => {
-    currentRoom = room.name;
-    roomTitle.textContent = room.name;
-    roomCount.textContent = `👥 ${room.users + 1}`;
+    roomTitle.textContent = r.name;
+    roomCount.textContent = `👥 ${r.users + 1}`;
     nickModal.classList.add("active");
   };
-
   roomsList.appendChild(div);
 });
 
@@ -107,10 +103,8 @@ fileInput.onchange = () => {
   if (!f) return;
 
   const url = URL.createObjectURL(f);
-
   if (f.type.startsWith("image")) addMessage("image", url);
   if (f.type.startsWith("audio")) addMessage("audio", url);
-
   fileInput.value = "";
 };
 
@@ -120,7 +114,7 @@ function sendMessage() {
   msgInput.value = "";
 }
 
-/* ================= MENSAJES ================= */
+/* ================= MESSAGES ================= */
 
 function addMessage(type, content) {
   const div = document.createElement("div");
@@ -131,6 +125,7 @@ function addMessage(type, content) {
   if (type === "audio") div.innerHTML = `<audio src="${content}" controls></audio>`;
 
   messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
 }
 
 /* ================= UTILS ================= */
