@@ -1,3 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Umbrala</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- ===== BOOT ===== -->
+<section id="bootScreen" class="screen active center">
+  <div class="terminal-window">
+    <div class="terminal-bar">
+      <div class="buttons">
+        <span class="btn red"></span>
+        <span class="btn yellow"></span>
+        <span class="btn green"></span>
+      </div>
+      <div class="title">UMBRALA</div>
+    </div>
+    <div id="terminal">Inicializando sistema…</div>
+  </div>
+</section>
+
 <!-- ===== SALAS ===== -->
 <section id="roomsScreen" class="screen center hidden">
   <div class="rooms-container">
@@ -7,9 +36,7 @@
     <div class="room-card" data-room="norte">
       <div class="room-meta">
         <span class="room-zone">📍 ZONA NORTE</span>
-        <span class="room-live">
-          <span class="dot"></span> 12
-        </span>
+        <span class="room-live"><span class="dot"></span>12</span>
       </div>
       <h2>Norte de Chile</h2>
       <p>Chat para Arica, Iquique, Antofagasta y alrededores</p>
@@ -18,9 +45,7 @@
     <div class="room-card" data-room="centro">
       <div class="room-meta">
         <span class="room-zone">📍 REGIÓN METROPOLITANA</span>
-        <span class="room-live">
-          <span class="dot"></span> 45
-        </span>
+        <span class="room-live"><span class="dot"></span>45</span>
       </div>
       <h2>Centro – Santiago</h2>
       <p>La capital y sus comunas</p>
@@ -29,9 +54,7 @@
     <div class="room-card" data-room="sur">
       <div class="room-meta">
         <span class="room-zone">📍 ZONA SUR</span>
-        <span class="room-live">
-          <span class="dot"></span> 8
-        </span>
+        <span class="room-live"><span class="dot"></span>8</span>
       </div>
       <h2>Sur de Chile</h2>
       <p>Desde Temuco hasta Punta Arenas</p>
@@ -40,9 +63,7 @@
     <div class="room-card" data-room="serena">
       <div class="room-meta">
         <span class="room-zone">📍 COQUIMBO</span>
-        <span class="room-live">
-          <span class="dot"></span> 5
-        </span>
+        <span class="room-live"><span class="dot"></span>5</span>
       </div>
       <h2>La Serena</h2>
       <p>Valle del Elqui y costa</p>
@@ -51,9 +72,7 @@
     <div class="room-card" data-room="valpo">
       <div class="room-meta">
         <span class="room-zone">📍 QUINTA REGIÓN</span>
-        <span class="room-live">
-          <span class="dot"></span> 15
-        </span>
+        <span class="room-live"><span class="dot"></span>15</span>
       </div>
       <h2>Valparaíso</h2>
       <p>El puerto, Viña y alrededores</p>
@@ -61,3 +80,39 @@
 
   </div>
 </section>
+
+<!-- ===== CHAT (estructura base) ===== -->
+<section id="chatScreen" class="screen hidden">
+  <div class="chat-top">
+    <button id="backBtn">⟵ Salas</button>
+    <div id="chatHeader">Sala</div>
+  </div>
+
+  <div class="chat-body">
+    <div id="messages"></div>
+  </div>
+
+  <div class="inputBar">
+    <input id="msgInput" placeholder="Escribe…" />
+    <button id="sendBtn">Enviar</button>
+  </div>
+</section>
+
+<!-- ===== MODAL NICK ===== -->
+<div id="nickModal" class="modal">
+  <div class="modal-box">
+    <h2 id="modalTitle">Entrar a sala</h2>
+    <p class="hint">Tu identidad es anónima y efímera</p>
+
+    <input id="nickInput" placeholder="Elige tu nickname" />
+    <button id="randomNick">🎲 Nick aleatorio</button>
+    <button id="enterRoom">Entrar al chat →</button>
+
+    <div id="nickError"></div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/particles.js"></script>
+</body>
+</html>
