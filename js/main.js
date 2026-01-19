@@ -16,6 +16,8 @@ const fileBtn = document.getElementById("fileBtn");
 const fileInput = document.getElementById("fileInput");
 const backBtn = document.getElementById("backToRooms");
 const roomTitle = document.getElementById("roomTitle");
+const roomCount = document.getElementById("roomCount");
+const usersList = document.getElementById("usersList");
 
 let currentRoom = "";
 let nick = "";
@@ -23,6 +25,11 @@ let nick = "";
 /* BOOT */
 const bootLines = [
   "Inicializando Umbrala...",
+  "Comunica en las sombras",
+  "Anónimo. Sin rastro, sin identidad",
+  "Efímero.Los mensajes desaparecen",
+  "Privado. No logs, no tracking",
+  "Seguro. Conexión encriptada",
   "Cargando módulos...",
   "Sistema activo ✔"
 ];
@@ -44,6 +51,7 @@ const rooms = [
   { name:"🏙 Centro", users:1 },
   { name:"🌊 Sur", users:0 },
   { name:"🧠 Curiosidades", users:0 }
+  { name:"🕳️ Vacío", users:0 }
 ];
 
 rooms.forEach(r => {
@@ -53,6 +61,7 @@ rooms.forEach(r => {
   div.onclick = () => {
     currentRoom = r.name;
     roomTitle.textContent = r.name;
+    roomCount.textContent = `👥 ${r.users + 1}`;
     nickModal.classList.add("active");
   };
   roomsList.appendChild(div);
@@ -66,6 +75,7 @@ document.getElementById("randomNick").onclick = () => {
 document.getElementById("enterChat").onclick = () => {
   nick = nickInput.value || "ghost";
   nickModal.classList.remove("active");
+  usersList.innerHTML = `<div>${nick}</div>`;
   switchScreen("chat");
 };
 
@@ -92,16 +102,16 @@ fileInput.onchange = () => {
 
 function sendMessage() {
   if (!msgInput.value.trim()) return;
-  addMessage("text", msgInput.value, 60000);
+  addMessage("text", `${nick}: ${msgInput.value}`, 60000);
   msgInput.value = "";
 }
 
-/* MENSAJES EFÍMEROS */
+/* MENSAJES */
 function addMessage(type, content, duration) {
   const div = document.createElement("div");
   div.className = "message";
 
-  if (type === "text") div.textContent = `${nick}: ${content}`;
+  if (type === "text") div.textContent = content;
   if (type === "image") div.innerHTML = `<img src="${content}" width="140">`;
   if (type === "audio") div.innerHTML = `<audio src="${content}" controls></audio>`;
 
