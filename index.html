@@ -11,7 +11,7 @@
 
 <canvas id="particles"></canvas>
 
-<!-- ================= TERMINAL INICIO ================= -->
+<!-- BOOT -->
 <section id="bootScreen" class="screen active center">
   <div class="terminal-window">
     <div class="terminal-bar">
@@ -26,7 +26,7 @@
   </div>
 </section>
 
-<!-- ================= SALAS ================= -->
+<!-- SALAS -->
 <section id="roomsScreen" class="screen center">
   <div class="rooms-box">
     <h2>Salas activas</h2>
@@ -34,34 +34,38 @@
   </div>
 </section>
 
-<!-- ================= CHAT ================= -->
+<!-- CHAT -->
 <section id="chatScreen" class="screen">
-  <div class="chat-top">
-<button id="backToRooms">← Volver</button>
-    <strong id="roomTitle"></strong>
-    <span id="roomCount">👥 0</span>
-  </div>
+  <div class="chat-container">
 
-  <div id="privateTabs"></div>
-
-  <div class="chat-body">
-    <div id="messages"></div>
-
-    <div id="usersPanel">
-      <div class="users-title">Usuarios</div>
-      <div id="usersList"></div>
+    <div class="chat-top">
+      <button id="backToRooms">← Salas</button>
+      <strong id="roomTitle"></strong>
+      <span id="roomCount">👥 0</span>
     </div>
-  </div>
 
-  <div class="inputBar">
-    <input id="msgInput" placeholder="Escribe..." />
-    <button id="sendBtn">Enviar</button>
-    <button id="fileBtn">📎</button>
-    <input type="file" id="fileInput" accept="image/*,audio/*" />
+    <div id="privateTabs"></div>
+
+    <div class="chat-body">
+      <div id="messages"></div>
+
+      <div id="usersPanel">
+        <div class="users-title">Usuarios</div>
+        <div id="usersList"></div>
+      </div>
+    </div>
+
+    <div class="inputBar">
+      <input id="msgInput" placeholder="Escribe..." />
+      <button id="fileBtn">📎</button>
+      <button id="sendBtn">Enviar</button>
+      <input type="file" id="fileInput" accept="image/*,audio/*" />
+    </div>
+
   </div>
 </section>
 
-<!-- ================= MODAL NICK ================= -->
+<!-- MODAL NICK -->
 <div id="nickModal" class="modal">
   <div class="modal-box">
     <h3>Ingresa tu nick</h3>
@@ -72,6 +76,7 @@
   </div>
 </div>
 
+<script src="js/particles.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
