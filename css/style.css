@@ -223,3 +223,11 @@ input {
     border-top: 1px solid rgba(0,255,136,0.3);
   }
 }
+/* OCULTAR INPUT FILE REAL */
+#fileInput {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
