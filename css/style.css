@@ -1,6 +1,6 @@
 :root {
   --bg: #050b08;
-  --neon: #00ff88b3; /* neon más elegante */
+  --neon: #00ff88;
   --text: #d7ffe9;
 }
 
@@ -16,69 +16,61 @@ body {
   overflow: hidden;
 }
 
-#particles {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-}
-
 /* =====================
-   SCREENS (FIX MOBILE)
+   SCREENS
 ===================== */
-
 .screen {
-  position: fixed;
-  inset: 0;
   display: none;
-  width: 100%;
-  height: 100svh;
-  align-items: center;
-  justify-content: center;
+  width: 100vw;
+  height: 100vh;
 }
 
 .screen.active {
   display: flex;
 }
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none !important;
+}
+
 /* =====================
    TERMINAL
 ===================== */
 .terminal-window {
   width: 90%;
-  max-width: 600px;
+  max-width: 520px;
+  background: #000;
   border: 1px solid var(--neon);
-  box-shadow: 0 0 12px var(--neon);
-  background: #060f0a;
+  box-shadow: 0 0 25px var(--neon);
 }
 
 .terminal-bar {
   display: flex;
   align-items: center;
   padding: 6px;
-  background: #0c1a12;
+  background: #001a0d;
 }
 
-.buttons {
-  display: flex;
-  gap: 6px;
-}
-
-.btn {
+.buttons span {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
 }
 
-.red { background:#ff5f56 }
-.yellow { background:#ffbd2e }
-.green { background:#27c93f }
-
-.title {
-  margin: auto;
-  color: var(--neon);
-}
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
 
 #terminal {
-  padding: 20px;
+  padding: 1rem;
+  min-height: 200px;
 }
 
 /* =====================
@@ -89,123 +81,64 @@ body {
 }
 
 .rooms {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 .room {
-  padding: 14px;
-  border-radius: 30px;
+  padding: 1rem;
   border: 1px solid var(--neon);
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.room:hover {
-  background: rgba(0,255,136,0.12);
-  transform: scale(1.02);
-}
-
-.global-count {
-  margin-bottom: 10px;
-  color: var(--neon);
 }
 
 /* =====================
    CHAT
 ===================== */
-#chatScreen {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* TOP BAR */
 .chat-top {
   display: flex;
-  gap: 10px;
-  align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid rgba(0,255,136,0.25);
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--neon);
 }
 
-/* TABS PRIVADOS */
-#privateTabs {
-  display: flex;
-  gap: 6px;
-  padding: 6px;
-}
-
-.tab {
-  padding: 6px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--neon);
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.tab.active {
-  background: rgba(0,255,136,0.2);
-}
-
-/* CUERPO CHAT */
 .chat-body {
-  flex: 1;
   display: flex;
-  overflow: hidden;
+  height: calc(100vh - 120px);
 }
 
-/* MENSAJES */
 #messages {
   flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-/* PANEL USUARIOS */
-#usersPanel {
-  width: 140px;
-  border-left: 1px solid rgba(0,255,136,0.35);
-  padding: 8px;
+  padding: 1rem;
   overflow-y: auto;
 }
 
-.users-title {
-  text-align: center;
-  margin-bottom: 6px;
-  color: var(--neon);
-}
-
-/* INPUT */
 .inputBar {
   display: flex;
-  gap: 6px;
-  padding: 8px;
-  border-top: 1px solid rgba(0,255,136,0.25);
+  padding: 0.5rem;
+  border-top: 1px solid var(--neon);
 }
 
-input, button {
-  background: #0c1a12;
+.inputBar input {
+  flex: 1;
+  background: #000;
   border: 1px solid var(--neon);
   color: var(--text);
-  padding: 8px;
-}
-
-input {
-  flex: 1;
+  padding: 0.5rem;
 }
 
 /* =====================
-   MODAL NICK
+   MODAL
 ===================== */
 .modal {
-  display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.75);
+  background: rgba(0,0,0,.75);
+  display: none;
   align-items: center;
   justify-content: center;
+  z-index: 999;
 }
 
 .modal.active {
@@ -213,71 +146,25 @@ input {
 }
 
 .modal-box {
+  width: 90%;
+  max-width: 420px;
+  background: #001a0d;
   border: 1px solid var(--neon);
-  padding: 20px;
-  background: #06120c;
-  width: 260px;
-  text-align: center;
+  padding: 1.5rem;
+  box-shadow: 0 0 20px var(--neon);
 }
 
-#nickError {
-  color: #ff8080;
-  margin-top: 6px;
+.modal-box input,
+.modal-box button {
+  width: 100%;
+  margin-top: .5rem;
+  padding: .6rem;
+  background: #000;
+  color: var(--text);
+  border: 1px solid var(--neon);
 }
 
-/* FILE INPUT OCULTO */
-#fileInput {
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  overflow: hidden;
-}
-
-/* =========================
-   📱 MÓVIL (CORRECTO)
-========================= */
-@media (max-width: 768px) {
-
-  #chatScreen {
-    height: 100vh;
-  }
-
-  .chat-body {
-    flex-direction: column;
-  }
-
-  #messages {
-    flex: 1;
-    width: 100%;
-  }
-
-  #usersPanel {
-    width: 100%;
-    max-height: 120px;
-    border-left: none;
-    border-top: 1px solid rgba(0,255,136,0.3);
-    font-size: 13px;
-  }
-
-  .inputBar {
-    width: 100%;
-  }
-
-}
-
-/* =====================
-   CHAT HEADER VISIBILITY
-===================== */
-
-/* Por defecto oculto */
-.chat-top {
-  display: none;
-}
-
-/* SOLO visible cuando el chat está activo */
-#chatScreen.active .chat-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.hint {
+  font-size: .8rem;
+  opacity: .7;
 }
