@@ -6,12 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+
+<body class="page">
 
 <canvas id="particles"></canvas>
 
-<!-- ===== PANTALLA TERMINAL ===== -->
-<div id="bootScreen" class="screen active center">
+<!-- ===== BOOT / SUPERMAN ===== -->
+<section id="bootScreen" class="screen active">
   <div class="terminal-window">
     <div class="terminal-bar">
       <div class="buttons">
@@ -23,10 +24,10 @@
     </div>
     <div id="terminal"></div>
   </div>
-</div>
+</section>
 
 <!-- ===== SALAS ===== -->
-<div id="roomsScreen" class="screen center">
+<section id="roomsScreen" class="screen hidden">
   <div class="rooms-box">
     <h1>Salas</h1>
     <div class="global-count">👥 <span id="globalCount">0</span></div>
@@ -39,10 +40,10 @@
       <div class="room">🕳 Vacío</div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- ===== CHAT ===== -->
-<div id="chatScreen" class="screen">
+<section id="chatScreen" class="screen hidden">
   <div class="chat-top">
     <button id="backBtn">⟵ Volver</button>
     <div id="chatHeader"></div>
@@ -63,13 +64,13 @@
   <div class="inputBar">
     <input id="msgInput" placeholder="Escribe..." />
     <button id="sendBtn">Enviar</button>
-    <input type="file" id="fileInput" accept="image/*,audio/*">
-<button id="fileBtn">📎</button>
+    <input type="file" id="fileInput" accept="image/*,audio/*" hidden>
+    <button id="fileBtn">📎</button>
   </div>
-</div>
+</section>
 
-<!-- ===== MODAL NICKNAME ===== -->
-<div id="nickModal" class="modal">
+<!-- ===== MODAL NICK ===== -->
+<div id="nickModal" class="modal hidden">
   <div class="modal-box">
     <h2 id="modalTitle"></h2>
     <input id="nickInput" placeholder="nickname" />
