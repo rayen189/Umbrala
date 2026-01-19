@@ -24,9 +24,7 @@ body {
   z-index: -1;
 }
 
-/* =====================
-   CONTENEDOR GENERAL
-===================== */
+/* PANTALLAS */
 .screen {
   display: none;
   width: 100vw;
@@ -39,9 +37,7 @@ body {
   justify-content: center;
 }
 
-/* =====================
-   TERMINAL INICIO
-===================== */
+/* TERMINAL */
 .terminal-window {
   width: 90%;
   max-width: 620px;
@@ -81,9 +77,7 @@ body {
   padding: 20px;
 }
 
-/* =====================
-   SALAS
-===================== */
+/* SALAS */
 .rooms-box {
   text-align: center;
   width: 100%;
@@ -109,17 +103,7 @@ body {
   transform: scale(1.02);
 }
 
-/* =====================
-   CHAT (FIX REAL)
-===================== */
-#chatScreen {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-
-/* CONTENEDOR CENTRAL */
+/* CHAT */
 .chat-container {
   width: 100%;
   max-width: 1100px;
@@ -129,7 +113,6 @@ body {
   background: rgba(5, 11, 8, 0.95);
 }
 
-/* TOP */
 .chat-top {
   padding: 10px;
   border-bottom: 1px solid rgba(0,255,136,0.25);
@@ -138,21 +121,23 @@ body {
   align-items: center;
 }
 
-/* CUERPO */
 .chat-body {
   flex: 1;
   display: flex;
   overflow: hidden;
 }
 
-/* MENSAJES */
 #messages {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
 }
 
-/* USUARIOS */
+.message {
+  margin-bottom: 6px;
+  opacity: 0;
+}
+
 #usersPanel {
   width: 180px;
   border-left: 1px solid rgba(0,255,136,0.35);
@@ -160,7 +145,6 @@ body {
   overflow-y: auto;
 }
 
-/* INPUT */
 .inputBar {
   display: flex;
   gap: 6px;
@@ -179,9 +163,7 @@ input {
   flex: 1;
 }
 
-/* =====================
-   MODAL NICK
-===================== */
+/* MODAL */
 .modal {
   display: none;
   position: fixed;
@@ -203,15 +185,15 @@ input {
   text-align: center;
 }
 
-/* =====================
-   📱 MÓVIL
-===================== */
+/* FILE INPUT OCULTO */
+#fileInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* MÓVIL */
 @media (max-width: 768px) {
-
-  .chat-container {
-    max-width: 100%;
-  }
-
   .chat-body {
     flex-direction: column;
   }
@@ -222,12 +204,4 @@ input {
     border-left: none;
     border-top: 1px solid rgba(0,255,136,0.3);
   }
-}
-/* OCULTAR INPUT FILE REAL */
-#fileInput {
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
 }
