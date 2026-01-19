@@ -11,7 +11,7 @@
 
 <canvas id="particles"></canvas>
 
-<!-- ===== BOOT / SUPERMAN ===== -->
+<!-- ===== BOOT ===== -->
 <section id="bootScreen" class="screen active center">
   <div class="terminal-window">
     <div class="terminal-bar">
@@ -22,59 +22,52 @@
       </div>
       <div class="title">UMBRALA</div>
     </div>
-    <div id="terminal"></div>
+    <div id="terminal">Inicializando sistema…</div>
   </div>
 </section>
 
 <!-- ===== SALAS ===== -->
-<section id="roomsScreen" class="screen center hidden">
+<section id="roomsScreen" class="screen center">
   <div class="rooms-box">
-    <h1>Salas</h1>
-    <div class="global-count">👥 <span id="globalCount">0</span></div>
+    <h1>SALAS</h1>
 
     <div class="rooms">
-      <div class="room">🌵 Norte</div>
-      <div class="room">🏙 Centro</div>
-      <div class="room">🏔 Sur</div>
-      <div class="room">🌍 Global</div>
-      <div class="room">🕳 Vacío</div>
+      <div class="room" data-room="Norte">🌵 Norte</div>
+      <div class="room" data-room="Centro">🏙 Centro</div>
+      <div class="room" data-room="Sur">🏔 Sur</div>
+      <div class="room" data-room="Global">🌍 Global</div>
+      <div class="room" data-room="Vacío">🕳 Vacío</div>
     </div>
   </div>
 </section>
 
 <!-- ===== CHAT ===== -->
-<section id="chatScreen" class="screen hidden">
+<section id="chatScreen" class="screen">
   <div class="chat-top">
-    <button id="backBtn">⟵ Volver</button>
+    <button id="backBtn">⟵ Salas</button>
     <div id="chatHeader"></div>
-    <div class="user-count">👥 <span id="roomCount">0</span></div>
   </div>
 
   <div class="chat-body">
     <div id="messages"></div>
-
-    <div id="usersPanel">
-      <div class="users-title">Usuarios</div>
-      <div id="usersList"></div>
-    </div>
   </div>
 
   <div class="inputBar">
-    <input id="msgInput" placeholder="Escribe..." />
+    <input id="msgInput" placeholder="Escribe…" />
     <button id="sendBtn">Enviar</button>
-    <input type="file" id="fileInput" accept="image/*,audio/*" hidden>
-    <button id="fileBtn">📎</button>
   </div>
 </section>
 
 <!-- ===== MODAL NICK ===== -->
-<div id="nickModal" class="modal hidden">
+<div id="nickModal" class="modal">
   <div class="modal-box">
     <h2 id="modalTitle"></h2>
-    <p class="hint">Identidad anónima · Mensajes efímeros</p>
+    <p class="hint">Anónimo · Mensajes efímeros</p>
+
     <input id="nickInput" placeholder="nickname" />
     <button id="randomNick">🎲 Nick aleatorio</button>
     <button id="enterRoom">Entrar</button>
+
     <div id="nickError"></div>
   </div>
 </div>
