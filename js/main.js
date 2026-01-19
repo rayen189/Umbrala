@@ -8,6 +8,7 @@ const modal = document.getElementById("nickModal");
 const modalTitle = document.getElementById("modalTitle");
 const nickInput = document.getElementById("nickInput");
 const nickError = document.getElementById("nickError");
+const chatHeader = document.getElementById("chatHeader");
 
 let currentRoom = "";
 let nickname = "";
@@ -16,14 +17,15 @@ let nickname = "";
 function showScreen(name) {
   Object.values(screens).forEach(s => s.classList.remove("active"));
   screens[name].classList.add("active");
+  window.scrollTo(0, 0);
 }
 
-/* ===== BOOT SEQUENCE ===== */
+/* ===== BOOT ===== */
 setTimeout(() => {
   showScreen("rooms");
-}, 2200);
+}, 2000);
 
-/* ===== CLICK EN SALAS (MÓVIL SAFE) ===== */
+/* ===== SALAS ===== */
 document.addEventListener("click", e => {
   const room = e.target.closest(".room");
   if (!room) return;
@@ -32,12 +34,10 @@ document.addEventListener("click", e => {
   modalTitle.textContent = currentRoom;
   nickInput.value = "";
   nickError.textContent = "";
-
-  modal.classList.remove("hidden");
   modal.classList.add("active");
 });
 
-/* ===== ENTRAR AL CHAT ===== */
+/* ===== ENTRAR ===== */
 document.getElementById("enterRoom").onclick = () => {
   const value = nickInput.value.trim();
   if (value.length < 2) {
@@ -47,9 +47,7 @@ document.getElementById("enterRoom").onclick = () => {
 
   nickname = value;
   modal.classList.remove("active");
-  modal.classList.add("hidden");
-
-  document.getElementById("chatHeader").textContent = currentRoom;
+  chatHeader.textContent = currentRoom;
   showScreen("chat");
 };
 
@@ -58,7 +56,7 @@ document.getElementById("randomNick").onclick = () => {
   nickInput.value = "anon" + Math.floor(Math.random() * 9999);
 };
 
-/* ===== VOLVER A SALAS ===== */
+/* ===== VOLVER ===== */
 document.getElementById("backBtn").onclick = () => {
   showScreen("rooms");
 };
