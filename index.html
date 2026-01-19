@@ -27,7 +27,7 @@
 </section>
 
 <!-- ===== SALAS ===== -->
-<section id="roomsScreen" class="screen center">
+<section id="roomsScreen" class="screen center hidden">
   <div class="rooms-box">
     <h1>SALAS</h1>
 
@@ -42,10 +42,10 @@
 </section>
 
 <!-- ===== CHAT ===== -->
-<section id="chatScreen" class="screen">
+<section id="chatScreen" class="screen hidden">
   <div class="chat-top">
     <button id="backBtn">⟵ Salas</button>
-    <div id="chatHeader"></div>
+    <div id="chatHeader">Sala</div>
   </div>
 
   <div class="chat-body">
@@ -58,15 +58,33 @@
   </div>
 </section>
 
-<!-- ===== MODAL NICK ===== -->
-<div id="nickModal" class="modal">
+<!-- ===== MODAL NICKNAME ===== -->
+<div id="nickModal" class="modal hidden">
   <div class="modal-box">
-    <h2 id="modalTitle"></h2>
-    <p class="hint">Anónimo · Mensajes efímeros</p>
 
-    <input id="nickInput" placeholder="nickname" />
-    <button id="randomNick">🎲 Nick aleatorio</button>
-    <button id="enterRoom">Entrar</button>
+    <div class="join-header">
+      <span>&gt; JOINING ROOM</span>
+      <h2 id="modalTitle">Sala</h2>
+    </div>
+
+    <div class="identity-box">
+      <h3>TU IDENTIDAD ANÓNIMA</h3>
+
+      <div class="nick-input">
+        <input id="nickInput" placeholder="Elige tu nickname" />
+        <button id="randomNick" title="Nick aleatorio">🔀</button>
+      </div>
+
+      <div class="identity-info">
+        • Tu identidad es efímera y anónima<br>
+        • No se guardan logs de tu sesión<br>
+        • Los mensajes desaparecen al salir
+      </div>
+    </div>
+
+    <button id="enterRoom" class="enter-btn">
+      ENTRAR AL CHAT →
+    </button>
 
     <div id="nickError"></div>
   </div>
