@@ -70,7 +70,6 @@ rooms.forEach(room => {
     roomTitle.textContent = room.name;
     roomCount.textContent = `👥 ${room.users + 1}`;
 
-    // 🔒 Cambio seguro de partículas
     if (window.setParticleMode) {
       setParticleMode(room.particles || "normal");
     }
@@ -103,8 +102,6 @@ document.getElementById("enterChat").onclick = () => {
 
 backBtn.onclick = () => {
   switchScreen("rooms");
-
-  // volver a partículas normales al salir
   if (window.setParticleMode) {
     setParticleMode("normal");
   }
@@ -163,6 +160,18 @@ function addMessage(type, content) {
 
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
+
+  /* ⏳ MENSAJE EFÍMERO */
+  const LIFE_TIME = 18000; // 18s total
+  const FADE_TIME = 2000;  // 2s fade
+
+  setTimeout(() => {
+    div.classList.add("fade");
+  }, LIFE_TIME - FADE_TIME);
+
+  setTimeout(() => {
+    div.remove();
+  }, LIFE_TIME);
 }
 
 /* ================= UTILS ================= */
