@@ -1,69 +1,62 @@
-:root {
-  --bg: #050b08;
-  --neon: #00ff88;
-  --neon-soft: rgba(0,255,136,0.35);
-  --text: #d7ffe9;
-}
+/* ================= RESET ================= */
 
 * {
   box-sizing: border-box;
-  font-family: "Courier New", monospace;
-}
-
-/* =====================
-   BASE
-===================== */
-body {
   margin: 0;
-  min-height: 100vh;
+  padding: 0;
+  font-family: monospace;
+}
+
+body {
+  background: #0b0b12;
+  color: #e0e0ff;
+  height: 100vh;
   overflow: hidden;
-  background: radial-gradient(circle at top, #08140e, #020604);
-  color: var(--text);
 }
 
-/* =====================
-   PARTICLES
-===================== */
-#particles {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
+/* ================= SCREENS ================= */
 
-/* =====================
-   SCREENS
-===================== */
 .screen {
   display: none;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  position: relative;
-  z-index: 1;
 }
 
 .screen.active {
   display: flex;
+}
+
+/* ================= CENTER ================= */
+
+.center {
   align-items: center;
   justify-content: center;
 }
 
-/* =====================
-   BOOT TERMINAL
-===================== */
+/* ================= PARTICLES ================= */
+
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* ================= BOOT ================= */
+
 .terminal-window {
-  width: 92%;
-  max-width: 620px;
-  border: 1px solid var(--neon);
-  box-shadow: 0 0 18px var(--neon-soft);
-  background: rgba(6, 15, 10, 0.82);
+  width: 90%;
+  max-width: 520px;
+  background: #0e0e16;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(122, 124, 255, 0.3);
 }
 
 .terminal-bar {
   display: flex;
   align-items: center;
   padding: 6px 10px;
-  background: #0c1a12;
+  background: #15152a;
 }
 
 .buttons {
@@ -72,268 +65,56 @@ body {
 }
 
 .btn {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
 }
 
-.red { background:#ff5f56 }
-.yellow { background:#ffbd2e }
-.green { background:#27c93f }
+.btn.red {
+  background: #ff5f56;
+}
+.btn.yellow {
+  background: #ffbd2e;
+}
+.btn.green {
+  background: #27c93f;
+}
 
 .title {
-  margin: auto;
-  color: var(--neon);
-  letter-spacing: 2px;
+  margin-left: auto;
+  font-size: 12px;
+  color: #7a7cff;
 }
 
 #terminal {
-  padding: 20px;
-  line-height: 1.45;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
-/* =====================
-   ROOMS
-===================== */
+/* ================= ROOMS ================= */
+
 .rooms-box {
-  width: 100%;
+  background: #0e0e16;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
   max-width: 420px;
-  padding: 10px;
 }
 
 .rooms-box h2 {
-  text-align: center;
-  margin-bottom: 18px;
-  color: var(--neon);
-  letter-spacing: 1px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  color: #7a7cff;
 }
 
 .rooms {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
 }
 
 .room {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 22px;
-  border-radius: 40px;
-  border: 1px solid var(--neon);
-  background: linear-gradient(
-    145deg,
-    rgba(10, 30, 20, 0.85),
-    rgba(5, 14, 10, 0.85)
-  );
-  box-shadow: 0 0 10px var(--neon-soft);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
-}
-
-.room:hover {
-  transform: scale(1.035);
-  box-shadow: 0 0 18px rgba(0,255,136,0.55);
-}
-
-.room span {
-  opacity: 0.8;
-  font-size: 13px;
-}
-
-/* =====================
-   CHAT
-===================== */
-.chat-container {
-  width: 100%;
-  max-width: 1100px;
-  height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  background: rgba(5, 11, 8, 0.75);
-  backdrop-filter: blur(3px);
-}
-
-.chat-top {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--neon-soft);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.chat-top strong {
-  color: var(--neon);
-}
-
-.chat-body {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
-
-#messages {
-  flex: 1;
-  padding: 14px;
-  overflow-y: auto;
-  font-size: 14px;
-}
-
-.message {
-  margin-bottom: 8px;
-  opacity: 0.95;
-}
-
-/* =====================
-   USERS
-===================== */
-#usersPanel {
-  width: 180px;
-  padding: 10px;
-  background: rgba(6, 15, 10, 0.65);
-  border-left: 1px solid var(--neon-soft);
-}
-
-.users-title {
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: var(--neon);
-}
-
-/* =====================
-   INPUT BAR
-===================== */
-.inputBar {
-  display: flex;
-  gap: 8px;
-  padding: 10px;
-  border-top: 1px solid var(--neon-soft);
-}
-
-input,
-button {
-  background: rgba(10, 26, 18, 0.9);
-  border: 1px solid var(--neon);
-  color: var(--text);
-  padding: 10px;
-  outline: none;
-}
-
-input {
-  flex: 1;
-}
-
-button {
-  cursor: pointer;
-  transition: background 0.15s, box-shadow 0.15s;
-}
-
-button:hover {
-  background: rgba(0,255,136,0.15);
-  box-shadow: 0 0 8px var(--neon-soft);
-}
-
-/* =====================
-   MODAL NICK
-===================== */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.82);
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-.modal.active {
-  display: flex;
-}
-
-.modal-box {
-  width: 92%;
-  max-width: 360px;
-  border: 1px solid var(--neon);
-  padding: 24px 22px;
-  background: linear-gradient(
-    160deg,
-    rgba(10, 30, 20, 0.95),
-    rgba(4, 12, 8, 0.95)
-  );
-  box-shadow: 0 0 22px var(--neon-soft);
-  text-align: center;
-  border-radius: 14px;
-}
-
-.modal-box h3 {
-  margin-bottom: 14px;
-  color: var(--neon);
-  letter-spacing: 1px;
-}
-
-.modal-box input {
-  width: 100%;
-  margin-bottom: 12px;
-  text-align: center;
-  font-size: 15px;
-}
-
-.modal-box button {
-  width: 100%;
-  margin-top: 8px;
-  font-weight: bold;
-}
-
-/* =====================
-   FILE INPUT
-===================== */
-#fileInput {
-  display: none;
-}
-
-/* =====================
-   MOBILE
-===================== */
-@media (max-width: 768px) {
-  .chat-body {
-    flex-direction: column;
-  }
-
-  #usersPanel {
-    width: 100%;
-    max-height: 120px;
-    border-left: none;
-    border-top: 1px solid var(--neon-soft);
-  }
-}
-
-/* =====================
-   MENSAJES TECNOLÓGICOS
-===================== */
-
-.message {
-  opacity: 0;
-  transform: translateY(6px);
-  animation: msgIn 0.35s ease-out forwards;
-}
-
-/* aparición */
-@keyframes msgIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* desvanecimiento efímero */
-.message.fade {
-  animation: msgOut 2s linear forwards;
-}
-
-@keyframes msgOut {
-  to {
-    opacity: 0;
-    filter: blur(1px);
-  }
-}
+  background: #15152a;
+  padding: 10px 12px;
+  border-radius: 6
