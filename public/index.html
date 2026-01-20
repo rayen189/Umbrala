@@ -30,9 +30,7 @@
 <section id="roomsScreen" class="screen center">
   <div class="rooms-box">
     <h2>Salas activas</h2>
-    <div class="rooms" id="roomsList">
-      <!-- JS inyecta salas -->
-    </div>
+    <div class="rooms" id="roomsList"></div>
   </div>
 </section>
 
@@ -40,33 +38,32 @@
 <section id="chatScreen" class="screen">
   <div class="chat-container">
 
-    <!-- TOP BAR -->
+    <!-- TOP -->
     <div class="chat-top">
       <button id="backToRooms">← Salas</button>
       <strong id="roomTitle">Sala</strong>
       <span id="roomCount">👥 0</span>
     </div>
 
+    <!-- TABS -->
+    <div id="chatTabs" class="chat-tabs">
+      <div class="tab active" data-type="public">🌍 Sala</div>
+    </div>
+
     <!-- BODY -->
     <div class="chat-body">
-
-      <!-- MENSAJES -->
       <div id="messages"></div>
 
-      <!-- USUARIOS -->
       <aside id="usersPanel">
         <div class="users-title">Usuarios</div>
         <div id="usersList"></div>
       </aside>
-
     </div>
 
     <!-- INPUT -->
     <div class="inputBar">
       <input id="msgInput" placeholder="Escribe un mensaje..." autocomplete="off" />
-      <button id="fileBtn">📎</button>
       <button id="sendBtn">Enviar</button>
-      <input type="file" id="fileInput" accept="image/*,audio/*" hidden />
     </div>
 
   </div>
@@ -79,22 +76,13 @@
     <input id="nickInput" placeholder="nickname" />
     <button id="randomNick">Aleatorio</button>
     <button id="enterChat">Entrar</button>
-    <div id="nickError"></div>
   </div>
 </div>
 
 <!-- ================= SCRIPTS ================= -->
-
-<!-- Socket.IO (SERVIDO POR RAILWAY) -->
 <script src="/socket.io/socket.io.js"></script>
-
-<!-- UI / FLUJO -->
 <script src="js/main.js"></script>
-
-<!-- CHAT REAL -->
 <script src="js/chat.js"></script>
-
-<!-- EFECTOS -->
 <script src="js/particles.js"></script>
 
 </body>
