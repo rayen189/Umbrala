@@ -29,7 +29,6 @@ function joinRoom(room) {
 
 /* ================= TABS ================= */
 
-// activar pestaña visual
 function setActiveTab(tab) {
   document.querySelectorAll(".tab").forEach(t =>
     t.classList.remove("active")
@@ -39,7 +38,6 @@ function setActiveTab(tab) {
 
 // pestaña pública
 const publicTab = document.querySelector('.tab[data-type="public"]');
-
 if (publicTab) {
   publicTab.onclick = () => {
     activeChat = { type: "public" };
@@ -48,12 +46,11 @@ if (publicTab) {
   };
 }
 
-/* ================= PRIVATE TABS ================= */
+/* ================= PRIVATE ================= */
 
 function openPrivateTab(user) {
-  if (user.socketId === socket.id) return;
+  if (!user || user.socketId === socket.id) return;
 
-  // crear chat si no existe
   if (!privateChats[user.socketId]) {
     privateChats[user.socketId] = {
       nick: user.nick,
@@ -80,7 +77,6 @@ function openPrivateTab(user) {
   const tab = [...tabs.children].find(
     t => t.dataset.socketId === user.socketId
   );
-
   if (tab) setActiveTab(tab);
 }
 
@@ -110,7 +106,6 @@ msgInput.addEventListener("keydown", e => {
 function sendMessage() {
   if (!msgInput.value.trim()) return;
 
-  // ===== PRIVADO =====
   if (activeChat.type === "private") {
     socket.emit("privateMessage", {
       toSocketId: activeChat.socketId,
@@ -122,10 +117,7 @@ function sendMessage() {
     );
 
     renderMessages();
-  }
-
-  // ===== PUBLICO =====
-  else {
+  } else {
     socket.emit("chatMessage", {
       room: currentRoom,
       text: msgInput.value
@@ -137,26 +129,36 @@ function sendMessage() {
 
 /* ================= SOCKET LISTENERS ================= */
 
-// mensajes públicos
+// público
 socket.on("message", data => {
   if (activeChat.type === "public") {
     addMessage("text", `${data.user}: ${data.text}`);
   }
 });
 
-// mensajes privados
+// privado (AUTO-CREA TAB)
 socket.on("privateMessage", data => {
-  const entry = Object.values(privateChats).find(
+  let entry = Object.values(privateChats).find(
     c => c.nick === data.from
   );
 
-  if (entry) {
-    entry.messages.push(`${data.from}: ${data.text}`);
+  if (!entry) {
+    const fakeUser = {
+      nick: data.from,
+      socketId: data.fromSocketId || data.from
+    };
+    openPrivateTab(fakeUser);
+    entry = privateChats[fakeUser.socketId];
+  }
+
+  entry.messages.push(`${data.from}: ${data.text}`);
+
+  if (activeChat.type === "private") {
     renderMessages();
   }
 });
 
-// lista usuarios
+// usuarios
 socket.on("users", users => {
   usersList.innerHTML = "";
 
