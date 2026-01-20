@@ -8,15 +8,31 @@ const io = new Server(server);
 
 app.use(express.static("public"));
 
-const users = {};
+/*
+ users = {
+   socketId: { nick, room }
+ }
+*/
+let users = {};
+let roomsCount = {
+  global: 0,
+  norte: 0,
+  centro: 0,
+  sur: 0,
+  curiosidades: 0,
+  vacio: 0
+};
 
 io.on("connection", socket => {
   console.log("🟢 Conectado:", socket.id);
 
   socket.on("joinRoom", ({ nick, room }) => {
-    users[socket.id] = { nick, room, socketId: socket.id };
+    if (!nick || !room) return;
 
     socket.join(room);
+    users[socket.id] = { nick, room };
+
+    roomsCount[room]++;
 
     io.to(room).emit("message", {
       user: "Umbrala",
@@ -27,33 +43,16 @@ io.on("connection", socket => {
       "users",
       Object.values(users).filter(u => u.room === room)
     );
+
+    io.emit("roomsUpdate", roomsCount);
   });
 
   socket.on("chatMessage", ({ room, text }) => {
     const user = users[socket.id];
-    if (!user) return;
+    if (!user || !text) return;
 
     io.to(room).emit("message", {
       user: user.nick,
-      text
-    });
-  });
-
-  // 🔐 PRIVADOS REALES
-  socket.on("privateMessage", ({ toSocketId, text }) => {
-    const fromUser = users[socket.id];
-    const toUser = users[toSocketId];
-
-    if (!fromUser || !toUser) return;
-
-    const privateRoom = [socket.id, toSocketId].sort().join("_");
-
-    socket.join(privateRoom);
-    io.to(toSocketId).socketsJoin(privateRoom);
-
-    io.to(privateRoom).emit("privateMessage", {
-      room: privateRoom,
-      from: fromUser.nick,
       text
     });
   });
@@ -62,22 +61,28 @@ io.on("connection", socket => {
     const user = users[socket.id];
     if (!user) return;
 
+    roomsCount[user.room]--;
+    if (roomsCount[user.room] < 0) roomsCount[user.room] = 0;
+
+    delete users[socket.id];
+
     io.to(user.room).emit("message", {
       user: "Umbrala",
       text: `${user.nick} salió`
     });
-
-    delete users[socket.id];
 
     io.to(user.room).emit(
       "users",
       Object.values(users).filter(u => u.room === user.room)
     );
 
+    io.emit("roomsUpdate", roomsCount);
+
     console.log("🔴 Desconectado:", socket.id);
   });
 });
 
-server.listen(process.env.PORT || 3000, () => {
-  console.log("🔥 Umbrala corriendo");
-});
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () =>
+  console.log(`🚀 Umbrala activo en puerto ${PORT}`)
+);
