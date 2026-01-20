@@ -1,5 +1,3 @@
-/* ================= ELEMENTS ================= */
-
 const screens = {
   boot: document.getElementById("bootScreen"),
   rooms: document.getElementById("roomsScreen"),
@@ -15,8 +13,6 @@ const nickInput = document.getElementById("nickInput");
 const msgInput = document.getElementById("msgInput");
 const messages = document.getElementById("messages");
 const sendBtn = document.getElementById("sendBtn");
-const fileBtn = document.getElementById("fileBtn");
-const fileInput = document.getElementById("fileInput");
 
 const backBtn = document.getElementById("backToRooms");
 const roomTitle = document.getElementById("roomTitle");
@@ -26,98 +22,86 @@ const usersList = document.getElementById("usersList");
 let nick = "";
 let selectedRoom = "";
 
-/* ================= BOOT ================= */
+/* ===== BOOT ===== */
 
 const bootLines = [
   "Inicializando Umbrala...",
   "Comunica en las sombras",
   "Anónimo. Sin rastro",
   "Efímero. Sin logs",
-  "Seguro. Encriptado",
   "Sistema activo ✔"
 ];
 
-let bootIndex = 0;
-
+let i = 0;
 const bootInterval = setInterval(() => {
-  terminal.innerHTML += bootLines[bootIndex] + "<br>";
-  bootIndex++;
-
-  if (bootIndex === bootLines.length) {
+  terminal.innerHTML += bootLines[i++] + "<br>";
+  if (i === bootLines.length) {
     clearInterval(bootInterval);
     setTimeout(() => switchScreen("rooms"), 700);
   }
 }, 450);
 
-/* ================= ROOMS ================= */
+/* ===== ROOMS ===== */
 
 const rooms = [
-  { id: "global", name: "🌍 Global", particles: "normal" },
-  { id: "norte", name: "🌵 Norte", particles: "normal" },
-  { id: "centro", name: "🏙 Centro", particles: "normal" },
-  { id: "sur", name: "🌊 Sur", particles: "normal" },
-  { id: "curiosidades", name: "🧠 Curiosidades", particles: "normal" },
-  { id: "vacio", name: "🕳️ Vacío", particles: "vacio" }
+  { id: "global", name: "🌍 Global" },
+  { id: "norte", name: "🌵 Norte" },
+  { id: "centro", name: "🏙 Centro" },
+  { id: "sur", name: "🌊 Sur" },
+  { id: "curiosidades", name: "🧠 Curiosidades" },
+  { id: "vacio", name: "🕳️ Vacío" }
 ];
+
 roomsList.innerHTML = "";
 
 rooms.forEach(room => {
   const div = document.createElement("div");
   div.className = "room";
-  div.innerHTML = `${room.name} <span>👥</span>`;
+  div.dataset.room = room.id;
+  div.innerHTML = `${room.name} <span>👥 0</span>`;
 
   div.onclick = () => {
-    selectedRoom = room.name;
+    selectedRoom = room.id;
     roomTitle.textContent = room.name;
-
-    if (window.setParticleMode) {
-      setParticleMode(room.particles || "normal");
-    }
-
     nickModal.classList.add("active");
   };
 
   roomsList.appendChild(div);
 });
 
-/* ================= NICK ================= */
+/* ===== NICK ===== */
 
-document.getElementById("randomNick").onclick = () => {
+randomNick.onclick = () => {
   nickInput.value = "ghost_" + Math.floor(Math.random() * 9999);
 };
 
-document.getElementById("enterChat").onclick = () => {
+enterChat.onclick = () => {
   if (!nickInput.value.trim() || !selectedRoom) return;
 
   nick = nickInput.value.trim();
   nickModal.classList.remove("active");
-
   usersList.innerHTML = "";
   messages.innerHTML = "";
 
   switchScreen("chat");
-
-  /* 🔌 ENTRAR A SALA SOCKET */
-  if (typeof joinRoom === "function") {
-    joinRoom(selectedRoom);
-  }
+  joinRoom(selectedRoom);
 };
 
-/* ================= CHAT ================= */
+/* ===== CHAT ===== */
 
-backBtn.onclick = () => {
-  switchScreen("rooms");
+backBtn.onclick = () => switchScreen("rooms");
 
-  if (window.setParticleMode) {
-    setParticleMode("normal");
-  }
-};
-
-/* ================= UTILS ================= */
+/* ===== UTILS ===== */
 
 function switchScreen(name) {
-  Object.values(screens).forEach(screen =>
-    screen.classList.remove("active")
-  );
+  Object.values(screens).forEach(s => s.classList.remove("active"));
   screens[name].classList.add("active");
+}
+
+function addMessage(type, text) {
+  const div = document.createElement("div");
+  div.className = "message";
+  div.textContent = text;
+  messages.appendChild(div);
+  messages.scrollTop = messages.scrollHeight;
 }
