@@ -35,6 +35,13 @@ function sendMessageSocket(text) {
 /* ================= SOCKET LISTENERS ================= */
 
 socket.on("message", data => {
+  console.log("📩 MENSAJE RECIBIDO:", data);
+
+  if (typeof addMessage !== "function") {
+    console.error("❌ addMessage no existe");
+    return;
+  }
+
   addMessage("text", `${data.user}: ${data.text}`);
 });
 
@@ -46,9 +53,7 @@ socket.on("users", users => {
     div.className = "user";
     div.textContent = u.nick;
 
-    div.onclick = () => {
-      openPrivate(u.nick);
-    };
+    div.onclick = () => openPrivate(u.nick);
 
     usersList.appendChild(div);
   });
@@ -59,15 +64,11 @@ socket.on("users", users => {
 socket.on("privateMessage", data => {
   addMessage("text", `(Privado) ${data.from}: ${data.text}`);
 });
-socket.on("message", data => {
-  console.log("📩 MENSAJE RECIBIDO:", data);
-  addMessage("text", `${data.user}: ${data.text}`);
-});
-/* ================= OVERRIDE SEND ================= */
+
+/* ================= SEND HANDLERS ================= */
 
 sendBtn.onclick = () => {
   if (!msgInput.value.trim()) return;
-
   sendMessageSocket(msgInput.value);
   msgInput.value = "";
 };
@@ -76,7 +77,6 @@ msgInput.addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
     if (!msgInput.value.trim()) return;
-
     sendMessageSocket(msgInput.value);
     msgInput.value = "";
   }
