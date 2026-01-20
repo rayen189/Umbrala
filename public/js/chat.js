@@ -36,12 +36,6 @@ function sendMessageSocket(text) {
 
 socket.on("message", data => {
   console.log("📩 MENSAJE RECIBIDO:", data);
-
-  if (typeof addMessage !== "function") {
-    console.error("❌ addMessage no existe");
-    return;
-  }
-
   addMessage("text", `${data.user}: ${data.text}`);
 });
 
@@ -82,12 +76,6 @@ msgInput.addEventListener("keydown", e => {
   }
 });
 
-/* ================= PRIVATE PLACEHOLDER ================= */
-
-function openPrivate(targetNick) {
-  addMessage("text", `(Sistema) Chat privado con ${targetNick} (próximamente)`);
-}
-
 /* ================= ADD MESSAGE ================= */
 
 function addMessage(type, content) {
@@ -109,14 +97,16 @@ function addMessage(type, content) {
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
 
+  // ⏳ mensaje efímero
   const LIFE_TIME = 18000;
   const FADE_TIME = 2000;
 
-  setTimeout(() => {
-    div.classList.add("fade");
-  }, LIFE_TIME - FADE_TIME);
+  setTimeout(() => div.classList.add("fade"), LIFE_TIME - FADE_TIME);
+  setTimeout(() => div.remove(), LIFE_TIME);
+}
 
-  setTimeout(() => {
-    div.remove();
-  }, LIFE_TIME);
+/* ================= PRIVATE PLACEHOLDER ================= */
+
+function openPrivate(targetNick) {
+  addMessage("text", `(Sistema) Chat privado con ${targetNick} (próximamente)`);
 }
