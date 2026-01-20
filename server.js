@@ -1,57 +1,98 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.static('public'));
+/* ================= STATIC ================= */
 
+app.use(express.static("public"));
+
+/* ================= STATE ================= */
+
+// users = {
+//   socketId: { nick, room }
+// }
 let users = {};
 
-io.on('connection', socket => {
+/* ================= SOCKET ================= */
 
-  socket.on('joinRoom', ({ nick, room }) => {
+io.on("connection", socket => {
+  console.log("🟢 Usuario conectado:", socket.id);
+
+  /* ===== JOIN ROOM ===== */
+  socket.on("joinRoom", ({ nick, room }) => {
+    if (!nick || !room) return;
+
     socket.join(room);
     users[socket.id] = { nick, room };
 
-    io.to(room).emit('message', {
-      user: 'Umbrala',
+    // Mensaje sistema
+    io.to(room).emit("message", {
+      user: "Umbrala",
       text: `${nick} entró a la sala`
     });
 
-    io.to(room).emit('users', Object.values(users).filter(u => u.room === room));
+    // Lista usuarios actualizada
+    io.to(room).emit(
+      "users",
+      Object.values(users).filter(u => u.room === room)
+    );
   });
 
-  socket.on('chatMessage', msg => {
+  /* ===== PUBLIC MESSAGE ===== */
+  socket.on("chatMessage", ({ room, text }) => {
     const user = users[socket.id];
-    if (!user) return;
+    if (!user || !text) return;
 
-    io.to(user.room).emit('message', {
+    io.to(room).emit("message", {
       user: user.nick,
-      text: msg
-    });
-  });
-
-  socket.on('privateMessage', ({ to, text }) => {
-    io.to(to).emit('privateMessage', {
-      from: users[socket.id].nick,
       text
     });
   });
 
-  socket.on('disconnect', () => {
+  /* ===== PRIVATE MESSAGE (BASE) ===== */
+  socket.on("privateMessage", ({ to, text }) => {
     const user = users[socket.id];
-    if (user) {
-      io.to(user.room).emit('message', {
-        user: 'Umbrala',
-        text: `${user.nick} salió`
-      });
-      delete users[socket.id];
-    }
+    if (!user || !to || !text) return;
+
+    io.to(to).emit("privateMessage", {
+      from: user.nick,
+      text
+    });
   });
 
+  /* ===== DISCONNECT ===== */
+  socket.on("disconnect", () => {
+    const user = users[socket.id];
+    if (!user) return;
+
+    const room = user.room;
+    const nick = user.nick;
+
+    delete users[socket.id];
+
+    // Aviso salida
+    io.to(room).emit("message", {
+      user: "Umbrala",
+      text: `${nick} salió`
+    });
+
+    // Actualizar lista usuarios
+    io.to(room).emit(
+      "users",
+      Object.values(users).filter(u => u.room === room)
+    );
+
+    console.log("🔴 Usuario desconectado:", socket.id);
+  });
 });
 
-server.listen(process.env.PORT || 3000);
+/* ================= START ================= */
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  console.log(`🚀 Umbrala activo en puerto ${PORT}`);
+});
