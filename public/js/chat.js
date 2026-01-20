@@ -1,3 +1,5 @@
+console.log("🟢 chat.js cargado");
+
 /* ================= SOCKET ================= */
 
 const socket = io();
@@ -57,7 +59,10 @@ socket.on("users", users => {
 socket.on("privateMessage", data => {
   addMessage("text", `(Privado) ${data.from}: ${data.text}`);
 });
-
+socket.on("message", data => {
+  console.log("📩 MENSAJE RECIBIDO:", data);
+  addMessage("text", `${data.user}: ${data.text}`);
+});
 /* ================= OVERRIDE SEND ================= */
 
 sendBtn.onclick = () => {
