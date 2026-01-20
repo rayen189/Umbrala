@@ -52,14 +52,13 @@ const bootInterval = setInterval(() => {
 /* ================= ROOMS ================= */
 
 const rooms = [
-  { name: "🌍 Global", particles: "normal" },
-  { name: "🌵 Norte", particles: "normal" },
-  { name: "🏙 Centro", particles: "normal" },
-  { name: "🌊 Sur", particles: "normal" },
-  { name: "🧠 Curiosidades", particles: "normal" },
-  { name: "🕳️ Vacío", particles: "vacio" }
+  { id: "global", name: "🌍 Global", particles: "normal" },
+  { id: "norte", name: "🌵 Norte", particles: "normal" },
+  { id: "centro", name: "🏙 Centro", particles: "normal" },
+  { id: "sur", name: "🌊 Sur", particles: "normal" },
+  { id: "curiosidades", name: "🧠 Curiosidades", particles: "normal" },
+  { id: "vacio", name: "🕳️ Vacío", particles: "vacio" }
 ];
-
 roomsList.innerHTML = "";
 
 rooms.forEach(room => {
