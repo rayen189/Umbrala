@@ -70,15 +70,9 @@ body {
   border-radius: 50%;
 }
 
-.btn.red {
-  background: #ff5f56;
-}
-.btn.yellow {
-  background: #ffbd2e;
-}
-.btn.green {
-  background: #27c93f;
-}
+.btn.red { background: #ff5f56; }
+.btn.yellow { background: #ffbd2e; }
+.btn.green { background: #27c93f; }
 
 .title {
   margin-left: auto;
@@ -134,6 +128,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
 }
 
 /* ===== TOP BAR ===== */
@@ -197,13 +192,13 @@ body {
   overflow: hidden;
 }
 
+/* ===== MESSAGES ===== */
+
 #messages {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
 }
-
-/* ===== MESSAGE ===== */
 
 .message {
   margin-bottom: 6px;
@@ -214,7 +209,7 @@ body {
 /* ===== USERS PANEL ===== */
 
 #usersPanel {
-  width: 160px;
+  width: 200px;
   background: #0e0e16;
   border-left: 1px solid #222;
 }
@@ -309,14 +304,39 @@ body {
   cursor: pointer;
 }
 
-/* ================= RESPONSIVE ================= */
+/* ================= DESKTOP FIX ================= */
+
+@media (min-width: 721px) {
+  .chat-body {
+    flex-direction: row;
+  }
+
+  #usersPanel {
+    display: block;
+    width: 200px;
+  }
+
+  #messages {
+    width: calc(100% - 200px);
+  }
+}
+
+/* ================= MOBILE ================= */
 
 @media (max-width: 720px) {
+  .chat-body {
+    flex-direction: column;
+  }
+
   #usersPanel {
     display: none;
   }
 
   .chat-tabs {
     font-size: 12px;
+  }
+
+  #messages {
+    width: 100%;
   }
 }
