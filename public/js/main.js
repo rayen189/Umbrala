@@ -22,7 +22,7 @@ const usersList = document.getElementById("usersList");
 let nick = "";
 let selectedRoom = "";
 
-/* ===== BOOT ===== */
+/* ================= BOOT ================= */
 
 const bootLines = [
   "Inicializando Umbrala...",
@@ -41,7 +41,7 @@ const bootInterval = setInterval(() => {
   }
 }, 450);
 
-/* ===== ROOMS ===== */
+/* ================= ROOMS ================= */
 
 const rooms = [
   { id: "global", name: "🌍 Global" },
@@ -57,8 +57,7 @@ roomsList.innerHTML = "";
 rooms.forEach(room => {
   const div = document.createElement("div");
   div.className = "room";
-  div.dataset.room = room.id;
-  div.innerHTML = `${room.name} <span>👥 0</span>`;
+  div.innerHTML = `${room.name} <span>👥</span>`;
 
   div.onclick = () => {
     selectedRoom = room.id;
@@ -69,7 +68,7 @@ rooms.forEach(room => {
   roomsList.appendChild(div);
 });
 
-/* ===== NICK ===== */
+/* ================= NICK ================= */
 
 randomNick.onclick = () => {
   nickInput.value = "ghost_" + Math.floor(Math.random() * 9999);
@@ -80,6 +79,7 @@ enterChat.onclick = () => {
 
   nick = nickInput.value.trim();
   nickModal.classList.remove("active");
+
   usersList.innerHTML = "";
   messages.innerHTML = "";
 
@@ -87,14 +87,16 @@ enterChat.onclick = () => {
   joinRoom(selectedRoom);
 };
 
-/* ===== CHAT ===== */
+/* ================= CHAT ================= */
 
 backBtn.onclick = () => switchScreen("rooms");
 
-/* ===== UTILS ===== */
+/* ================= UTILS ================= */
 
 function switchScreen(name) {
-  Object.values(screens).forEach(s => s.classList.remove("active"));
+  Object.values(screens).forEach(s =>
+    s.classList.remove("active")
+  );
   screens[name].classList.add("active");
 }
 
