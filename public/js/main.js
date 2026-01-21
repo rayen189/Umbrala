@@ -9,6 +9,8 @@ const roomsList = document.getElementById("roomsList");
 
 const nickModal = document.getElementById("nickModal");
 const nickInput = document.getElementById("nickInput");
+const randomNick = document.getElementById("randomNick");
+const enterChat = document.getElementById("enterChat");
 
 const msgInput = document.getElementById("msgInput");
 const messages = document.getElementById("messages");
