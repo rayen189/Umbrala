@@ -61,6 +61,7 @@ roomsList.innerHTML = "";
 rooms.forEach(room => {
   const div = document.createElement("div");
   div.className = "room";
+  div.style.pointerEvents = "auto";
   div.innerHTML = `${room.name} <span>👥</span>`;
 
   div.onclick = () => {
