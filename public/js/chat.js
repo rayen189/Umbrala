@@ -131,10 +131,33 @@ function sendMessage() {
 
 // público
 socket.on("message", data => {
-  if (activeChat.type === "public") {
+  if (activeChat.type !== "public") return;
+
+  if (data.type === "image") {
+    addImage(data.user, data.url);
+  } else if (data.type === "audio") {
+    addAudio(data.user, data.url);
+  } else {
     addMessage("text", `${data.user}: ${data.text}`);
   }
 });
+
+function addImage(user, url) {
+  const div = document.createElement("div");
+  div.className = "message";
+  div.innerHTML = `<strong>${user}:</strong><br><img src="${url}" class="chat-image">`;
+  messages.appendChild(div);
+}
+
+function addAudio(user, url) {
+  const div = document.createElement("div");
+  div.className = "message";
+  div.innerHTML = `
+    <strong>${user}:</strong><br>
+    <audio controls src="${url}"></audio>
+  `;
+  messages.appendChild(div);
+}
 
 // privado (AUTO-CREA TAB)
 socket.on("privateMessage", data => {
@@ -174,3 +197,58 @@ socket.on("users", users => {
 
   roomCount.textContent = `👥 ${users.length}`;
 });
+
+
+const imgBtn = document.getElementById("imgBtn");
+const fileInput = document.getElementById("fileInput");
+
+imgBtn.onclick = () => fileInput.click();
+
+fileInput.onchange = async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/upload", {
+    method: "POST",
+    body: formData
+  });
+
+  const data = await res.json();
+
+  socket.emit("chatMessage", {
+    room: currentRoom,
+    type: "image",
+    url: data.url
+  });
+};
+
+let mediaRecorder;
+let audioChunks = [];
+
+async function startRecording() {
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  mediaRecorder = new MediaRecorder(stream);
+
+  mediaRecorder.start();
+  audioChunks = [];
+
+  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+  mediaRecorder.onstop = async () => {
+    const blob = new Blob(audioChunks, { type: "audio/webm" });
+    const formData = new FormData();
+    formData.append("file", blob);
+
+    const res = await fetch("/upload", { method: "POST", body: formData });
+    const data = await res.json();
+
+    socket.emit("chatMessage", {
+      room: currentRoom,
+      type: "audio",
+      url: data.url
+    });
+  };
+}
