@@ -1,4 +1,20 @@
-/* ================= RESET ================= */
+/* ==================================================
+   UMBRALA – CSS CIBERPUNK VERDE (LIMPIO Y ESTABLE)
+   ================================================== */
+
+/* ===== VARIABLES ===== */
+:root {
+  --bg: #05080a;
+  --panel: #0a0f12;
+  --panel-2: #0f171c;
+  --green: #00ff9c;
+  --green-soft: #00c97b;
+  --text: #caffea;
+  --border: rgba(0,255,156,.25);
+  --glow: 0 0 14px rgba(0,255,156,.35);
+}
+
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,56 +22,57 @@
   font-family: monospace;
 }
 
-/* ================= BODY ================= */
+/* ===== BODY ===== */
 body {
-  background: #0b0b12;
-  color: #e0e0ff;
-  min-height: 100dvh; /* 🔥 real viewport móvil */
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* ================= SCREENS ================= */
+/* ===== PARTICLES ===== */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* ===== SCREENS ===== */
 .screen {
   display: none;
   width: 100%;
-  min-height: 100dvh;
-  position: relative;
-  z-index: 1;
+  min-height: 100vh;
 }
 
 .screen.active {
   display: flex;
 }
 
-/* ================= CENTER ================= */
 .center {
   align-items: center;
   justify-content: center;
 }
 
-/* ================= PARTICLES ================= */
-#particles {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none; /* 🔥 CLAVE */
-}
+/* ==================================================
+   BOOT / TERMINAL
+   ================================================== */
 
-/* ================= BOOT ================= */
 .terminal-window {
   width: 90%;
   max-width: 520px;
-  background: #0e0e16;
+  background: var(--panel);
   border-radius: 8px;
+  border: 1px solid var(--border);
+  box-shadow: var(--glow);
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(122,124,255,.3);
 }
 
 .terminal-bar {
   display: flex;
   align-items: center;
   padding: 6px 10px;
-  background: #15152a;
+  background: #020b07;
 }
 
 .buttons {
@@ -69,51 +86,74 @@ body {
   border-radius: 50%;
 }
 
-.btn.red { background:#ff5f56; }
-.btn.yellow { background:#ffbd2e; }
-.btn.green { background:#27c93f; }
+.btn.red { background: #ff5f56; }
+.btn.yellow { background: #ffbd2e; }
+.btn.green { background: #27c93f; }
 
 .title {
   margin-left: auto;
   font-size: 12px;
-  color: #7a7cff;
+  color: var(--green);
+  text-shadow: var(--glow);
 }
 
 #terminal {
-  padding: 12px;
+  padding: 14px;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.5;
+  color: var(--green);
 }
 
-/* ================= ROOMS ================= */
+/* ==================================================
+   ROOMS
+   ================================================== */
+
 .rooms-box {
-  background: #0e0e16;
+  background: var(--panel);
   padding: 20px;
   border-radius: 10px;
   width: 90%;
   max-width: 420px;
+  border: 1px solid var(--border);
+  box-shadow: var(--glow);
+}
+
+.rooms-box h2 {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color: var(--green);
 }
 
 .rooms {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .room {
-  background: #15152a;
-  padding: 10px 12px;
+  background: var(--panel-2);
+  padding: 10px 14px;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
+  color: var(--green);
+  border: 1px solid transparent;
 }
 
-/* ================= CHAT ================= */
+.room:hover {
+  border-color: var(--green);
+  box-shadow: var(--glow);
+}
+
+/* ==================================================
+   CHAT
+   ================================================== */
+
 .chat-container {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  min-height: 100vh;
   width: 100%;
 }
 
@@ -123,33 +163,47 @@ body {
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  background: #15152a;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  color: var(--green);
 }
 
 #backToRooms {
   background: none;
   border: none;
-  color: #7a7cff;
-  font-size: 14px;
+  color: var(--green);
+  cursor: pointer;
+}
+
+#roomTitle {
+  flex: 1;
+}
+
+#roomCount {
+  font-size: 12px;
+  opacity: .8;
 }
 
 /* ===== TABS ===== */
 .chat-tabs {
   display: flex;
+  background: #020b07;
+  border-bottom: 1px solid var(--border);
   overflow-x: auto;
-  background: #0e0e16;
-  border-bottom: 1px solid #222;
 }
 
 .tab {
   padding: 8px 14px;
   cursor: pointer;
+  color: #8fffd0;
+  border-right: 1px solid var(--border);
   white-space: nowrap;
 }
 
 .tab.active {
-  background: #1a1a2a;
-  color: #7a7cff;
+  background: #02140c;
+  color: var(--green);
+  text-shadow: var(--glow);
 }
 
 /* ===== BODY ===== */
@@ -162,44 +216,85 @@ body {
 /* ===== MESSAGES ===== */
 #messages {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
+.message {
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.message::before {
+  content: "> ";
+  color: var(--green-soft);
+}
+
 /* ===== USERS ===== */
 #usersPanel {
-  background: #0e0e16;
-  border-left: 1px solid #222;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+}
+
+.users-title {
+  padding: 8px;
+  font-size: 12px;
+  color: var(--green-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.user {
+  padding: 8px 10px;
+  cursor: pointer;
+  color: #8fffd0;
+}
+
+.user:hover {
+  background: #02140c;
+  color: var(--green);
 }
 
 /* ===== INPUT ===== */
 .inputBar {
   display: flex;
-  border-top: 1px solid #222;
-  background: #0e0e16;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 #msgInput {
   flex: 1;
   padding: 12px;
+  background: transparent;
   border: none;
-  background: #0e0e16;
-  color: #fff;
+  color: var(--green);
+  outline: none;
 }
 
 #sendBtn {
-  padding: 0 16px;
-  background: #7a7cff;
+  background: var(--green);
   border: none;
-  color: #fff;
+  padding: 0 18px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-/* ================= MODAL ================= */
+#sendBtn:hover {
+  box-shadow: var(--glow);
+}
+
+/* ==================================================
+   MODAL NICK
+   ================================================== */
+
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.6);
+  background: rgba(0,0,0,.7);
   display: none;
   align-items: center;
   justify-content: center;
@@ -211,152 +306,64 @@ body {
 }
 
 .modal-box {
-  background: #0e0e16;
+  background: var(--panel);
   padding: 20px;
+  border-radius: 10px;
   width: 90%;
   max-width: 320px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.modal-box input,
-.modal-box button {
-  padding: 12px;
-  font-size: 14px;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 720px) {
-  .chat-body {
-    flex-direction: column;
-  }
-
-  #usersPanel {
-    max-height: 120px;
-    overflow-y: auto;
-    border-top: 1px solid #222;
-  }
-}
-
-/* ================= CIBERPUNK THEME ================= */
-
-body {
-  background: var(--bg);
-  color: var(--text);
-}
-
-.terminal-window,
-.rooms-box,
-.chat-top,
-.chat-tabs,
-#usersPanel,
-.modal-box {
-  background: var(--panel);
   border: 1px solid var(--border);
   box-shadow: var(--glow);
 }
 
-/* ===== TERMINAL ===== */
-#terminal {
-  color: var(--green);
-}
-
-.title {
-  color: var(--green);
-  text-shadow: var(--glow);
-}
-
-/* ===== ROOMS ===== */
-.room {
-  background: var(--panel-2);
-  color: var(--green);
-  border: 1px solid transparent;
-}
-
-.room:hover {
-  border-color: var(--green);
-  box-shadow: var(--glow);
-}
-
-/* ===== CHAT TOP ===== */
-.chat-top {
-  color: var(--green);
-}
-
-/* ===== TABS ===== */
-.tab {
-  color: #7fffd4;
-}
-
-.tab.active {
-  background: #02140c;
-  color: var(--green);
-  text-shadow: var(--glow);
-}
-
-/* ===== MESSAGES ===== */
-.message {
-  color: var(--text);
-}
-
-.message::before {
-  content: "> ";
-  color: var(--green-soft);
-}
-
-/* ===== USERS ===== */
-.user {
-  color: #8fffd0;
-}
-
-.user:hover {
-  color: var(--green);
-  background: #02140c;
-}
-
-/* ===== INPUT ===== */
-#msgInput {
-  color: var(--green);
-  caret-color: var(--green);
-}
-
-#sendBtn {
-  background: var(--green);
-  color: #000;
-  font-weight: bold;
-}
-
-#sendBtn:hover {
-  box-shadow: 0 0 10px rgba(0,255,156,.8);
-}
-
-/* ===== MODAL ===== */
 .modal-box h3 {
   color: var(--green);
+  margin-bottom: 10px;
   text-align: center;
 }
 
 .modal-box input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
   background: #020b07;
   border: 1px solid var(--green-soft);
   color: var(--green);
 }
 
 .modal-box button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
   background: transparent;
   border: 1px solid var(--green);
   color: var(--green);
+  cursor: pointer;
 }
 
 .modal-box button:hover {
   background: var(--green);
   color: #000;
-  box-shadow: var(--glow);
 }
 
-/* ===== BUTTONS ===== */
-#backToRooms {
-  color: var(--green);
+/* ==================================================
+   RESPONSIVE
+   ================================================== */
+
+@media (min-width: 721px) {
+  #usersPanel {
+    width: 200px;
+  }
+}
+
+@media (max-width: 720px) {
+  .chat-body {
+    flex-direction: column;
+  }
+
+  #usersPanel {
+    width: 100%;
+    max-height: 120px;
+    overflow-y: auto;
+    border-top: 1px solid var(--border);
+  }
 }
