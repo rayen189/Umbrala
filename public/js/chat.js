@@ -252,3 +252,48 @@ async function startRecording() {
     });
   };
 }
+
+
+let mediaRecorder;
+let audioChunks = [];
+let recording = false;
+
+const recordBtn = document.getElementById("recordBtn");
+
+recordBtn.onclick = async () => {
+  if (!recording) {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+    mediaRecorder.onstop = async () => {
+      const blob = new Blob(audioChunks, { type: "audio/webm" });
+      const formData = new FormData();
+      formData.append("audio", blob);
+
+      const res = await fetch("/upload-audio", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await res.json();
+
+      socket.emit("chatMessage", {
+        room: currentRoom,
+        nick,
+        type: "audio",
+        url: data.url
+      });
+    };
+
+    mediaRecorder.start();
+    recording = true;
+    recordBtn.textContent = "⏹️";
+  } else {
+    mediaRecorder.stop();
+    recording = false;
+    recordBtn.textContent = "🎤";
+  }
+};
