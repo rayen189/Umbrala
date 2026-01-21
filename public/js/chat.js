@@ -1,12 +1,9 @@
+console.log("🟢 chat.js cargado");
+
 const socket = io();
 
-/* ===== CONFIG ===== */
-let currentRoom = "global";
-let nick = "Rayen"; // luego lo puedes pedir por modal
+/* ================= ELEMENTOS ================= */
 
-socket.emit("joinRoom", { nick, room: currentRoom });
-
-/* ===== ELEMENTOS ===== */
 const messages = document.getElementById("messages");
 const msgInput = document.getElementById("msgInput");
 const sendBtn = document.getElementById("sendBtn");
@@ -15,7 +12,19 @@ const fileInput = document.getElementById("fileInput");
 const imgBtn = document.getElementById("imgBtn");
 const recordBtn = document.getElementById("recordBtn");
 
-/* ===== RENDER MENSAJES ===== */
+/* ================= UNIRSE A SALA ================= */
+/* esta función es llamada desde main.js */
+window.joinRoom = function (room) {
+  window.currentRoom = room;
+
+  socket.emit("joinRoom", {
+    nick: window.nick,
+    room: window.currentRoom
+  });
+};
+
+/* ================= MENSAJES ================= */
+
 socket.on("message", data => {
   const msg = document.createElement("div");
   msg.className = "message";
@@ -29,25 +38,28 @@ socket.on("message", data => {
   messages.scrollTop = messages.scrollHeight;
 });
 
-/* ===== ENVIAR TEXTO ===== */
+/* ================= ENVIAR TEXTO ================= */
+
 sendBtn.onclick = sendText;
+
 msgInput.addEventListener("keydown", e => {
   if (e.key === "Enter") sendText();
 });
 
 function sendText() {
   const text = msgInput.value.trim();
-  if (!text) return;
+  if (!text || !window.currentRoom) return;
 
   socket.emit("chatMessage", {
-    room: currentRoom,
+    room: window.currentRoom,
     text
   });
 
   msgInput.value = "";
 }
 
-/* ===== ENVIAR IMAGEN ===== */
+/* ================= ENVIAR IMAGEN ================= */
+
 imgBtn.onclick = () => fileInput.click();
 
 fileInput.onchange = async () => {
@@ -65,14 +77,15 @@ fileInput.onchange = async () => {
   const data = await res.json();
 
   socket.emit("chatMessage", {
-    room: currentRoom,
+    room: window.currentRoom,
     text: `<img src="${data.url}" class="chat-img">`
   });
 
   fileInput.value = "";
 };
 
-/* ===== AUDIO NOTA DE VOZ ===== */
+/* ================= AUDIO NOTA DE VOZ ================= */
+
 let mediaRecorder;
 let audioChunks = [];
 let recording = false;
@@ -98,7 +111,7 @@ recordBtn.onclick = async () => {
       const data = await res.json();
 
       socket.emit("chatMessage", {
-        room: currentRoom,
+        room: window.currentRoom,
         text: `
           <audio controls class="chat-audio">
             <source src="${data.url}" type="audio/webm">
