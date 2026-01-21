@@ -1,49 +1,34 @@
 console.log("🟢 chat.js cargado");
 
-/* ================= SOCKET ================= */
-
 const socket = io();
-
-/* ================= STATE ================= */
 
 let currentRoom = null;
 let activeChat = { type: "public" };
-
-// socketId -> { nick, messages: [] }
 const privateChats = {};
 
-/* ================= ELEMENTS ================= */
-
 const tabs = document.getElementById("chatTabs");
+const fileInput = document.getElementById("fileInput");
+const imgBtn = document.getElementById("imgBtn");
+const recordBtn = document.getElementById("recordBtn");
 
-/* ================= JOIN ROOM ================= */
+/* ================= JOIN ================= */
 
 function joinRoom(room) {
   currentRoom = room;
-
-  socket.emit("joinRoom", {
-    nick,
-    room
-  });
+  socket.emit("joinRoom", { nick, room });
 }
 
-/* ================= TABS ================= */
+/* ================= PUBLIC TAB ================= */
+
+document.querySelector('.tab[data-type="public"]').onclick = () => {
+  activeChat = { type: "public" };
+  messages.innerHTML = "";
+  setActiveTab(event.target);
+};
 
 function setActiveTab(tab) {
-  document.querySelectorAll(".tab").forEach(t =>
-    t.classList.remove("active")
-  );
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   tab.classList.add("active");
-}
-
-// pestaña pública
-const publicTab = document.querySelector('.tab[data-type="public"]');
-if (publicTab) {
-  publicTab.onclick = () => {
-    activeChat = { type: "public" };
-    messages.innerHTML = "";
-    setActiveTab(publicTab);
-  };
 }
 
 /* ================= PRIVATE ================= */
@@ -52,10 +37,7 @@ function openPrivateTab(user) {
   if (!user || user.socketId === socket.id) return;
 
   if (!privateChats[user.socketId]) {
-    privateChats[user.socketId] = {
-      nick: user.nick,
-      messages: []
-    };
+    privateChats[user.socketId] = { nick: user.nick, messages: [] };
 
     const tab = document.createElement("div");
     tab.className = "tab";
@@ -73,11 +55,6 @@ function openPrivateTab(user) {
 
   activeChat = { type: "private", socketId: user.socketId };
   renderMessages();
-
-  const tab = [...tabs.children].find(
-    t => t.dataset.socketId === user.socketId
-  );
-  if (tab) setActiveTab(tab);
 }
 
 /* ================= RENDER ================= */
@@ -87,23 +64,19 @@ function renderMessages() {
 
   if (activeChat.type === "public") return;
 
-  privateChats[activeChat.socketId].messages.forEach(m => {
-    addMessage("text", m);
-  });
+  privateChats[activeChat.socketId].messages.forEach(m =>
+    addMessage("text", m)
+  );
 }
 
-/* ================= SEND ================= */
+/* ================= SEND TEXT ================= */
 
-sendBtn.onclick = sendMessage;
-
+sendBtn.onclick = sendText;
 msgInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (e.key === "Enter") sendText();
 });
 
-function sendMessage() {
+function sendText() {
   if (!msgInput.value.trim()) return;
 
   if (activeChat.type === "private") {
@@ -127,69 +100,93 @@ function sendMessage() {
   msgInput.value = "";
 }
 
-if (msg.type === "audio") {
-  const audio = document.createElement("audio");
-  audio.src = msg.url;
-  audio.controls = true;
-  audio.className = "audio-msg";
-  messageDiv.appendChild(audio);
-}
+/* ================= IMAGE ================= */
 
-/* ================= SOCKET LISTENERS ================= */
+imgBtn.onclick = () => fileInput.click();
 
-// público
+fileInput.onchange = async () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const res = await fetch("/upload", { method: "POST", body: formData });
+  const data = await res.json();
+
+  socket.emit("chatMessage", {
+    room: currentRoom,
+    type: "image",
+    url: data.url
+  });
+};
+
+/* ================= AUDIO ================= */
+
+let mediaRecorder;
+let audioChunks = [];
+let recording = false;
+
+recordBtn.onclick = async () => {
+  if (!recording) {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+    mediaRecorder.onstop = async () => {
+      const blob = new Blob(audioChunks, { type: "audio/webm" });
+      const formData = new FormData();
+      formData.append("file", blob);
+
+      const res = await fetch("/upload", { method: "POST", body: formData });
+      const data = await res.json();
+
+      socket.emit("chatMessage", {
+        room: currentRoom,
+        type: "audio",
+        url: data.url
+      });
+    };
+
+    mediaRecorder.start();
+    recordBtn.textContent = "⏹️";
+    recordBtn.classList.add("recording");
+    recording = true;
+
+  } else {
+    mediaRecorder.stop();
+    recordBtn.textContent = "🎙️";
+    recordBtn.classList.remove("recording");
+    recording = false;
+  }
+};
+
+/* ================= SOCKET ================= */
+
 socket.on("message", data => {
-  if (activeChat.type !== "public") return;
-
   if (data.type === "image") {
-    addImage(data.user, data.url);
+    addMessage("html", `<img src="${data.url}" class="chat-img">`);
   } else if (data.type === "audio") {
-    addAudio(data.user, data.url);
+    addMessage("html", `<audio controls src="${data.url}"></audio>`);
   } else {
     addMessage("text", `${data.user}: ${data.text}`);
   }
 });
 
-function addImage(user, url) {
-  const div = document.createElement("div");
-  div.className = "message";
-  div.innerHTML = `<strong>${user}:</strong><br><img src="${url}" class="chat-image">`;
-  messages.appendChild(div);
-}
-
-function addAudio(user, url) {
-  const div = document.createElement("div");
-  div.className = "message";
-  div.innerHTML = `
-    <strong>${user}:</strong><br>
-    <audio controls src="${url}"></audio>
-  `;
-  messages.appendChild(div);
-}
-
-// privado (AUTO-CREA TAB)
 socket.on("privateMessage", data => {
-  let entry = Object.values(privateChats).find(
-    c => c.nick === data.from
+  if (!privateChats[data.fromSocketId]) {
+    openPrivateTab({ nick: data.from, socketId: data.fromSocketId });
+  }
+
+  privateChats[data.fromSocketId].messages.push(
+    `${data.from}: ${data.text}`
   );
 
-  if (!entry) {
-    const fakeUser = {
-      nick: data.from,
-      socketId: data.fromSocketId || data.from
-    };
-    openPrivateTab(fakeUser);
-    entry = privateChats[fakeUser.socketId];
-  }
-
-  entry.messages.push(`${data.from}: ${data.text}`);
-
-  if (activeChat.type === "private") {
-    renderMessages();
-  }
+  if (activeChat.type === "private") renderMessages();
 });
 
-// usuarios
 socket.on("users", users => {
   usersList.innerHTML = "";
 
@@ -205,103 +202,3 @@ socket.on("users", users => {
 
   roomCount.textContent = `👥 ${users.length}`;
 });
-
-
-const imgBtn = document.getElementById("imgBtn");
-const fileInput = document.getElementById("fileInput");
-
-imgBtn.onclick = () => fileInput.click();
-
-fileInput.onchange = async () => {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const formData = new FormData();
-  formData.append("file", file);
-
-  const res = await fetch("/upload", {
-    method: "POST",
-    body: formData
-  });
-
-  const data = await res.json();
-
-  socket.emit("chatMessage", {
-    room: currentRoom,
-    type: "image",
-    url: data.url
-  });
-};
-
-let mediaRecorder;
-let audioChunks = [];
-
-async function startRecording() {
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  mediaRecorder = new MediaRecorder(stream);
-
-  mediaRecorder.start();
-  audioChunks = [];
-
-  mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-
-  mediaRecorder.onstop = async () => {
-    const blob = new Blob(audioChunks, { type: "audio/webm" });
-    const formData = new FormData();
-    formData.append("file", blob);
-
-    const res = await fetch("/upload", { method: "POST", body: formData });
-    const data = await res.json();
-
-    socket.emit("chatMessage", {
-      room: currentRoom,
-      type: "audio",
-      url: data.url
-    });
-  };
-}
-
-
-let mediaRecorder;
-let audioChunks = [];
-let recording = false;
-
-const recordBtn = document.getElementById("recordBtn");
-
-recordBtn.onclick = async () => {
-  if (!recording) {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRecorder = new MediaRecorder(stream);
-    audioChunks = [];
-
-    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-
-    mediaRecorder.onstop = async () => {
-      const blob = new Blob(audioChunks, { type: "audio/webm" });
-      const formData = new FormData();
-      formData.append("audio", blob);
-
-      const res = await fetch("/upload-audio", {
-        method: "POST",
-        body: formData
-      });
-
-      const data = await res.json();
-
-      socket.emit("chatMessage", {
-        room: currentRoom,
-        nick,
-        type: "audio",
-        url: data.url
-      });
-    };
-
-    mediaRecorder.start();
-    recording = true;
-    recordBtn.textContent = "⏹️";
-  } else {
-    mediaRecorder.stop();
-    recording = false;
-    recordBtn.textContent = "🎤";
-  }
-};
