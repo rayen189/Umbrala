@@ -1,52 +1,109 @@
-/* ==================================================
-   UMBRALA – CSS CIBERPUNK VERDE (LIMPIO Y ESTABLE)
-   ================================================== */
+/* ================= RESET ================= */
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
   font-family: monospace;
 }
 
-body {
+html, body {
+  width: 100%;
+  height: 100%;
   background: #050b08;
   color: #9affc9;
-  min-height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
-.screen { display: none; min-height: 100vh; }
-.screen.active { display: flex; }
-.center { align-items: center; justify-content: center; }
+/* ================= GENERAL ================= */
 
-#particles { position: fixed; inset: 0; z-index: -1; }
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
 
-/* TERMINAL */
+.screen.active {
+  display: flex;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+/* ================= TERMINAL BOOT ================= */
+
 .terminal-window {
   width: 90%;
   max-width: 520px;
   background: #07120c;
   border: 1px solid #1aff7c;
-  box-shadow: 0 0 20px #1aff7c55;
+  box-shadow: 0 0 25px #1aff7c55;
 }
 
 .terminal-bar {
   display: flex;
+  align-items: center;
   padding: 6px;
   background: #0b1c13;
+  border-bottom: 1px solid #1aff7c33;
 }
 
-.title {
+.terminal-bar .buttons {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-bar .btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.btn.red { background: #ff5f56; }
+.btn.yellow { background: #ffbd2e; }
+.btn.green { background: #27c93f; }
+
+.terminal-bar .title {
   margin-left: auto;
   color: #1aff7c;
+  font-weight: bold;
 }
 
-/* ROOMS */
+#terminal {
+  padding: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* ================= ROOMS ================= */
+
 .rooms-box {
   background: #07120c;
   border: 1px solid #1aff7c;
   padding: 20px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 0 20px #1aff7c33;
+}
+
+.rooms-box h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #1aff7c;
+}
+
+.rooms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .room {
@@ -54,24 +111,54 @@ body {
   border: 1px solid #1aff7c33;
   padding: 10px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .room:hover {
-  box-shadow: 0 0 8px #1aff7c;
+  box-shadow: 0 0 10px #1aff7c;
 }
 
-/* CHAT */
-.chat-container { display: flex; flex-direction: column; width: 100%; }
-.chat-top { background: #0b1c13; padding: 8px; border-bottom: 1px solid #1aff7c; }
+/* ================= CHAT ================= */
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* TOP */
+
+.chat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0b1c13;
+  padding: 8px;
+  border-bottom: 1px solid #1aff7c;
+}
+
+.chat-top button {
+  background: transparent;
+  border: 1px solid #1aff7c;
+  color: #1aff7c;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+/* TABS */
 
 .chat-tabs {
   display: flex;
   background: #07120c;
+  border-bottom: 1px solid #1aff7c33;
+  overflow-x: auto;
 }
 
 .tab {
-  padding: 8px;
+  padding: 8px 12px;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .tab.active {
@@ -79,7 +166,15 @@ body {
   box-shadow: inset 0 -2px 0 #1aff7c;
 }
 
-.chat-body { display: flex; flex: 1; }
+/* BODY */
+
+.chat-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* MESSAGES */
 
 #messages {
   flex: 1;
@@ -87,38 +182,81 @@ body {
   overflow-y: auto;
 }
 
-.message { margin-bottom: 6px; }
+.message {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* IMAGES & AUDIO */
 
 .chat-img {
-  max-width: 200px;
+  max-width: 220px;
   border: 1px solid #1aff7c;
+  margin-top: 4px;
 }
 
-/* USERS */
+audio {
+  width: 220px;
+  margin-top: 4px;
+}
+
+/* USERS PANEL */
+
 #usersPanel {
   width: 180px;
-  border-left: 1px solid #1aff7c;
+  background: #07120c;
+  border-left: 1px solid #1aff7c33;
+  display: flex;
+  flex-direction: column;
 }
 
-/* INPUT */
+.users-title {
+  padding: 8px;
+  border-bottom: 1px solid #1aff7c33;
+  text-align: center;
+  color: #1aff7c;
+}
+
+#usersList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.user {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.user:hover {
+  background: #0b1c13;
+}
+
+/* ================= INPUT BAR ================= */
+
 .inputBar {
   display: flex;
+  align-items: center;
   border-top: 1px solid #1aff7c;
   background: #07120c;
+  padding: 6px;
+  gap: 6px;
 }
 
 #msgInput {
   flex: 1;
   background: transparent;
   border: none;
+  outline: none;
   color: #9affc9;
-  padding: 10px;
+  font-size: 14px;
+  padding: 8px;
 }
 
 #sendBtn {
   background: #1aff7c;
   border: none;
-  padding: 0 16px;
+  color: #000;
+  padding: 8px 12px;
   cursor: pointer;
 }
 
@@ -126,7 +264,7 @@ body {
   background: transparent;
   border: 1px solid #1aff7c;
   color: #1aff7c;
-  padding: 0 10px;
+  padding: 6px 10px;
   cursor: pointer;
 }
 
@@ -136,18 +274,75 @@ body {
   color: #fff;
 }
 
-/* MODAL */
+/* ================= MODAL ================= */
+
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.8);
+  background: rgba(0,0,0,.85);
   display: none;
+  align-items: center;
+  justify-content: center;
 }
 
-.modal.active { display: flex; }
+.modal.active {
+  display: flex;
+}
 
 .modal-box {
   background: #07120c;
   border: 1px solid #1aff7c;
   padding: 20px;
+  width: 90%;
+  max-width: 320px;
+}
+
+.modal-box h3 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #1aff7c;
+}
+
+.modal-box input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #1aff7c;
+  color: #9affc9;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.modal-box button {
+  width: 100%;
+  background: #1aff7c;
+  border: none;
+  color: #000;
+  padding: 8px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  #usersPanel {
+    display: none;
+  }
+
+  .chat-body {
+    flex-direction: column;
+  }
+
+  .chat-tabs {
+    font-size: 13px;
+  }
+
+  #messages {
+    font-size: 14px;
+  }
+
+  body {
+    overflow: auto;
+  }
 }
