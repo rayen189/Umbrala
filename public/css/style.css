@@ -293,3 +293,53 @@ body {
     width: 100%;
   }
 }
+
+/* ================= MODAL ================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-box {
+  background: #0e0e16;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 320px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(122,124,255,0.4);
+}
+
+.modal-box h3 {
+  margin-bottom: 12px;
+  color: #7a7cff;
+}
+
+.modal-box input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  background: #15152a;
+  border: none;
+  color: #fff;
+}
+
+.modal-box button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  background: #7a7cff;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
