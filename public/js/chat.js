@@ -127,6 +127,14 @@ function sendMessage() {
   msgInput.value = "";
 }
 
+if (msg.type === "audio") {
+  const audio = document.createElement("audio");
+  audio.src = msg.url;
+  audio.controls = true;
+  audio.className = "audio-msg";
+  messageDiv.appendChild(audio);
+}
+
 /* ================= SOCKET LISTENERS ================= */
 
 // público
