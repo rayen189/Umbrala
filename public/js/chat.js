@@ -12,6 +12,9 @@ const fileInput = document.getElementById("fileInput");
 const imgBtn = document.getElementById("imgBtn");
 const recordBtn = document.getElementById("recordBtn");
 
+const usersList = document.getElementById("usersList");
+const chatTabs = document.getElementById("chatTabs");
+
 /* ================= JOIN DESDE main.js ================= */
 
 window.joinRoom = function (room) {
