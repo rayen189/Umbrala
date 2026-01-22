@@ -50,7 +50,12 @@ socket.on("message", data => {
 /* ================= ENVIAR TEXTO ================= */
 
 sendBtn.addEventListener("click", sendText);
-
+msgInput.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendText();
+  }
+});
 function sendText() {
   // 🔥 FORZAR LECTURA EN MÓVIL
   const text = msgInput.value?.trim();
