@@ -161,7 +161,7 @@ recordBtn.onclick = async () => {
             room: window.currentRoom,
             text: `
               <audio controls class="chat-audio">
-                <source src="${data.url}" type="audio/webm">
+                <source src="${data.url}" type="audio/mp4">
               </audio>
             `
           });
