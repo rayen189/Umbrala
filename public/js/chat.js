@@ -1,12 +1,6 @@
 console.log("🟢 chat.js cargado");
 
-/* ================= SOCKET ================= */
-
 const socket = io();
-
-/* ================= STATE ================= */
-
-let currentRoom = null;
 
 /* ================= ELEMENTOS ================= */
 
@@ -18,11 +12,15 @@ const fileInput = document.getElementById("fileInput");
 const imgBtn = document.getElementById("imgBtn");
 const recordBtn = document.getElementById("recordBtn");
 
-/* ================= JOIN ROOM (GLOBAL) ================= */
-/* 👇 ESTO SOLUCIONA main.js:65 */
+/* ================= JOIN DESDE main.js ================= */
 
 window.joinRoom = function (room) {
-  currentRoom = room;
+  if (!window.nick || !room) {
+    console.warn("⚠️ joinRoom cancelado", window.nick, room);
+    return;
+  }
+
+  console.log("🔌 Uniéndose a sala:", room);
 
   socket.emit("joinRoom", {
     nick: window.nick,
@@ -30,68 +28,47 @@ window.joinRoom = function (room) {
   });
 };
 
-/* ================= RENDER MENSAJES ================= */
-
-function renderMessage(html) {
-  const div = document.createElement("div");
-  div.className = "message";
-  div.innerHTML = html;
-  messages.appendChild(div);
-  messages.scrollTop = messages.scrollHeight;
-}
-
-/* ================= SOCKET LISTENERS ================= */
+/* ================= MENSAJES ================= */
 
 socket.on("message", data => {
-  let content = "";
+  const msg = document.createElement("div");
+  msg.className = "message";
 
-  if (data.type === "image") {
-    content = `
-      <strong>${data.user}</strong><br>
-      <img src="${data.url}" class="chat-img">
-    `;
-  } else if (data.type === "audio") {
-    content = `
-      <strong>${data.user}</strong><br>
-      <audio controls class="chat-audio">
-        <source src="${data.url}" type="audio/webm">
-      </audio>
-    `;
-  } else {
-    content = `<strong>${data.user}:</strong> ${data.text}`;
-  }
+  msg.innerHTML = `
+    <span class="user">${data.user}</span>
+    <div class="bubble">${data.text}</div>
+  `;
 
-  renderMessage(content);
+  messages.appendChild(msg);
+  messages.scrollTop = messages.scrollHeight;
 });
 
 /* ================= ENVIAR TEXTO ================= */
 
 sendBtn.onclick = sendText;
 msgInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendText();
-  }
+  if (e.key === "Enter") sendText();
 });
 
 function sendText() {
-  if (!msgInput.value.trim() || !currentRoom) return;
+  const text = msgInput.value.trim();
+  if (!text) return;
 
   socket.emit("chatMessage", {
-    room: currentRoom,
-    text: msgInput.value
+    room: window.currentRoom,
+    text
   });
 
   msgInput.value = "";
 }
 
-/* ================= ENVIAR IMAGEN ================= */
+/* ================= IMAGEN ================= */
 
 imgBtn.onclick = () => fileInput.click();
 
 fileInput.onchange = async () => {
   const file = fileInput.files[0];
-  if (!file || !currentRoom) return;
+  if (!file) return;
 
   const formData = new FormData();
   formData.append("file", file);
@@ -104,23 +81,20 @@ fileInput.onchange = async () => {
   const data = await res.json();
 
   socket.emit("chatMessage", {
-    room: currentRoom,
-    type: "image",
-    url: data.url
+    room: window.currentRoom,
+    text: `<img src="${data.url}" class="chat-img">`
   });
 
   fileInput.value = "";
 };
 
-/* ================= AUDIO (NOTA DE VOZ) ================= */
+/* ================= AUDIO ================= */
 
 let mediaRecorder;
 let audioChunks = [];
 let recording = false;
 
 recordBtn.onclick = async () => {
-  if (!currentRoom) return;
-
   if (!recording) {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorder = new MediaRecorder(stream);
@@ -141,21 +115,21 @@ recordBtn.onclick = async () => {
       const data = await res.json();
 
       socket.emit("chatMessage", {
-        room: currentRoom,
-        type: "audio",
-        url: data.url
+        room: window.currentRoom,
+        text: `
+          <audio controls class="chat-audio">
+            <source src="${data.url}" type="audio/webm">
+          </audio>
+        `
       });
     };
 
     mediaRecorder.start();
     recording = true;
     recordBtn.textContent = "⏹️";
-    recordBtn.classList.add("recording");
-
   } else {
     mediaRecorder.stop();
     recording = false;
     recordBtn.textContent = "🎙️";
-    recordBtn.classList.remove("recording");
   }
 };
