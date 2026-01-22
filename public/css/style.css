@@ -356,23 +356,42 @@ audio {
 
 @media (max-width: 768px) {
 
-  #usersPanel {
-    display: none;
-  }
-
+  /* Chat ocupa toda la pantalla */
   .chat-body {
     flex-direction: column;
   }
 
-  .chat-tabs {
-    font-size: 13px;
+  /* PANEL USUARIOS → OVERLAY */
+  #usersPanel {
+    position: fixed;
+    top: 0;
+    right: -260px;
+    width: 260px;
+    height: 100vh;
+    background: #07120c;
+    border-left: 1px solid #1aff7c;
+    z-index: 50;
+    transition: right 0.3s ease;
   }
 
-  #messages {
-    font-size: 14px;
+  #usersPanel.active {
+    right: 0;
+  }
+
+  /* Botón usuarios */
+  .chat-top {
+    position: relative;
+  }
+
+  #usersToggle {
+    background: transparent;
+    border: 1px solid #1aff7c;
+    color: #1aff7c;
+    padding: 4px 8px;
+    cursor: pointer;
   }
 
   body {
-    overflow: auto;
+    overflow: hidden;
   }
 }
