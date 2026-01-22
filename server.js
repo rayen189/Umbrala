@@ -12,6 +12,7 @@ const io = new Server(server);
 /* ================= STATIC ================= */
 
 app.use(express.static("public"));
+app.use("/uploads", express.static("public/uploads"));
 
 /* ================= ENSURE UPLOAD FOLDERS ================= */
 
@@ -62,20 +63,6 @@ io.on("connection", socket => {
     });
   });
 
-  socket.on("privateMessage", ({ toSocketId, text }) => {
-    const user = users[socket.id];
-    if (!user) return;
-
-    const payload = {
-      from: user.nick,
-      fromSocketId: socket.id,
-      text
-    };
-
-    io.to(toSocketId).emit("privateMessage", payload);
-    socket.emit("privateMessage", payload);
-  });
-
   socket.on("disconnect", () => {
     const user = users[socket.id];
     if (!user) return;
@@ -94,6 +81,8 @@ io.on("connection", socket => {
       "users",
       Object.values(users).filter(u => u.room === room)
     );
+
+    console.log("🔴 Desconectado:", socket.id);
   });
 });
 
@@ -108,7 +97,7 @@ const storage = multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || ".webm";
+    const ext = path.extname(file.originalname) || ".mp4";
     cb(null, Date.now() + ext);
   }
 });
