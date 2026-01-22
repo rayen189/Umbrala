@@ -193,7 +193,10 @@ html, body {
   flex: 1;
   padding: 10px;
   overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  min-height: 0;               /* 🔥 CLAVE */
+  -webkit-overflow-scrolling: touch; /* 📱 iOS */
 }
 
 .message {
