@@ -3,7 +3,14 @@ console.log("🟢 chat.js cargado");
 const socket = io();
 
 /* ================= ELEMENTOS ================= */
+const usersPanel = document.getElementById("usersPanel");
+const usersToggle = document.getElementById("usersToggle");
 
+if (usersToggle) {
+  usersToggle.onclick = () => {
+    usersPanel.classList.toggle("active");
+  };
+}
 const messages = document.getElementById("messages");
 const msgInput = document.getElementById("msgInput");
 const sendBtn = document.getElementById("sendBtn");
