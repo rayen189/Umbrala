@@ -133,3 +133,26 @@ recordBtn.onclick = async () => {
     recordBtn.textContent = "🎙️";
   }
 };
+
+/* ================= LISTA DE USUARIOS ================= */
+
+const usersList = document.getElementById("usersList");
+const roomCount = document.getElementById("roomCount");
+
+socket.on("users", users => {
+  if (!usersList) return;
+
+  usersList.innerHTML = "";
+
+  users.forEach(u => {
+    const div = document.createElement("div");
+    div.className = "user";
+    div.textContent = u.nick;
+
+    usersList.appendChild(div);
+  });
+
+  if (roomCount) {
+    roomCount.textContent = `👥 ${users.length}`;
+  }
+});
